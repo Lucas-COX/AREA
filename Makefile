@@ -1,7 +1,7 @@
 all: install
 
 db:
-	@echo "\033[0;32mMake sure that the user has all permissions over the database Area and that the database exists.\033[0m"
+	@printf "\033[0;32mMake sure that the user has all permissions over the database Area and that the database exists.\033[0m\n"
 	@cat area.sql | mysql -p Area
 
 install:
