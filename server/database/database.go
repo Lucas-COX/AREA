@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	c "Area/config"
+	"Area/lib"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -25,9 +26,7 @@ func New(config *c.Config) *gorm.DB {
 	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Warn),
 	})
-	if err != nil {
-		panic(fmt.Errorf("failed to open database: %w", err))
-	}
+	lib.CheckError(err)
 
 	return db
 }

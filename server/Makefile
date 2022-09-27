@@ -6,10 +6,15 @@ all: install
 build: $(BINARY_NAME)
 
 $(BINARY_NAME):
-	@go build main.go
+	@go build -o $(BINARY_NAME)
 
 install:
 	@go mod tidy
 
 start:
 	@$(GO_BINARY_PATH)/air -c .air.toml
+
+.PHONY: all \
+		build \
+		install \
+		start \

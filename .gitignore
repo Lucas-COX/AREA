@@ -4,5 +4,8 @@
 # Temporary files
 tmp/
 
-# config file
+# Configuration files
 server/config/config.yml
+
+# Compiled files
+server/server
