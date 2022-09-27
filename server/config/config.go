@@ -2,7 +2,9 @@ package config
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/viper"
@@ -20,6 +22,7 @@ type Config struct {
 	Server struct {
 		Address string
 	}
+	Environment map[string]string
 }
 
 func Read() *Config {
@@ -34,6 +37,9 @@ func Read() *Config {
 	err = viper.Unmarshal(&c)
 	if err != nil {
 		panic(fmt.Errorf("failed to parse config file: %w", err))
+	}
+	for k, v := range c.Environment {
+		os.Setenv(strings.ToUpper(k), v)
 	}
 	spew.Dump(c)
 	return &c
