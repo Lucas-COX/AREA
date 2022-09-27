@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "Area/config"
 
+func main() {
+	config.Read()
 }
