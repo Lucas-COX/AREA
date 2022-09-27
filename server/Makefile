@@ -3,6 +3,8 @@ GO_BINARY_PATH	=$(shell go env GOPATH)/bin
 
 all: install
 
+build: $(BINARY_NAME)
+
 $(BINARY_NAME):
 	@go build main.go
 

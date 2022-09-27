@@ -7,13 +7,15 @@ db:
 	@cat area.sql | mysql -p Area
 
 install:
-	make -C server install
+	@make -C server install
 
 run:
-	make -C $(t) start
+	@make -C $(t) start
 
 pr:
 	@gh pr create --fill --base dev
+
+start: run
 
 .PHONY: all \
 		db \

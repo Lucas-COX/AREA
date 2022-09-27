@@ -1,0 +1,10 @@
+database:
+  user:
+  password:
+  address:
+  protocol:
+  name:
+  ParseTime:
+
+server:
+  address:
