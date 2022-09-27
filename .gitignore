@@ -3,3 +3,6 @@
 
 # Temporary files
 tmp/
+
+# config file
+server/config/config.yml
