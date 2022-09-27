@@ -8,3 +8,6 @@ database:
 
 server:
   address:
+
+environment:
+  - token_secret:
