@@ -1,0 +1,25 @@
+version: "3"
+services:
+  app_server:
+    build: .
+    volumes:
+      - .:/server
+    ports:
+      -8081:8081
+    restart: always
+  
+  mobile_service:
+    depends_on:
+      - app_server
+    build:
+    volumes:
+      -.:/mobile
+    restart: always
+  
+  web_service:
+    depends_on:
+      - app_server
+    build:
+    volumes:
+      -.:/web
+    restart: always

@@ -1,0 +1,15 @@
+FROM golang:1.16-alpine
+WORKDIR /server
+
+#download necessary GO modules
+COPY go.mod ./
+COPY go.sym ./
+RUN go mod tidy
+
+COPY *.go ./
+
+RUN make build .
+
+EXPOSE 8081
+
+CMD ["make", "start"]
