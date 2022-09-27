@@ -1,3 +1,5 @@
+t ?=
+
 all: install
 
 db:
@@ -5,10 +7,16 @@ db:
 	@cat area.sql | mysql -p Area
 
 install:
-	@echo "Nothing to install."
+	make -C server install
+
+run:
+	make -C $(t) start
 
 pr:
 	@gh pr create --fill --base dev
 
-.PHONY:	db \
-		install
+.PHONY: all \
+		db \
+		install \
+		server \
+		pr \
