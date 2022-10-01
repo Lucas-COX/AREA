@@ -2,7 +2,6 @@ package database
 
 import (
 	"Area/database/models"
-	"Area/lib"
 )
 
 type userController struct {
@@ -30,15 +29,13 @@ func (userController) Get() ([]models.User, error) {
 func (userController) GetById(id uint) (*models.User, error) {
 	var user models.User
 	err := db.First(&user, id).Error
-	lib.CheckError(err)
-	return &user, nil
+	return &user, err
 }
 
 func (userController) GetByUsername(username string) (*models.User, error) {
-	var user models.User = models.User{Username: username}
-	err := db.First(&user).Error
-	lib.CheckError(err)
-	return &user, nil
+	var user models.User
+	err := db.Where("username = ?", username).First(&user).Error
+	return &user, err
 }
 
 func (userController) Update(models.User) (*models.User, error) {

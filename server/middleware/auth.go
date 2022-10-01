@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"log"
+	"Area/database"
 	"net/http"
 
 	"github.com/go-chi/oauth"
@@ -12,8 +12,8 @@ type UserVerifier struct {
 
 // For user / password authentication
 func (u *UserVerifier) ValidateUser(username, password, scope string, r *http.Request) error {
-	// Todo: check in db and validate if passwords match
-	return nil
+	_, err := database.User.GetByUsername(username)
+	return err
 }
 
 // For client authentication
@@ -39,7 +39,6 @@ func (u *UserVerifier) AddProperties(tokenType oauth.TokenType, credential, toke
 
 // For refresh token
 func (u *UserVerifier) ValidateTokenID(tokenType oauth.TokenType, credential, tokenID, refreshTokenID string) error {
-	log.Printf("%v\n", tokenID)
 	// Todo: check in the users table for credentials and get the stored token ID
 	return nil
 }
