@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-chi/jwtauth/v5"
 )
 
@@ -16,9 +15,8 @@ func UserFromContext(ctx context.Context) (*models.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	spew.Dump(claims)
 	if id, exists := claims["id"].(float64); exists {
-		user, err := database.User.GetById(uint(id))
+		user, err := database.User.GetById(uint(id), true)
 		return user, err
 	}
 	return nil, errors.New("bad token")

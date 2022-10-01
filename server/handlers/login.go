@@ -18,7 +18,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&input)
 	lib.CheckError(err)
 
-	user, err := database.User.GetByUsername(input.Username)
+	user, err := database.User.GetByUsername(input.Username, false)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		lib.SendError(w, http.StatusBadRequest, "User not found")
 		return

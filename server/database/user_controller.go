@@ -2,47 +2,58 @@ package database
 
 import (
 	"Area/database/models"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 type userController struct {
-	User *models.User
 }
 
 type UserController interface {
 	Create(user *models.User) (*models.User, error)
-	Get() (*models.User, error)
-	GetById(id uint) (*models.User, error)
-	GetByUsername(username string) (*models.User, error)
+	Get(loadTriggers bool) (*models.User, error)
+	GetById(id uint, loadTriggers bool) (*models.User, error)
+	GetByUsername(username string, loadTriggers bool) (*models.User, error)
 	Update(user *models.User) (*models.User, error)
 	Delete(id uint) (*models.User, error)
 }
 
 func (userController) Create(user models.User) (*models.User, error) {
-	result := db.Create(&user)
-	if result.Error != nil {
-		return nil, result.Error
+	err := db.Create(&user).Error
+	if err != nil {
+		return nil, err
 	}
-	spew.Dump(user)
 	return &user, nil
 }
 
-func (userController) Get() ([]models.User, error) {
+func (userController) Get(loadTriggers bool) ([]models.User, error) {
 	var users []models.User
-	err := db.Model(&models.User{}).Preload("Triggers").Find(&users).Error
+	var err error
+	if loadTriggers {
+		err = db.Model(&models.User{}).Preload("Triggers").Find(&users).Error
+	} else {
+		err = db.Model(&models.User{}).Find(&users).Error
+	}
 	return users, err
 }
 
-func (userController) GetById(id uint) (*models.User, error) {
+func (userController) GetById(id uint, loadTriggers bool) (*models.User, error) {
 	var user models.User
-	err := db.First(&user, id).Error
+	var err error
+	if loadTriggers {
+		err = db.Preload("Triggers").First(&user, id).Error
+	} else {
+		err = db.First(&user, id).Error
+	}
 	return &user, err
 }
 
-func (userController) GetByUsername(username string) (*models.User, error) {
+func (userController) GetByUsername(username string, loadTriggers bool) (*models.User, error) {
 	var user models.User
-	err := db.Where("username = ?", username).First(&user).Error
+	var err error
+	if loadTriggers {
+		err = db.Where("username = ?", username).Preload("Triggers").First(&user).Error
+	} else {
+		err = db.Where("username = ?", username).First(&user).Error
+	}
 	return &user, err
 }
 

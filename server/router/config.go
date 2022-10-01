@@ -21,7 +21,7 @@ func ProtectedRoutes(r chi.Router) {
 
 func UnprotectedRoutes(r chi.Router) {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		users, _ := database.User.Get()
+		users, _ := database.User.Get(true)
 		lib.SendJson(w, users)
 	})
 	r.Post("/login", handlers.Login)
