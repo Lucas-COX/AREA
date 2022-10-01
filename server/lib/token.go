@@ -20,6 +20,15 @@ func CreateToken(claims map[string]interface{}) (string, error) {
 	return token, err
 }
 
+func ParseToken(token string) (map[string]interface{}, error) {
+	t, err := tokenAuth.Decode(token)
+	if err != nil {
+		return nil, err
+	}
+	result, err := t.AsMap(nil)
+	return result, err
+}
+
 func HashPassword(password string) (string, error) {
 	salt, err := strconv.Atoi(os.Getenv("SALT"))
 	if err != nil {

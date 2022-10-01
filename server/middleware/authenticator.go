@@ -4,7 +4,6 @@ import (
 	"Area/lib"
 	"net/http"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-chi/jwtauth/v5"
 	"github.com/lestrrat-go/jwx/jwt"
 )
@@ -12,7 +11,6 @@ import (
 func Authenticator(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, _, err := jwtauth.FromContext(r.Context())
-		spew.Dump(r.Context())
 
 		if err != nil {
 			lib.SendError(w, http.StatusUnauthorized, err.Error())
