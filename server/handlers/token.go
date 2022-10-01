@@ -27,7 +27,7 @@ func Token(w http.ResponseWriter, r *http.Request) {
 	grant_type := r.FormValue("grant_type")
 	if grant_type == "register" {
 		r.Form.Set("grant_type", "password")
-		err := database.User.Create(models.User{
+		_, err := database.User.Create(models.User{
 			Username: username,
 			Password: password,
 		})

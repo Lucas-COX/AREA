@@ -1,35 +1,28 @@
 package router
 
 import (
+	"Area/database"
 	"Area/handlers"
 	"Area/lib"
-	"Area/middleware"
-	"errors"
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/oauth"
+	"github.com/go-chi/jwtauth/v5"
 )
 
 func ProtectedRoutes(r chi.Router) {
-	r.Use(oauth.Authorize(os.Getenv("TOKEN_SECRET"), nil))
+	tokenAuth := lib.NewTokenAuth()
+	r.Use(jwtauth.Verifier(tokenAuth))
+	// Todo : change this one to a custom one
+	r.Use(jwtauth.Authenticator)
 	r.Get("/triggers", handlers.Triggers)
 }
 
 func UnprotectedRoutes(r chi.Router) {
-	s := oauth.NewBearerServer(
-		os.Getenv("TOKEN_SECRET"),
-		time.Second*600,
-		&middleware.UserVerifier{},
-		nil,
-	)
-
-	r.Use(middleware.JsonToForm)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		lib.CheckError(errors.New("Agneugneugneu"))
+		users, _ := database.User.Get()
+		lib.SendJson(w, users)
 	})
-	r.Post("/token", handlers.Token)
-	r.Post("/auth", s.ClientCredentials)
+	r.Post("/login", handlers.Login)
+	r.Post("/register", handlers.Register)
 }
