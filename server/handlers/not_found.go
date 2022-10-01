@@ -7,5 +7,5 @@ import (
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
-	lib.SendError(w, 404, "Not Found")
+	lib.SendError(w, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 }

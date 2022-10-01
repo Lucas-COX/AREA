@@ -21,6 +21,5 @@ func SendError(w http.ResponseWriter, code int, message string) {
 	}
 	bytes, err := json.Marshal(body)
 	CheckError(err)
-	w.WriteHeader(code)
-	w.Write(bytes)
+	http.Error(w, string(bytes), code)
 }

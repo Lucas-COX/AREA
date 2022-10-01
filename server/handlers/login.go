@@ -20,12 +20,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	user, err := database.User.GetByUsername(input.Username)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		lib.SendError(w, 400, "User not found")
+		lib.SendError(w, http.StatusBadRequest, "User not found")
 		return
 	}
 	lib.CheckError(err)
 	if !lib.CheckPassword(input.Password, user.Password) {
-		lib.SendError(w, 400, "Invalid credentials")
+		lib.SendError(w, http.StatusBadRequest, "Invalid credentials")
 		return
 	}
 

@@ -27,7 +27,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		Password: password,
 	})
 	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 {
-		lib.SendError(w, 400, "User already exists")
+		lib.SendError(w, http.StatusBadRequest, "User already exists")
 		return
 	}
 	lib.CheckError(err)
