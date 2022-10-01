@@ -1,13 +1,16 @@
 package middleware
 
 import (
-	"Area/handlers"
 	"Area/lib"
 	"net/http"
 	"runtime/debug"
 
 	"github.com/go-chi/chi/v5/middleware"
 )
+
+type ErrorBody struct {
+	Message string `json:"message"`
+}
 
 func Recoverer(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +25,7 @@ func Recoverer(next http.Handler) http.Handler {
 				}
 
 				w.WriteHeader(http.StatusInternalServerError)
-				lib.SendJson(w, handlers.ErrorBody{
+				lib.SendJson(w, ErrorBody{
 					Message: "An unexpected error occurred",
 				})
 			}

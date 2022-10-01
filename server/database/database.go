@@ -11,7 +11,14 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+var db *gorm.DB
+
+var User userController
+
+var Trigger triggerController
+
 func New(config *c.Config) *gorm.DB {
+	var err error
 	mysqlConfig := mysql.Config{
 		DSN: fmt.Sprintf("%s:%s@%s(%s)/%s?charset=utf8mb4&parseTime=%s&loc=Local",
 			config.Database.User, config.Database.Password, config.Database.Protocol,
@@ -23,7 +30,7 @@ func New(config *c.Config) *gorm.DB {
 		SkipInitializeWithVersion: false,
 	}
 
-	db, err := gorm.Open(mysql.New(mysqlConfig), &gorm.Config{
+	db, err = gorm.Open(mysql.New(mysqlConfig), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Warn),
 	})
 	lib.CheckError(err)

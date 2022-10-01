@@ -23,12 +23,14 @@ func UnprotectedRoutes(r chi.Router) {
 		os.Getenv("TOKEN_SECRET"),
 		time.Second*600,
 		&middleware.UserVerifier{},
-		nil)
+		nil,
+	)
 
 	r.Use(middleware.JsonToForm)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		lib.CheckError(errors.New("Agneugneugneu"))
 	})
+	r.Post("/register", handlers.Register)
 	r.Post("/token", s.UserCredentials)
 	r.Post("/auth", s.ClientCredentials)
 }
