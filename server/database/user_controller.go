@@ -2,6 +2,8 @@ package database
 
 import (
 	"Area/database/models"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 type userController struct {
@@ -17,13 +19,19 @@ type UserController interface {
 	Delete(id uint) (*models.User, error)
 }
 
-func (userController) Create(user models.User) error {
-	err := db.Create(&user).Error
-	return err
+func (userController) Create(user models.User) (*models.User, error) {
+	result := db.Create(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	spew.Dump(user)
+	return &user, nil
 }
 
 func (userController) Get() ([]models.User, error) {
-	return nil, nil
+	var users []models.User
+	err := db.Model(&models.User{}).Preload("Triggers").Find(&users).Error
+	return users, err
 }
 
 func (userController) GetById(id uint) (*models.User, error) {
