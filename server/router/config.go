@@ -30,7 +30,6 @@ func UnprotectedRoutes(r chi.Router) {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		lib.CheckError(errors.New("Agneugneugneu"))
 	})
-	r.Post("/register", handlers.Register)
-	r.Post("/token", s.UserCredentials)
+	r.Post("/token", handlers.Token)
 	r.Post("/auth", s.ClientCredentials)
 }
