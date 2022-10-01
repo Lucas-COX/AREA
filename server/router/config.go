@@ -19,7 +19,11 @@ func ProtectedRoutes(r chi.Router) {
 }
 
 func UnprotectedRoutes(r chi.Router) {
-	s := oauth.NewBearerServer(os.Getenv("TOKEN_SECRET"), time.Second*600, &middleware.UserVerifier{}, nil)
+	s := oauth.NewBearerServer(
+		os.Getenv("TOKEN_SECRET"),
+		time.Second*600,
+		&middleware.UserVerifier{},
+		nil)
 
 	r.Use(middleware.JsonToForm)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
