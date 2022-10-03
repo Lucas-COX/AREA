@@ -1,9 +1,11 @@
 package handlers
 
-type ErrorBody struct {
-	Message string `json:"message"`
+// Bodies for /login and /register routes
+type AuthRequestBody struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
-type AuthBody struct {
+type AuthResponseBody struct {
 	Token string `json:"token"`
 }
