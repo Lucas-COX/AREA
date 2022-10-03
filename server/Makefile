@@ -3,9 +3,7 @@ GO_BINARY_PATH	=$(shell go env GOPATH)/bin
 
 all: install
 
-build: $(BINARY_NAME)
-
-$(BINARY_NAME):
+build:
 	@go build -o $(BINARY_NAME)
 
 install:
