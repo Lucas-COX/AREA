@@ -16,20 +16,16 @@ jobs:
           script: |
             session="area-server"
 
-            tmux new-session -d -s $session
+            tmux new-session -d -s $session -c /root/AREA/server
 
             window=0
-            tmux rename-window -t $session:$window 'cwd'
-            tmux send-keys -t $session:$window 'cd /root/AREA/server' C-m
-
-            window=1
             tmux new-window -t $session:$window -n 'git'
             tmux send-keys -t $session:$window 'git fetch --prune --all'
 
-            window=2
+            window=1
             tmux new-window -t $session:$window -n 'build'
             tmux send-keys -t $session:$window 'make build'
 
-            window=3
+            window=2
             tmux new-window -t $session:$window -n 'start'
             tmux send-keys -t $session:$window './server'
