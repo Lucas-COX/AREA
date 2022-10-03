@@ -20,13 +20,13 @@ jobs:
             tmux new-session -d -s $session -c /root/AREA/server
 
             window=0
-            tmux new-window -t $session:$window -n 'git'
+            tmux new-window -t $session:$window -n 'fetch' -c /root/AREA/server
             tmux send-keys -t $session:$window 'git fetch --prune --all'
 
             window=1
-            tmux new-window -t $session:$window -n 'build'
+            tmux new-window -t $session:$window -n 'build' -c /root/AREA/server
             tmux send-keys -t $session:$window 'make build'
 
             window=2
-            tmux new-window -t $session:$window -n 'start'
+            tmux new-window -t $session:$window -n 'start' -c /root/AREA/server
             tmux send-keys -t $session:$window './server'
