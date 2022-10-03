@@ -8,12 +8,12 @@ type userController struct {
 }
 
 type UserController interface {
-	Create(user *models.User) (*models.User, error)
+	Create(user models.User) (*models.User, error)
 	Get(loadTriggers bool) (*models.User, error)
 	GetById(id uint, loadTriggers bool) (*models.User, error)
 	GetByUsername(username string, loadTriggers bool) (*models.User, error)
-	Update(user *models.User) (*models.User, error)
-	Delete(id uint) (*models.User, error)
+	Update(user models.User) (*models.User, error)
+	Delete(id uint) error
 }
 
 func (userController) Create(user models.User) (*models.User, error) {
@@ -57,10 +57,14 @@ func (userController) GetByUsername(username string, loadTriggers bool) (*models
 	return &user, err
 }
 
-func (userController) Update(models.User) (*models.User, error) {
-	return nil, nil
+func (userController) Update(user models.User) (*models.User, error) {
+	var err error
+	err = db.Save(&user).Error
+	return &user, err
 }
 
-func (userController) Delete(id string) (*models.User, error) {
-	return nil, nil
+func (userController) Delete(id string) error {
+	var err error
+	err = db.Delete(&id).Error
+	return err
 }

@@ -1,0 +1,224 @@
+_type: export
+__export_format: 4
+__export_date: 2022-10-03T08:57:59.702Z
+__export_source: insomnia.desktop.app:v2022.6.0
+resources:
+  - _id: req_b1daf781a6204ee997ba49a32f61d9df
+    parentId: fld_f8026c517e6f492a854199115fc58ec9
+    modified: 1664659210306
+    created: 1664659196039
+    url: "{{ _.base_url }}"
+    name: /
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1664284374086
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_f8026c517e6f492a854199115fc58ec9
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664658555943
+    created: 1664658555943
+    name: Miscallenous
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1664658555943
+    _type: request_group
+  - _id: wrk_b012a7cc8d824ce0a75814230143e8e1
+    parentId: null
+    modified: 1664281056153
+    created: 1664281056153
+    name: Area
+    description: ""
+    scope: design
+    _type: workspace
+  - _id: req_ea2b50d853854ff0bc92f1791c4d9408
+    parentId: fld_f8026c517e6f492a854199115fc58ec9
+    modified: 1664658564673
+    created: 1664281064550
+    url: "{{ _.base_url }}/ping"
+    name: Heartbeat
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1664284374036
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_abc9fe4ff08d4464ac8e49610cc76ebc
+    parentId: fld_f8026c517e6f492a854199115fc58ec9
+    modified: 1664658560084
+    created: 1664646201794
+    url: "{{ _.base_url }}/toto"
+    name: Not found
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1664284373986
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_aec573783f4b47f7b5e7b6bebdf69023
+    parentId: fld_9ca826d29f1c434e963997a36854b161
+    modified: 1664660583126
+    created: 1664641858392
+    url: "{{ _.base_url }}/register"
+    name: Register
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "username3",
+        	"password": "password"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_feded495caaf4d02ad810a5a62d6067c
+    authentication: {}
+    metaSortKey: -1664376043715
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_9ca826d29f1c434e963997a36854b161
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664378871431
+    created: 1664378871431
+    name: Authentication
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1664378871431
+    _type: request_group
+  - _id: req_42264df40e844285ab542cd753b49767
+    parentId: fld_9ca826d29f1c434e963997a36854b161
+    modified: 1664781582575
+    created: 1664376043565
+    url: "{{ _.base_url }}/login"
+    name: Login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "username3",
+        	"password": "password"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_fd76a021f1c041d1a3d6fe27980d365c
+    authentication: {}
+    metaSortKey: -1664376043690
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_23c961aa9ba84cbb8bd16f02de85c059
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664781595817
+    created: 1664284374036
+    url: "{{ _.base_url }}/triggers"
+    name: Triggers
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_20a517ecba2c416d90c650285dff3e4b
+        name: Authorization
+        value: Bearer
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoidXNlcm5hbWUzIn0.qXvvEfpRqLAg13KiyaS1-A_-z6xLFaGF_bN5Arpy7Io
+        description: ""
+    authentication: {}
+    metaSortKey: -1664284374036
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_58357f115cd3203b0c66879644875ecf27656b77
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664281078218
+    created: 1664281056158
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: {}
+    color: null
+    isPrivate: false
+    metaSortKey: 1664281056158
+    _type: environment
+  - _id: jar_58357f115cd3203b0c66879644875ecf27656b77
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664281056162
+    created: 1664281056162
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_efe531e7214a49a9adda5d3880e2bbb0
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664281056154
+    created: 1664281056154
+    fileName: Area
+    contents: ""
+    contentType: yaml
+    _type: api_spec
+  - _id: env_57b725c2e89c4ce18a2948e3a96ae763
+    parentId: env_58357f115cd3203b0c66879644875ecf27656b77
+    modified: 1664658598660
+    created: 1664281081896
+    name: Area
+    data:
+      base_url: http://localhost:3000
+      test_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJ1c2VybmFtZSJ9.f5MGX7GNSu61jDYqDker5XHYTmo6qL9XoksZ8Tzh7fU
+    dataPropertyOrder:
+      "&":
+        - base_url
+        - test_token
+    color: "#a723d7"
+    isPrivate: false
+    metaSortKey: 1664281081896
+    _type: environment

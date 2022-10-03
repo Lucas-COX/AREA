@@ -20,4 +20,3 @@ make run t=web
 ```
 
 > To use the mobile client download the apk.
-
