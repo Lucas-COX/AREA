@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"context"
 	"os"
 	"strconv"
 
@@ -25,7 +26,7 @@ func ParseToken(token string) (map[string]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	result, err := t.AsMap(nil)
+	result, err := t.AsMap(context.TODO())
 	return result, err
 }
 

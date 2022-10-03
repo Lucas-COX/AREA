@@ -3,9 +3,8 @@ package handlers
 import (
 	"Area/database"
 	"Area/lib"
-	"errors"
-
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"gorm.io/gorm"
@@ -34,5 +33,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		"id":       user.ID,
 	})
 	lib.CheckError(err)
+	lib.SetCookie(w, "area_token", resp.Token)
 	lib.SendJson(w, resp)
 }
