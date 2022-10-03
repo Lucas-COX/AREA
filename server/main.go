@@ -5,7 +5,9 @@ import (
 	"Area/database"
 	"Area/database/models"
 	"Area/router"
+	"fmt"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -14,5 +16,9 @@ func main() {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Trigger{})
 	r := router.New()
-	http.ListenAndServe(config.Server.Address, r)
+	if os.Getenv("PORT") != "" {
+		http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), r)
+	} else {
+		http.ListenAndServe(config.Server.Address, r)
+	}
 }
