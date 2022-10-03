@@ -19,14 +19,14 @@ jobs:
             tmux kill-session -t $session
             tmux new-session -d -s $session -c /root/AREA/server
 
-            window=0
-            tmux new-window -t $session:$window -n 'fetch' -c /root/AREA/server
-            tmux send-keys -t $session:$window 'git fetch --prune --all'
-
             window=1
-            tmux new-window -t $session:$window -n 'build' -c /root/AREA/server
-            tmux send-keys -t $session:$window 'make build'
+            tmux new-window -t $session:$window -n 'fetch' -c /root/AREA/server
+            tmux send-keys -t $session:$window 'git fetch --prune --all' C-m
 
             window=2
+            tmux new-window -t $session:$window -n 'build' -c /root/AREA/server
+            tmux send-keys -t $session:$window 'make build' C-m
+
+            window=3
             tmux new-window -t $session:$window -n 'start' -c /root/AREA/server
-            tmux send-keys -t $session:$window './server'
+            tmux send-keys -t $session:$window './server' C-m
