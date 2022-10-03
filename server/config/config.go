@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/viper"
 )
 
@@ -41,6 +40,6 @@ func Read() *Config {
 	for k, v := range c.Environment {
 		os.Setenv(strings.ToUpper(k), v)
 	}
-	spew.Dump(c)
+	//spew.Dump(c)
 	return &c
 }

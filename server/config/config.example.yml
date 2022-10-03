@@ -10,4 +10,7 @@ server:
   address:
 
 environment:
-  - token_secret:
+  - jwt_secret:
+  - salt:
+  - google_client_id:
+  - google_client_secret:

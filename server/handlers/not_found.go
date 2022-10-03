@@ -7,7 +7,5 @@ import (
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
-	lib.SendJson(w, ErrorBody{
-		Message: "Not found",
-	})
+	lib.SendError(w, http.StatusNotFound, http.StatusText(http.StatusNotFound))
 }
