@@ -16,6 +16,7 @@ jobs:
           script: |
             session="area-server"
 
+            tmux kill-session -t $session
             tmux new-session -d -s $session -c /root/AREA/server
 
             window=0
