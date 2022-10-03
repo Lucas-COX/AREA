@@ -5,26 +5,24 @@ import useSession from '../hooks/useSession'
 
 const Home: NextPage = () => {
   const router = useRouter()
-  const [session, setSession, sessionLoading, sessionError] = useSession()
+  const [session, loading, error] = useSession()
 
-  if (sessionLoading)
+  if (loading)
     return <div>Spinner</div>
-  if (sessionError)
-    return <div>{String(sessionError)}</div>
 
-  if (!session.loggedIn)
-    return (
-        <CenteredLayout title="EpyTodo Remix">
-          <button className="text-dark" type="button" onClick={() => router.push('/login')}>
-            connecte toi grobatar
-          </button>
-        </CenteredLayout>
-    )
+  if (error)
+    return <div>{String(error)}</div>
+
+  if (session.user == null)
+    router.push("/login")
 
   return (
-    <div>
-      <div>Hello {session.user.username}</div>
-    </div>
+    <CenteredLayout title={"AREA"}>
+      {loading ?
+        <div>Spinner</div> :
+        <div>Hello {session?.user?.username}</div>
+      }
+    </CenteredLayout>
   )
 }
 

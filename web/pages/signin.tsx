@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button } from "@mui/material";
 import axios from "axios";
 import { TextField } from "@mui/material";
+import { setToken } from "../lib/jwt";
 
 function SigninPage() {
     const [state, setState] = useState({
@@ -11,7 +12,7 @@ function SigninPage() {
         username: "",
         password: "",
         confirm: "",
-        error: ""
+        error: null
     })
 
 
@@ -48,22 +49,20 @@ function SigninPage() {
 
 
     const handleSubmit = (e: any) => {
-        axios.post('/api/register', {
+        console.log(process.env)
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
             username: state.username,
             password: state.password,
-            first_name: state.firstname,
-            last_name: state.lastname,
-        })
-        .then(function (response) {
-            localStorage.setItem('epytodo_token', response.data.token)
-        })
-        .catch(function (error) {
+        }).then(function (response) {
+            setToken(response.data.token)
+        }).catch(function (error) {
             console.log(error);
+            setState({ ...state, error });
         });
     }
 
     const canSubmit = () => ( state.username !== "" && state.password !== "" && state.confirm !== "" && state.password === state.confirm );
-    
+
     return (
         <CenteredLayout title="Sign in">
             <div className="flex flex-col space-y-5 justify-center">
