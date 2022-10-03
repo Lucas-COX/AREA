@@ -1,0 +1,35 @@
+name: Build & Deploy
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy Go app
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{secrets.SSH_HOST}}
+          key: ${{secrets.SSH_KEY}}
+          username: ${{secrets.SSH_USER}}
+          script: |
+            session="area-server"
+
+            tmux new-session -d -s $session
+
+            window=0
+            tmux rename-window -t $session:$window 'cwd'
+            tmux send-keys -t $session:$window 'cd /root/AREA/server' C-m
+
+            window=1
+            tmux new-window -t $session:$window -n 'git'
+            tmux send-keys -t $session:$window 'git fetch --prune --all'
+
+            window=2
+            tmux new-window -t $session:$window -n 'build'
+            tmux send-keys -t $session:$window 'make build'
+
+            window=3
+            tmux new-window -t $session:$window -n 'start'
+            tmux send-keys -t $session:$window './server'
