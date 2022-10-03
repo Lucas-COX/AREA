@@ -16,6 +16,6 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	user, err := UserFromContext(r.Context())
 	lib.CheckError(err)
 
-	copier.Copy(&resp, &user)
+	copier.Copy(&resp.User, &user)
 	lib.SendJson(w, resp)
 }

@@ -22,7 +22,7 @@ func New() *chi.Mux {
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
-		AllowCredentials: false,
+		AllowCredentials: true,
 		MaxAge:           300,
 	}))
 	r.Use(middleware.Heartbeat("/ping"))
