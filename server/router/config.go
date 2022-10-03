@@ -17,12 +17,19 @@ func ProtectedRoutes(r chi.Router) {
 	// Todo : change this one to a custom one
 	r.Use(middleware.Authenticator)
 	r.Get("/triggers", handlers.Triggers)
+	r.Get("/me", handlers.Me)
 }
 
 func UnprotectedRoutes(r chi.Router) {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		users, _ := database.User.Get(true)
-		lib.SendJson(w, users)
+		// triggers, _ := database.Trigger.Create(models.Trigger{
+		// 	Title:       "test_trigger1",
+		// 	Description: "Just a test trigger",
+		// 	UserID:      2,
+		// })
+		database.Trigger.Delete("2")
+		trigger, _ := database.Trigger.Get()
+		lib.SendJson(w, trigger)
 	})
 	r.Post("/login", handlers.Login)
 	r.Post("/register", handlers.Register)
