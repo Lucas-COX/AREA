@@ -36,5 +36,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		"id":       user.ID,
 	})
 	lib.CheckError(err)
+	lib.SetCookie(w, "area_token", resp.Token)
 	lib.SendJson(w, resp)
 }
