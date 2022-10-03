@@ -1,29 +1,29 @@
-import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import CenteredLayout from '../components/CenteredLayout'
-import useSession from '../hooks/useSession'
+import type { GetServerSidePropsContext } from 'next'
+import AppLayout from '../components/AppLayout'
+import { getSession } from '../lib/session'
+import { withSession } from '../config/withs'
 
-const Home: NextPage = () => {
-  const router = useRouter()
-  const [session, loading, error] = useSession()
-
-  if (loading)
-    return <div>Spinner</div>
-
-  if (error)
-    return <div>{String(error)}</div>
-
-  if (session.user == null)
-    router.push("/login")
-
+export default function Home({ session }: HomeProps) {
   return (
-    <CenteredLayout title={"AREA"}>
-      {loading ?
-        <div>Spinner</div> :
-        <div>Hello {session?.user?.username}</div>
-      }
-    </CenteredLayout>
+    <AppLayout type="centered">
+        <div>Hello {session.user?.username}</div>
+    </AppLayout>
   )
 }
 
-export default Home
+export interface HomeProps extends withSession {}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context)
+  if (session.authenticated == false) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props: { session }
+  }
+}

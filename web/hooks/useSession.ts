@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { User } from "../config/types"
-import { getToken } from "../lib/jwt"
+import { getToken } from "../lib/cookie"
 
 export interface Session {
     user: User | null,

@@ -1,11 +1,21 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
-export type User = user;
-
-export type UserBody = Omit<User, "password">;
-
-export type ErrorBody = {
-    message: string,
+export type Trigger = {
+    id: Number,
+    title: String,
+    description?: String,
+    created_at: Date,
+    updated_at: Date,
+    user_id: Number
 }
 
-export type ProtectedApiHandler<T = any> = (req: NextApiRequest, res: NextApiResponse<T>, body: UserBody) => unknown | Promise<unknown>;
+export type User = {
+    id: Number,
+    username: String,
+    created_at: Date,
+    updated_at: Date,
+    triggers?: Trigger[],
+}
+
+export type Session = {
+    user?: User,
+    authenticated: boolean,
+}

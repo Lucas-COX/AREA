@@ -1,31 +1,14 @@
 import Head from 'next/head';
-import React from 'react'
+import React from 'react';
+import clsx from 'clsx';
+import { withChildren, withClassName } from '../config/withs';
 
-const CenteredLayout = ({
-    title, icon = "/favicon.ico", children
-}: CenteredLayoutProps) => {
+export default function CenteredLayout({ children, className = "" }: CenteredLayoutProps) {
     return (
-        <div className='h-screen w-screen bg-light'>
-            <Head>
-                <title>{title}</title>
-                <meta name="description" content="To Do List application" />
-                <link rel="icon" href={icon} />
-            </Head>
-
-            <main className="flex h-full w-full items-center justify-center">
-                {children}
-            </main>
-
-            <footer>
-            </footer>
+        <div className={clsx('h-full w-full flex items-center justify-center', className)}>
+            {children}
         </div>
     )
 }
 
-export interface CenteredLayoutProps {
-    title: string;
-    icon?: string;
-    children: any;
-}
-
-export default CenteredLayout
+export interface CenteredLayoutProps extends withChildren, withClassName {}

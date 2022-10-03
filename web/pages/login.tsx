@@ -1,14 +1,14 @@
-import CenteredLayout from "../components/CenteredLayout";
+import AppLayout from "../components/AppLayout";
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import useSession from "../hooks/useSession";
-import { setToken } from "../lib/jwt";
 import { Alert, Button, TextField } from "@mui/material";
+import { getSession } from "../lib/session";
+import { GetServerSidePropsContext } from "next";
+import { withSession } from "../config/withs";
 
-function LoginPage() {
+export default function LoginPage({}: LoginPageProps) {
     const router = useRouter()
-    const [session, loading, error] = useSession()
     const [state, setState] = useState({
         username: "",
         password: "",
@@ -26,38 +26,26 @@ function LoginPage() {
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
             username: state.username,
             password: state.password
-        }).then(function (response) {
-            setToken(response.data.token);
+        }, { withCredentials: true }).then(function (response) {
             router.push('/')
         }).catch(function (error) {
             setState({ ...state, error });
         });
     }
     const handleRegister = (e: any) => {
-        console.log(process.env)
         axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
             username: state.username,
             password: state.password,
-        }).then(function (response) {
-            setToken(response.data.token)
+        }, { withCredentials: true }).then(function (response) {
             router.push('/')
         }).catch(function (error) {
-            console.log(error);
             setState({ ...state, error });
         });
     }
     const canSubmit = () => ( state.username !== "" && state.password !== "" );
 
-    if (loading)
-        return <div>Spinner</div>
-
-    if (session.user != null && !error)
-        router.push("/")
-
     return (
-        <CenteredLayout title="Authentication">
-           {  loading ?
-            <div>Spinner</div> :
+        <AppLayout>
             <div className="flex flex-col space-y-20 text-dark" >
                 <form className="flex flex-col space-y-10 items-end" >
                     <TextField label="Username" variant="outlined" onChange={handleNameChange}/>
@@ -66,9 +54,24 @@ function LoginPage() {
                 <Button disabled={!canSubmit()} variant="contained" onClick={handleLogin}>Log in</Button>
                 <Button disabled={!canSubmit()} variant="outlined" onClick={handleRegister}>Register</Button>
                 { state.error &&  <Alert severity="error">An error occured...</Alert> }
-            </div> }
-        </CenteredLayout>
+            </div>
+        </AppLayout>
     )
 }
 
-export default LoginPage
+export interface LoginPageProps {}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context)
+  if (session.authenticated == true) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props: {}
+  }
+}
