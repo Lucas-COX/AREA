@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import React from 'react';
 import clsx from 'clsx';
 import { withChildren, withClassName } from '../config/withs';
