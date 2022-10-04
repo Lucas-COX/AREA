@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import 'services/services_login.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,16 @@ import 'dart:async';
 import 'services/services_login.dart';
 import 'package:flutter/material.dart';
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+import 'services/services_login.dart';
+import 'package:flutter/material.dart';
+=======
+
+import 'services/services_login.dart';
+import 'package:flutter/material.dart';
+import 'dart:async';
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
 
 class AccueilPage extends StatefulWidget {
   const AccueilPage({Key? key, required this.title}) : super(key: key);
@@ -22,6 +33,7 @@ class AccueilPage extends StatefulWidget {
 
 class _AccueilPageState extends State<AccueilPage> {
 <<<<<<< HEAD
+<<<<<<< HEAD
   @override
   String username = '', password = '';
 
@@ -30,6 +42,16 @@ class _AccueilPageState extends State<AccueilPage> {
 
   @override
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+  String username = '', password = '';
+
+  @override
+=======
+  @override
+  String username = '', password = '';
+
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
@@ -40,9 +62,15 @@ class _AccueilPageState extends State<AccueilPage> {
             style: TextStyle(color: Color.fromRGBO(37, 36, 34, 1))),
         elevation: 0,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         leading: const Text(''),
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+        leading: const Text(''),
+=======
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
       ),
       body: Form(
         child: Column(
@@ -113,9 +141,15 @@ class _AccueilPageState extends State<AccueilPage> {
                   final response = await ServicesLogin.login(
                       username.trim(), password.trim());
 <<<<<<< HEAD
+<<<<<<< HEAD
                   print(response.statusCode);
 =======
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+=======
+                  print(response.statusCode);
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
                   if (response.statusCode == 200) {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.setString(

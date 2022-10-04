@@ -53,10 +53,17 @@ android {
         versionName flutterVersionName
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
                 
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+                
+=======
+
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -76,4 +83,8 @@ dependencies {
 }
 =======
 }
+<<<<<<< HEAD
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)

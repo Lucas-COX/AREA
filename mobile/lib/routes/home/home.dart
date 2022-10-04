@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import 'package:flutter/material.dart';
 import 'dart:async';
 =======
+=======
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
 import 'package:mobil/routes/login/login.dart';
@@ -14,9 +17,78 @@ import '../../services/services_session.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+=======
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mobil/routes/login/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+class User {
+  String username;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  User(
+      {required this.username,
+      required this.createdAt,
+      required this.updatedAt});
+
+  User.fromJson(Map<String, dynamic> json)
+      : username = json['username'],
+        createdAt = DateTime.parse(json['createdAt']),
+        updatedAt = DateTime.parse(json['updatedAt']);
+}
+
+class Session {
+  bool authenticated;
+  User? user;
+
+  Session({required this.authenticated, required this.user});
+  Session.load()
+      : authenticated = false,
+        user = null {
+    dotenv.load();
+    final uri = dotenv.env['API_URL'] ?? "";
+    http.get(Uri.parse('http://$uri/me'), headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    }).then((response) {
+      if (response.statusCode == 200) {
+        authenticated = true;
+        user = User.fromJson(jsonDecode(response.body));
+      }
+    });
+  }
+
+  bool _isAuthenticated() {
+    return authenticated;
+  }
+
+  void _setAuthenticated(bool value) {
+    authenticated = value;
+  }
+
+  User? _getUser() {
+    return user;
+  }
+
+  void _setUser(User? value) {
+    user = value;
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key, required this.title}) : super(key: key);
+
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
   final String title;
 
   @override
@@ -24,6 +96,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+<<<<<<< HEAD
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Session>(
@@ -201,4 +274,41 @@ Widget headerWidget(BuildContext context, final session) {
         ),
       ]));
 }
+<<<<<<< HEAD
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+=======
+  final Session _session = Session.load();
+
+  User? _getUser() {
+    return _session._getUser();
+  }
+
+  Session _getSession() {
+    return _session;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_getSession()._isAuthenticated()) {
+      Navigator.pushNamed(context, "/login");
+    }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Welcome ${_getUser()?.username}',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)

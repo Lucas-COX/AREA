@@ -8,11 +8,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import 'package:mobile/main.dart';
 =======
 import 'package:mobil/main.dart';
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+import 'package:mobil/main.dart';
+=======
+
+import 'package:mobile/main.dart';
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

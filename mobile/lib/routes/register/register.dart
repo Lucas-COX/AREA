@@ -1,8 +1,14 @@
 import 'dart:convert';
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+=======
+
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/services_register.dart';
@@ -18,12 +24,21 @@ class RegisterPage extends StatelessWidget {
       backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
       appBar: AppBar(
 <<<<<<< HEAD
+<<<<<<< HEAD
         title: const Text('Register'),
 =======
         centerTitle: true,
         title: const Text('Register'),
         leading: const Text(''),
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+        centerTitle: true,
+        title: const Text('Register'),
+        leading: const Text(''),
+=======
+        title: const Text('Register'),
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
         backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
       ),
       body: Form(
@@ -127,15 +142,25 @@ class RegisterPage extends StatelessWidget {
                 final response = await ServicesRegister.register(
                     username.trim(), password.trim());
 <<<<<<< HEAD
+<<<<<<< HEAD
                 print(response.statusCode);
 =======
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+=======
+                print(response.statusCode);
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
                 if (response.statusCode == 200) {
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setString(
                       'area_token', jsonDecode(response.body)['token']);
                   if (prefs.getString('area_token') != null) {}
+<<<<<<< HEAD
                   Navigator.pushNamed(context, '/');
+=======
+                  Navigator.pushNamed(context, '/home');
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -146,10 +171,17 @@ class RegisterPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
 <<<<<<< HEAD
+<<<<<<< HEAD
                 primary: const Color.fromRGBO(235, 94, 40, 1),
 =======
                 backgroundColor: const Color.fromRGBO(235, 94, 40, 1),
 >>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
+=======
+                backgroundColor: const Color.fromRGBO(235, 94, 40, 1),
+=======
+                primary: const Color.fromRGBO(235, 94, 40, 1),
+>>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
+>>>>>>> 81baccd (feat(mobile): add flutter authentication system)
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
