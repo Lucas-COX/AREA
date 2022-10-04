@@ -156,11 +156,7 @@ class RegisterPage extends StatelessWidget {
                   prefs.setString(
                       'area_token', jsonDecode(response.body)['token']);
                   if (prefs.getString('area_token') != null) {}
-<<<<<<< HEAD
-                  Navigator.pushNamed(context, '/');
-=======
                   Navigator.pushNamed(context, '/home');
->>>>>>> b07b2e5 (feat(mobile): add flutter authentication system)
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

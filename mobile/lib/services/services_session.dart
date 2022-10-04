@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -151,3 +152,5 @@ class ServicesSession {
     return completer.future;
   }
 }
+=======
+>>>>>>> 4e5f23f (fix(mobile): add easy session handling for any widget)
