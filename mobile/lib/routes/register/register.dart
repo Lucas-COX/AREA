@@ -123,7 +123,7 @@ class RegisterPage extends StatelessWidget {
                   prefs.setString(
                       'area_token', jsonDecode(response.body)['token']);
                   if (prefs.getString('area_token') != null) {}
-                  Navigator.pushNamed(context, '/home');
+                  Navigator.pushNamed(context, '/');
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
