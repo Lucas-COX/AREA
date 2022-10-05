@@ -14,6 +14,12 @@ type AuthResponseBody struct {
 	Token string `json:"token"`
 }
 
+// Body for /trigger route
+type TriggerRequestBody struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
 // Bodies for user and trigger getters
 type TriggerBody struct {
 	ID          uint      `json:"id"`
