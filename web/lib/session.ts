@@ -14,7 +14,7 @@ export async function getSession(context: SessionContext): Promise<Session> {
         axios.get(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
             headers: { 'Authorization': 'Bearer ' + token },
         }).then((res) => {
-            resolve({ user: res.data.me, authenticated: true })
+            resolve({ user: res.data.me, authenticated: true, token })
         }).catch(() => {
             resolve({ user: undefined, authenticated: false});
         })

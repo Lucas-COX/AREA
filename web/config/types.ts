@@ -18,4 +18,5 @@ export type User = {
 export type Session = {
     user?: User,
     authenticated: boolean,
+    token?: String | null,
 }
