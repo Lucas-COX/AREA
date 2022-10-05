@@ -121,6 +121,7 @@ func DeleteTrigger(w http.ResponseWriter, r *http.Request) {
 
 	trigger, err := database.Trigger.GetById(uint(id), user.ID)
 	lib.CheckError(err)
+
 	if user.ID != trigger.UserID {
 		lib.SendError(w, http.StatusUnauthorized, "Can't delete this trigger")
 		return
