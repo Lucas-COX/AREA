@@ -23,11 +23,18 @@ type triggerResponse struct {
 
 func GetTriggers(w http.ResponseWriter, r *http.Request) {
 	var resp triggersResponse
+<<<<<<< HEAD
 
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 	triggers, _ := database.Trigger.Get(user.ID)
 
+=======
+	user, err := UserFromContext(r.Context())
+	lib.CheckError(err)
+	triggers, _ := database.Trigger.Get(user.ID)
+
+>>>>>>> ae11fa4 (feat(server): add actions and reactions to trigger model)
 	copier.Copy(&resp.Triggers, &triggers)
 	lib.SendJson(w, resp)
 }
@@ -55,7 +62,11 @@ func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 	var resp triggerResponse
 
+<<<<<<< HEAD
 	user, err := database.User.GetFromContext(r.Context())
+=======
+	user, err := UserFromContext(r.Context())
+>>>>>>> ae11fa4 (feat(server): add actions and reactions to trigger model)
 	lib.CheckError(err)
 
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
