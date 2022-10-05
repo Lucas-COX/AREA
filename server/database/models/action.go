@@ -27,8 +27,9 @@ func (a ActionType) Value() (driver.Value, error) {
 type Action struct {
 	gorm.Model
 	Type      ActionType `gorm:"not null"`
-	EventType string     `gorm:"not null"`
+	Event     string     `gorm:"not null"`
 	TriggerID uint
+	Token     string `gorm:"not null"`
 }
 
 func (a *Action) TableName() string { return "actions" }

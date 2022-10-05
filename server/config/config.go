@@ -40,6 +40,5 @@ func Read() *Config {
 	for k, v := range c.Environment {
 		os.Setenv(strings.ToUpper(k), v)
 	}
-	//spew.Dump(c)
 	return &c
 }

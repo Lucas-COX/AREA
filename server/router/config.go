@@ -1,11 +1,9 @@
 package router
 
 import (
-	"Area/database"
 	"Area/handlers"
 	"Area/lib"
 	"Area/middleware"
-	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/jwtauth/v5"
@@ -25,15 +23,6 @@ func ProtectedRoutes(r chi.Router) {
 }
 
 func UnprotectedRoutes(r chi.Router) {
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		// triggers, _ := database.Trigger.Create(models.Trigger{
-		// 	Title:       "test_trigger1",
-		// 	Description: "Just a test trigger",
-		// 	UserID:      2,
-		// })
-		trigger, _ := database.Trigger.Get()
-		lib.SendJson(w, trigger)
-	})
 	r.Post("/login", handlers.Login)
 	r.Post("/register", handlers.Register)
 }

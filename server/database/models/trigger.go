@@ -9,6 +9,7 @@ type Trigger struct {
 	UserID      uint
 	Action      Action   `gorm:"not null"`
 	Reaction    Reaction `gorm:"not null"`
+	Active      bool     `gorm:"default:false"`
 }
 
 func (t *Trigger) TableName() string { return "triggers" }
