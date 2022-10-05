@@ -16,7 +16,11 @@ func ProtectedRoutes(r chi.Router) {
 	r.Use(jwtauth.Verifier(tokenAuth))
 	// Todo : change this one to a custom one
 	r.Use(middleware.Authenticator)
-	r.Get("/triggers", handlers.Triggers)
+	r.Get("/triggers", handlers.GetTriggers)
+	r.Post("/triggers", handlers.CreateTriggers)
+	r.Get("/triggers/{id}", handlers.GetTriggerById)
+	r.Post("/triggers/{id}", handlers.UpdateTrigger)
+	r.Delete("/triggers/{id}", handlers.DeleteTrigger)
 	r.Get("/me", handlers.Me)
 }
 
@@ -27,7 +31,6 @@ func UnprotectedRoutes(r chi.Router) {
 		// 	Description: "Just a test trigger",
 		// 	UserID:      2,
 		// })
-		database.Trigger.Delete("2")
 		trigger, _ := database.Trigger.Get()
 		lib.SendJson(w, trigger)
 	})
