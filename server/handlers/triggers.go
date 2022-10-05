@@ -31,7 +31,7 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 
 func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 	var input TriggerRequestBody
-	var resp TriggerBody
+	var resp triggerResponse
 	user, err := UserFromContext(r.Context())
 	lib.CheckError(err)
 	err = json.NewDecoder(r.Body).Decode(&input)
@@ -41,19 +41,19 @@ func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 		Description: input.Description,
 		UserID:      user.ID,
 	})
-	copier.Copy(&resp, &trigger)
+	copier.Copy(&resp.Trigger, &trigger)
 	lib.SendJson(w, resp)
 }
 
 func GetTriggerById(w http.ResponseWriter, r *http.Request) {
-	var resp TriggerBody
+	var resp triggerResponse
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	lib.CheckError(err)
 
 	trigger, err := database.Trigger.GetById(uint(id))
 	lib.CheckError(err)
 
-	copier.Copy(&resp, &trigger)
+	copier.Copy(&resp.Trigger, &trigger)
 	lib.SendJson(w, resp)
 }
 
@@ -68,6 +68,7 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	lib.CheckError(err)
 
 	trigger, err := database.Trigger.GetById(uint(id))
+	lib.CheckError(err)
 	if user.ID != trigger.UserID {
 		lib.SendError(w, http.StatusUnauthorized, "Can't Modify this trigger")
 		return
@@ -94,6 +95,8 @@ func DeleteTrigger(w http.ResponseWriter, r *http.Request) {
 	lib.CheckError(err)
 
 	trigger, err := database.Trigger.GetById(uint(id))
+	lib.CheckError(err)
+
 	if user.ID != trigger.UserID {
 		lib.SendError(w, http.StatusUnauthorized, "Can't delete this trigger")
 		return
