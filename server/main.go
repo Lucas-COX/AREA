@@ -13,8 +13,7 @@ import (
 func main() {
 	config := config.Read()
 	db := database.New(config)
-	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.Trigger{})
+	db.AutoMigrate(&models.User{}, &models.Trigger{}, &models.Action{}, &models.Reaction{})
 	r := router.New()
 	if os.Getenv("PORT") != "" {
 		http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), r)

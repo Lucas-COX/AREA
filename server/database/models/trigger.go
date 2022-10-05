@@ -7,6 +7,8 @@ type Trigger struct {
 	Title       string `gorm:"not null"`
 	Description string
 	UserID      uint
+	Action      Action   `gorm:"not null"`
+	Reaction    Reaction `gorm:"not null"`
 }
 
 func (t *Trigger) TableName() string { return "triggers" }
