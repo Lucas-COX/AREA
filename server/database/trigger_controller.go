@@ -9,8 +9,8 @@ type TriggerController interface {
 	Get() ([]models.Trigger, error)
 	GetById(id string) (*models.Trigger, error)
 	GetByTitle(title string) (*models.Trigger, error)
-	Update(trigger models.Trigger) (*models.Trigger, error)
-	Delete(id string) error
+	Update(trigger *models.Trigger) (*models.Trigger, error)
+	Delete(trigger *models.Trigger) error
 }
 
 func (triggerController) Create(trigger models.Trigger) (*models.Trigger, error) {
@@ -43,14 +43,14 @@ func (triggerController) GetByTitle(title string) (*models.Trigger, error) {
 	return &trigger, err
 }
 
-func (triggerController) Update(trigger models.Trigger) (*models.Trigger, error) {
+func (triggerController) Update(trigger *models.Trigger) (*models.Trigger, error) {
 	var err error
-	err = db.Save(&trigger).Error
-	return &trigger, err
+	err = db.Save(trigger).Error
+	return trigger, err
 }
 
-func (triggerController) Delete(id string) error {
+func (triggerController) Delete(trigger *models.Trigger) error {
 	var err error
-	err = db.Delete(&id).Error
+	err = db.Delete(trigger).Error
 	return err
 }
