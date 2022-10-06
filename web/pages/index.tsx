@@ -51,7 +51,7 @@ export default function Home({ session }: HomeProps) {
                 }), {
                   pending: 'Loading...',
                   error: 'An error occured while deleting trigger.',
-                  success: 'Trigger successfully created !'
+                  success: 'Trigger successfully deleted !'
                 })
                 setState({ triggers: state.triggers.filter((t) => t.id !== trigger.id )});
               } catch (e) {
