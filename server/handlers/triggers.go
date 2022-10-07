@@ -22,7 +22,8 @@ type triggerResponse struct {
 
 func GetTriggers(w http.ResponseWriter, r *http.Request) {
 	var resp triggersResponse
-	user, err := UserFromContext(r.Context())
+
+	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 	triggers, _ := database.Trigger.Get(user.ID)
 
@@ -33,7 +34,8 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 	var input TriggerRequestBody
 	var resp triggerResponse
-	user, err := UserFromContext(r.Context())
+
+	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 
 	err = json.NewDecoder(r.Body).Decode(&input)
@@ -50,7 +52,7 @@ func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 	var resp triggerResponse
 
-	user, err := UserFromContext(r.Context())
+	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
@@ -66,7 +68,7 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	var input TriggerRequestBody
 	var resp triggerResponse
-	user, err := UserFromContext(r.Context())
+	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	lib.CheckError(err)
@@ -97,7 +99,7 @@ func DeleteTrigger(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	lib.CheckError(err)
 
-	user, err := UserFromContext(r.Context())
+	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 
 	trigger, err := database.Trigger.GetById(uint(id), user.ID)

@@ -20,9 +20,11 @@ func ProtectedRoutes(r chi.Router) {
 	r.Put("/triggers/{id}", handlers.UpdateTrigger)
 	r.Delete("/triggers/{id}", handlers.DeleteTrigger)
 	r.Get("/me", handlers.Me)
+	r.Get("/providers/{provider}/auth", handlers.ProviderLogin)
 }
 
 func UnprotectedRoutes(r chi.Router) {
 	r.Post("/login", handlers.Login)
 	r.Post("/register", handlers.Register)
+	r.Get("/providers/{provider}/callback", handlers.ProviderCallback)
 }
