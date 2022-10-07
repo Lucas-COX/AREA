@@ -20,8 +20,11 @@ func main() {
 	// 	google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_CLIENT_SECRET"), "http://localhost:8080/providers/google/callback", "https://www.googleapis.com/auth/gmail.readonly"),
 	// )
 
+<<<<<<< HEAD
 	// Créer le jobsManager
 	// Appeler JobsManager.Run() en go routine
+=======
+>>>>>>> 7b575bd (feat(server): implement google oauth flow to get refresh token)
 	if os.Getenv("PORT") != "" {
 		http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), r)
 	} else {

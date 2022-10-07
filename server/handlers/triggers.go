@@ -24,6 +24,7 @@ type triggerResponse struct {
 func GetTriggers(w http.ResponseWriter, r *http.Request) {
 	var resp triggersResponse
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
@@ -31,6 +32,10 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 
 =======
 	user, err := UserFromContext(r.Context())
+=======
+
+	user, err := database.User.GetFromContext(r.Context())
+>>>>>>> 7b575bd (feat(server): implement google oauth flow to get refresh token)
 	lib.CheckError(err)
 	triggers, _ := database.Trigger.Get(user.ID)
 
@@ -63,10 +68,14 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 	var resp triggerResponse
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	user, err := database.User.GetFromContext(r.Context())
 =======
 	user, err := UserFromContext(r.Context())
 >>>>>>> ae11fa4 (feat(server): add actions and reactions to trigger model)
+=======
+	user, err := database.User.GetFromContext(r.Context())
+>>>>>>> 7b575bd (feat(server): implement google oauth flow to get refresh token)
 	lib.CheckError(err)
 
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
