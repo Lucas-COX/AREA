@@ -21,10 +21,15 @@ func main() {
 	// )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// Créer le jobsManager
 	// Appeler JobsManager.Run() en go routine
 =======
 >>>>>>> 7b575bd (feat(server): implement google oauth flow to get refresh token)
+=======
+	// Créer le jobsManager
+	// Appeler JobsManager.Run() en go routine
+>>>>>>> d2840a3 (feat(server): move providers into handlers and add jobsManager)
 	if os.Getenv("PORT") != "" {
 		http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), r)
 	} else {
