@@ -19,7 +19,7 @@ func ProtectedRoutes(r chi.Router) {
 	r.Get("/triggers", handlers.GetTriggers)
 	r.Post("/triggers", handlers.CreateTriggers)
 	r.Get("/triggers/{id}", handlers.GetTriggerById)
-	r.Post("/triggers/{id}", handlers.UpdateTrigger)
+	r.Put("/triggers/{id}", handlers.UpdateTrigger)
 	r.Delete("/triggers/{id}", handlers.DeleteTrigger)
 	r.Get("/me", handlers.Me)
 }
