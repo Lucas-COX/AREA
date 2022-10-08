@@ -95,6 +95,9 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Todo: handle "error" query parameter
+	// Todo: refactor this process
+
 	// Todo: crypt that token
 	user.GoogleToken = token.RefreshToken
 	database.User.Update(*user)

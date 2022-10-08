@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"Area/handlers/providers"
 	"Area/lib"
-	"Area/providers"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"

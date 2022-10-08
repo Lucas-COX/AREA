@@ -20,6 +20,8 @@ func main() {
 	// 	google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_CLIENT_SECRET"), "http://localhost:8080/providers/google/callback", "https://www.googleapis.com/auth/gmail.readonly"),
 	// )
 
+	// Créer le jobsManager
+	// Appeler JobsManager.Run() en go routine
 	if os.Getenv("PORT") != "" {
 		http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), r)
 	} else {
