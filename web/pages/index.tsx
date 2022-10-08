@@ -13,6 +13,11 @@ import Image from 'next/image';
 import { TrendingFlatOutlined } from '@mui/icons-material';
 import { gmail, discord } from '../lib/icons'
 
+const icons = {
+  "gmail": gmail,
+  "discord": discord,
+}
+
 export default function Home({ session }: HomeProps) {
 
   const router = useRouter();
@@ -42,10 +47,18 @@ export default function Home({ session }: HomeProps) {
       console.error(e)
     }
   }
+  const computeLastModified = (d: Date) => {
+    const now = Date.now()
+    const date = Date.parse(d.toString())
+    const diff = Math.ceil(Math.abs(now.valueOf() - date.valueOf()) / (1000 * 60 * 60 * 24));
+    return String(diff) + (diff < 1 ? " days" : " day") +  " ago";
+  }
+  // Todo: sort trigger list by updatedAt
+  // Todo: make trigger list scrollable
 
   return (
     <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-4">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4">
           {state.triggers.map(function (trigger) {
             const handleDelete = async (e: any) => {
               try {
@@ -61,6 +74,7 @@ export default function Home({ session }: HomeProps) {
                 console.error(e);
               }
             }
+
             const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
               try {
                 await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger?.id}`, {
@@ -72,6 +86,14 @@ export default function Home({ session }: HomeProps) {
                   error: 'An error occured while turning trigger ' + (e.target.checked ? 'on.' : 'off.'),
                   success: 'Successfully turned trigger ' + (e.target.checked ? 'on.' : 'off.'),
                 })
+                console.log(e.target.checked)
+                setState({ triggers: state.triggers.map((t) => {
+                  if (t.id !== trigger.id)
+                    return (t)
+                  else
+                    return ({ ...t, active: e.target.checked })
+                })})
+                console.log(state.triggers)
               } catch (e) {
                 console.error(e);
               }
@@ -82,11 +104,11 @@ export default function Home({ session }: HomeProps) {
                 <CardActionArea onClick={function () {router.push(`/triggers/${trigger.id}`)}}>
                   <div className='flex items-center justify-evenly p-4'>
                     <div className="w-20 h-20">
-                      <Image src={gmail} layout="responsive" />
+                      <Image src={icons[trigger.action.type]} layout="responsive" />
                     </div>
                     <TrendingFlatOutlined fontSize='large' color="secondary" />
                     <div className="w-20 h-20">
-                      <Image src={discord} layout="responsive" />
+                      <Image src={icons[trigger.reaction.type]} layout="responsive" />
                     </div>
                   </div>
                   <CardContent>
@@ -94,7 +116,7 @@ export default function Home({ session }: HomeProps) {
                       {trigger?.title}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {`Dernières modifications : ${trigger.updated_at && trigger.updated_at}`}
+                      {`Last edited : ${trigger.updated_at && computeLastModified(trigger.updated_at)}`}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -102,7 +124,7 @@ export default function Home({ session }: HomeProps) {
                   <IconButton aria-label="delete" onClick={handleDelete}>
                     <DeleteIcon color="error" />
                   </IconButton>
-                  <Switch color="secondary" onChange={handleToggle}/>
+                  <Switch color="secondary" onChange={handleToggle} checked={trigger.active} />
                 </CardActions>
               </Card>
           )})}
