@@ -54,8 +54,8 @@ export default function LoginPage({}: LoginPageProps) {
                     <TextField type="password" label="Password" variant="outlined" onChange={handlePasswordChange}/>
                 </form>
                 <div className="flex justify-between space-x-2 h-12">
-                    <Button disabled={!canSubmit()} variant="contained" onClick={handleLogin} color={"primary"} className="w-1/2">Log in</Button>
-                    <Button disabled={!canSubmit()} variant="outlined" onClick={handleRegister} color={"primary"} className="w-1/2">Register</Button>
+                    <Button disabled={!canSubmit()} variant="outlined" onClick={handleLogin} color={"primary"} className="w-1/2">Log in</Button>
+                    <Button disabled={!canSubmit()} variant="outlined" onClick={handleRegister} color={"secondary"} className="w-1/2">Register</Button>
                 </div>
             </div>
         </AppLayout>

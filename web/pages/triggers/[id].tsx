@@ -55,16 +55,15 @@ export default function TriggerPage({ session }: TriggerProps) {
     console.log(trigger)
 
     return (
-        <AppLayout type="centered" className="flex flex-col">
-            <div>Trigger {id}</div>
-            <Paper>
-                <div className="flex flex-col p-10 space-y-4">
-                    <TextField label="Triggername" variant="outlined" defaultValue={ trigger?.title } onChange={ handleTitleChange }/>
+        <AppLayout type="centered" className="flex flex-col items-center justify-center bg-blue-50/50">
+            <Paper className="w-2/3 h-2/3 flex flex-col justify-between p-10">
+                <div className="flex flex-col space-y-6">
+                    <TextField label="Title" variant="outlined" defaultValue={ trigger?.title } onChange={ handleTitleChange }/>
                     <TextField label="Description" multiline rows={4} defaultValue={ trigger?.description } onChange={ handleDescriptionChange }/>
-                    <div className="space-x-4">
-                      <Button variant="outlined" onClick={router.back}>Cancel</Button>
-                      <Button variant="contained" onClick={handleApply}>Apply changes</Button>
-                    </div>
+                </div>
+                <div className="justify-self-end space-x-4">
+                      <Button variant="outlined" onClick={handleApply}>Apply changes</Button>
+                      <Button variant="outlined" color={"error"} onClick={router.back}>Cancel</Button>
                 </div>
             </Paper>
         </AppLayout>
