@@ -4,6 +4,7 @@ import (
 	"Area/config"
 	"Area/database"
 	"Area/database/models"
+	"Area/jobs"
 	"Area/router"
 	"fmt"
 	"net/http"
@@ -20,16 +21,8 @@ func main() {
 	// 	google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_CLIENT_SECRET"), "http://localhost:8080/providers/google/callback", "https://www.googleapis.com/auth/gmail.readonly"),
 	// )
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	// Créer le jobsManager
-	// Appeler JobsManager.Run() en go routine
-=======
->>>>>>> 7b575bd (feat(server): implement google oauth flow to get refresh token)
-=======
-	// Créer le jobsManager
-	// Appeler JobsManager.Run() en go routine
->>>>>>> d2840a3 (feat(server): move providers into handlers and add jobsManager)
+	manager := jobs.NewManager()
+	manager.RunAsync()
 	if os.Getenv("PORT") != "" {
 		http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), r)
 	} else {

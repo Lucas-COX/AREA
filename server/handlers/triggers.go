@@ -28,9 +28,6 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 	lib.CheckError(err)
 	triggers, _ := database.Trigger.Get(user.ID)
 
-	lib.CheckError(err)
-	triggers, _ := database.Trigger.Get(user.ID)
-
 	copier.Copy(&resp.Triggers, &triggers)
 	lib.SendJson(w, resp)
 }
@@ -68,7 +65,7 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 	trigger, err := database.Trigger.GetById(uint(id), user.ID)
 	lib.CheckError(err)
 
-	copier.Copy(&resp, &trigger)
+	copier.Copy(&resp.Trigger, &trigger)
 	lib.SendJson(w, resp)
 }
 

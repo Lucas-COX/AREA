@@ -3,10 +3,10 @@ module Area
 go 1.19
 
 require (
-	github.com/davecgh/go-spew v1.1.1
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/cors v1.2.1
 	github.com/go-chi/jwtauth/v5 v5.0.2
+	github.com/go-co-op/gocron v1.17.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/jinzhu/copier v0.3.5
 	github.com/lestrrat-go/jwx v1.2.21
@@ -36,12 +36,14 @@ require (
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect

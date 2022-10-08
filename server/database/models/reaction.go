@@ -8,18 +8,14 @@ import (
 
 type ReactionType string
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 type ReactionActionType string
-=======
-type ReactionAction string
->>>>>>> 73b5e7a (feat(server): add action and reaction models)
-=======
-type ReactionActionType string
->>>>>>> ae11fa4 (feat(server): add actions and reactions to trigger model)
 
 const (
-	Discord ReactionType = "discord"
+	DiscordReaction ReactionType = "discord"
+)
+
+const (
+	SendReaction ReactionActionType = "send"
 )
 
 func (e *ReactionType) Scan(value interface{}) error {
@@ -33,23 +29,10 @@ func (e ReactionType) Value() (driver.Value, error) {
 
 type Reaction struct {
 	gorm.Model
-<<<<<<< HEAD
-<<<<<<< HEAD
 	Type      ReactionType       `gorm:"not null"`
 	Action    ReactionActionType `gorm:"not null"`
 	TriggerID uint
 	Token     string `gorm:"not null"`
-=======
-	Type      ReactionType   `gorm:"not null"`
-	Action    ReactionAction `gorm:"not null"`
-	TriggerID uint
->>>>>>> 73b5e7a (feat(server): add action and reaction models)
-=======
-	Type      ReactionType       `gorm:"not null"`
-	Action    ReactionActionType `gorm:"not null"`
-	TriggerID uint
-	Token     string `gorm:"not null"`
->>>>>>> ae11fa4 (feat(server): add actions and reactions to trigger model)
 }
 
 func (r *Reaction) TableName() string { return "reactions" }

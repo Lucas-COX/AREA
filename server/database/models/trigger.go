@@ -7,6 +7,7 @@ type Trigger struct {
 	Title       string `gorm:"not null"`
 	Description string
 	UserID      uint
+	User        User
 	Action      Action   `gorm:"not null"`
 	Reaction    Reaction `gorm:"not null"`
 	Active      bool     `gorm:"default:false"`

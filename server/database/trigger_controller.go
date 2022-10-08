@@ -9,6 +9,7 @@ type TriggerController interface {
 	Get(user_id uint) ([]models.Trigger, error)
 	GetById(id uint, user_id uint) (*models.Trigger, error)
 	GetByTitle(title string, user_id uint) (*models.Trigger, error)
+	GetActive() ([]models.Trigger, error)
 	Update(trigger *models.Trigger) (*models.Trigger, error)
 	Delete(trigger *models.Trigger) error
 }
@@ -38,6 +39,12 @@ func (triggerController) GetByTitle(title string, user_id uint) (*models.Trigger
 	var trigger models.Trigger
 	err := db.Model(models.Trigger{}).Where("user_id = ?", user_id).Preload("Action").Preload("Reaction").Where("title = ?", title).First(&trigger).Error
 	return &trigger, err
+}
+
+func (triggerController) GetActive() ([]models.Trigger, error) {
+	var triggers []models.Trigger
+	err := db.Model(models.Trigger{}).Where("active = ?", 1).Preload("Action").Preload("Reaction").Preload("User").Find(&triggers).Error
+	return triggers, err
 }
 
 func (triggerController) Update(trigger *models.Trigger) (*models.Trigger, error) {
