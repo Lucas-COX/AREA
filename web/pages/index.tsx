@@ -11,7 +11,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 export default function Home({ session }: HomeProps) {
-  
+
   const router = useRouter();
   const [state, setState] = useState({triggers: session.user?.triggers ? session.user.triggers : []});
 
@@ -42,7 +42,7 @@ export default function Home({ session }: HomeProps) {
 
   return (
     <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-4">
           {state.triggers.map(function (trigger) {
             const handleDelete = async (e: any) => {
               try {
@@ -67,7 +67,7 @@ export default function Home({ session }: HomeProps) {
                       {trigger?.title}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Dernières modifications : {trigger?.updated_at}
+                      Dernières modifications : {trigger.updated_at && trigger.updated_at}
                     </Typography>
                   </CardContent>
                 </CardActionArea>

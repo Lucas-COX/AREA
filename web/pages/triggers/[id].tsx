@@ -12,7 +12,11 @@ import axios from 'axios'
 export default function TriggerPage({ session }: TriggerProps) {
     const router = useRouter()
     const { id } = router.query
-    const trigger = session?.user?.triggers.find((t) => {return t.id == id})
+    const trigger = session?.user?.triggers?.find((t) => {return t.id === Number(id)})
+
+    if (trigger === undefined)
+      return router.push("/");
+
     const [state, setState] = useState({
       title: trigger.title,
       description: trigger?.description
@@ -30,17 +34,18 @@ export default function TriggerPage({ session }: TriggerProps) {
         description: e.target.value
       })
     }
-    const handleChange = async (e: any) => {
+
+    const handleApply = async (e: any) => {
       try {
-        const response = await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers`, {
+        const response = await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger.id}`, {
           title: state.title,
           description: state.description,
         }, {
           headers: { 'Authorization': 'Bearer ' + (session.token as string), 'Content-Type': 'application/json' }
         }), {
           pending: "Loading...",
-          error: "An error occured while modifying trigger.",
-          success: "Trigger successfully modified !"
+          error: "An error occured while updating trigger.",
+          success: "Trigger successfully updated !"
         })
         router.back
       } catch (e) {
@@ -58,7 +63,7 @@ export default function TriggerPage({ session }: TriggerProps) {
                     <TextField label="Description" multiline rows={4} defaultValue={ trigger?.description } onChange={ handleDescriptionChange }/>
                     <div className="space-x-4">
                       <Button variant="outlined" onClick={router.back}>Cancel</Button>
-                      <Button variant="contained" onClick={handleChange}>Apply changes</Button>
+                      <Button variant="contained" onClick={handleApply}>Apply changes</Button>
                     </div>
                 </div>
             </Paper>
