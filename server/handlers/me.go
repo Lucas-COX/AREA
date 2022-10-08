@@ -18,5 +18,10 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	lib.CheckError(err)
 
 	copier.Copy(&resp.User, &user)
+
+	triggers, err := database.Trigger.Get(user.ID)
+	lib.CheckError(err)
+
+	copier.Copy(&resp.User.Triggers, triggers)
 	lib.SendJson(w, resp)
 }
