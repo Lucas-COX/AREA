@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"Area/database/models"
 	"time"
 )
 
@@ -14,20 +15,55 @@ type AuthResponseBody struct {
 	Token string `json:"token"`
 }
 
+type ActionRequestBody struct {
+	Type  models.ActionType      `json:"type"`
+	Event models.ActionEventType `json:"event"`
+	Token string                 `json:"token"`
+}
+
+type ReactionRequestBody struct {
+	Type   models.ReactionType       `json:"type"`
+	Action models.ReactionActionType `json:"action"`
+	Token  string                    `json:"token"`
+}
+
 // Body for /trigger route
 type TriggerRequestBody struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
+	Title       string              `json:"title"`
+	Description string              `json:"description"`
+	Action      ActionRequestBody   `json:"action"`
+	Reaction    ReactionRequestBody `json:"reaction"`
+}
+
+type ActionResponseBody struct {
+	ID        uint                   `json:"id"`
+	Type      models.ActionType      `json:"type"`
+	Event     models.ActionEventType `json:"event"`
+	TriggerID uint                   `json:"trigger_id"`
+	CreatedAt time.Time              `json:"created_at"`
+	UpdatedAt time.Time              `json:"updated_at"`
+}
+
+type ReactionResponseBody struct {
+	ID        uint                   `json:"id"`
+	Type      models.ActionType      `json:"type"`
+	Action    models.ActionEventType `json:"action"`
+	TriggerID uint                   `json:"trigger_id"`
+	CreatedAt time.Time              `json:"created_at"`
+	UpdatedAt time.Time              `json:"updated_at"`
 }
 
 // Bodies for user and trigger getters
 type TriggerBody struct {
-	ID          uint      `json:"id"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	UserID      uint      `json:"user_id"`
+	ID          uint                 `json:"id"`
+	CreatedAt   time.Time            `json:"created_at"`
+	UpdatedAt   time.Time            `json:"updated_at"`
+	Title       string               `json:"title"`
+	Description string               `json:"description"`
+	UserID      uint                 `json:"user_id"`
+	Active      bool                 `json:"active"`
+	Action      ActionResponseBody   `json:"action"`
+	Reaction    ReactionResponseBody `json:"reaction"`
 }
 
 type UserBody struct {
