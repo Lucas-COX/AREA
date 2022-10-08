@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"Area/database"
 	"Area/lib"
 	"net/http"
 
@@ -13,7 +14,7 @@ type userBody struct {
 
 func Me(w http.ResponseWriter, r *http.Request) {
 	var resp userBody
-	user, err := UserFromContext(r.Context())
+	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 
 	copier.Copy(&resp.User, &user)

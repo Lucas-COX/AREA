@@ -3,6 +3,8 @@
 
 # Temporary files
 tmp/
+web/.next
+web/node_modules
 
 # Configuration files
 server/config/config.yml
