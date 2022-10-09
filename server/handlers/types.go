@@ -67,9 +67,10 @@ type TriggerBody struct {
 }
 
 type UserBody struct {
-	ID        uint          `json:"id"`
-	CreatedAt time.Time     `json:"created_at"`
-	UpdatedAt time.Time     `json:"updated_at"`
-	Username  string        `json:"username"`
-	Triggers  []TriggerBody `json:"triggers"`
+	ID           uint          `json:"id"`
+	CreatedAt    time.Time     `json:"created_at"`
+	UpdatedAt    time.Time     `json:"updated_at"`
+	Username     string        `json:"username"`
+	Triggers     []TriggerBody `json:"triggers"`
+	GoogleLogged bool          `json:"google_logged"`
 }
