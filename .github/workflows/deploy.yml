@@ -21,7 +21,7 @@ jobs:
 
             window=1
             tmux new-window -t $session:$window -n 'fetch' -c /root/AREA/server
-            tmux send-keys -t $session:$window 'git fetch --prune --all' C-m
+            tmux send-keys -t $session:$window 'git pull' C-m
 
             window=2
             tmux new-window -t $session:$window -n 'build' -c /root/AREA/server
