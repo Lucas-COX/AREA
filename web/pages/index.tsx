@@ -34,7 +34,7 @@ export default function Home({ session }: HomeProps) {
       },
       reaction: {
         type: 'discord',
-        event: 'send'
+        action: 'send'
       }
     }
     try {
