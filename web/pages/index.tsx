@@ -39,10 +39,7 @@ export default function Home({ session }: HomeProps) {
     }
     try {
       const response = await toast.promise(axios.post(`${process.env.NEXT_PUBLIC_API_URL}/triggers`, {
-        title: newTrigger.title,
-        user_id: newTrigger.user_id,
-        action: { type: "gmail", event: "receive" },
-        reaction: { type: "discord", event: "send" },
+        ...newTrigger
       }, {
           headers: { 'Authorization': 'Bearer ' + (session.token as string), 'Content-Type': 'application/json' }
       }), {
