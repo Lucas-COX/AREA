@@ -72,6 +72,7 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	var resp triggerResponse
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
+
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	lib.CheckError(err)
 	err = json.NewDecoder(r.Body).Decode(&input)
@@ -84,12 +85,7 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if input.Title != "" {
-		trigger.Title = input.Title
-	}
-	if input.Description != "" {
-		trigger.Description = input.Description
-	}
+	copier.CopyWithOption(&trigger, &input, copier.Option{IgnoreEmpty: true, DeepCopy: true})
 	trigger, err = database.Trigger.Update(trigger)
 	lib.CheckError(err)
 

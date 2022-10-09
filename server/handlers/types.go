@@ -37,6 +37,7 @@ type TriggerRequestBody struct {
 	Description string              `json:"description"`
 	Action      ActionRequestBody   `json:"action"`
 	Reaction    ReactionRequestBody `json:"reaction"`
+	Active      bool                `json:"active"`
 }
 
 type ActionResponseBody struct {
