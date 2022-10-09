@@ -8,6 +8,7 @@ import (
 	"Area/lib"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/go-co-op/gocron"
 )
 
@@ -39,11 +40,11 @@ func (jobsManager) Do() {
 	var triggered bool
 	triggers, err := database.Trigger.GetActive()
 	lib.CheckError(err)
-	//spew.Dump(triggers)
+	spew.Dump(triggers)
 	for _, v := range triggers {
 		switch v.Action.Type {
 		case models.GmailAction:
-			triggered = actions.CheckGmailAction(v.Action)
+			triggered = actions.CheckGmailAction(v.Action, v.User)
 		default:
 			triggered = false
 		}

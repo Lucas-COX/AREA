@@ -88,6 +88,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 
 	code := r.URL.Query().Get("code")
 	token, err := conf.Exchange(context.Background(), code)
+
 	if err != nil {
 		lib.SendError(w, http.StatusBadRequest, "Invalid code provided")
 		return
