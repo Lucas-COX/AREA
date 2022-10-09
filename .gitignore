@@ -11,3 +11,10 @@ server/config/config.yml
 
 # Compiled files
 server/server
+
+# Node temporary files
+web/node_modules/
+web/.next/
+
+# Log files
+*.log
