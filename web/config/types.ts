@@ -1,6 +1,6 @@
 export type Action = {
     id: Number,
-    type: String,
+    type: "gmail",
     event: String,
     token: String,
     created_at: Date,
@@ -10,7 +10,7 @@ export type Action = {
 
 export type Reaction = {
     id: Number,
-    type: String,
+    type: "discord",
     action: String,
     token: String,
     created_at: Date,
@@ -36,10 +36,11 @@ export type User = {
     created_at: Date,
     updated_at: Date,
     triggers?: Trigger[],
+    google_logged: boolean,
 }
 
 export type Session = {
     user?: User,
     authenticated: boolean,
-    token?: String | null,
+    token?: string | null,
 }

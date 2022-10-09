@@ -8,6 +8,12 @@ import { useState } from 'react'
 import { Paper, TextField, Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios'
+import icons from '../../lib/icons';
+import Image from 'next/image';
+import InputAdornment from "@mui/material/InputAdornment";
+import { TrendingFlatOutlined } from '@mui/icons-material';
+import URLSafeBase64 from 'urlsafe-base64'
+
 
 export default function TriggerPage({ session }: TriggerProps) {
     const router = useRouter()
@@ -18,28 +24,40 @@ export default function TriggerPage({ session }: TriggerProps) {
       return router.push("/");
 
     const [state, setState] = useState({
-      title: trigger.title,
-      description: trigger?.description
+      trigger: trigger,
     })
 
     const handleTitleChange = (e: any) => {
       setState({
-        ...state,
-        title: e.target.value
+        trigger: {
+          ...state.trigger,
+          title: e.target.value
+        }
       })
     }
     const handleDescriptionChange = (e: any) => {
       setState({
-        ...state,
-        description: e.target.value
+        trigger: {
+          ...state.trigger,
+          description: e.target.value
+        }
       })
     }
-
+    const handleReactionTokenChange = (e: any) => {
+      setState({
+        trigger: {
+          ...state.trigger,
+          reaction: {
+            ...state.trigger.reaction,
+            token: e.target.value,
+          }
+        }
+      })
+    }
     const handleApply = async (e: any) => {
       try {
-        const response = await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger.id}`, {
-          title: state.title,
-          description: state.description,
+        await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger.id}`, {
+          ...state.trigger
         }, {
           headers: { 'Authorization': 'Bearer ' + (session.token as string), 'Content-Type': 'application/json' }
         }), {
@@ -47,27 +65,95 @@ export default function TriggerPage({ session }: TriggerProps) {
           error: "An error occured while updating trigger.",
           success: "Trigger successfully updated !"
         })
-        router.back
+        router.push("/")
       } catch (e) {
         console.error(e)
       }
     }
-    console.log(trigger)
+    const handleGoogleLogin = async () => {
+      try {
+        const location = "http://localhost:3000" + router.asPath
+        const url = URLSafeBase64.encode(Buffer.from(location));
+
+        const response = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/google/auth?callback=${url}`, {
+          headers: { 'Authorization': 'Bearer ' + session.token }
+        })
+        router.push((await response).data.url)
+      } catch (e) {
+        toast.error("Failed to redirect to Google authentication page.")
+      }
+    }
+
+
+    const ActionIcon = <Image src={icons[trigger.action.type]} width="15" height="15" />
+    const ReactionIcon = <Image src={icons[trigger.reaction.type]} width="15" height="15" />
 
     return (
-        <AppLayout type="centered" className="flex flex-col items-center justify-center bg-blue-50/50">
-            <Paper className="w-2/3 h-2/3 flex flex-col justify-between p-10">
-                <div className="flex flex-col space-y-6">
-                    <TextField label="Title" variant="outlined" defaultValue={ trigger?.title } onChange={ handleTitleChange }/>
-                    <TextField label="Description" multiline rows={4} defaultValue={ trigger?.description } onChange={ handleDescriptionChange }/>
-                </div>
-                <div className="justify-self-end space-x-4">
-                      <Button variant="outlined" onClick={handleApply}>Apply changes</Button>
-                      <Button variant="outlined" color={"error"} onClick={router.back}>Cancel</Button>
-                </div>
-            </Paper>
-        </AppLayout>
-    )
+      <AppLayout
+        type="centered"
+        className="flex flex-col items-center justify-center bg-blue-50/50"
+        loggedIn={true}
+      >
+        <Paper className="w-2/3 h-2/3 flex flex-col justify-between p-10">
+          <div className="flex flex-col space-y-6">
+            <TextField
+              label="Title"
+              variant="outlined"
+              defaultValue={trigger?.title}
+              onChange={handleTitleChange}
+            />
+            <TextField
+              label="Description"
+              multiline
+              rows={4}
+              defaultValue={trigger?.description}
+              onChange={handleDescriptionChange}
+            />
+          </div>
+          <div className="h-full flex items-center space-x-6">
+            <div className={"flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-primary/5"}>
+              <div>Action</div>
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={ActionIcon}
+                className="h-10"
+                disabled={session.user?.google_logged}
+                onClick={handleGoogleLogin}
+              >
+                {session.user?.google_logged ? "Logged in" : "Login with Google"}
+              </Button>
+            </div>
+            <TrendingFlatOutlined fontSize='large' color="secondary" />
+            <div className={"flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-secondary/5"}>
+              <div>Reaction</div>
+              <TextField
+                label={"Discord webhook url"}
+                className="bg-white"
+                value={state.trigger.reaction.token}
+                onChange={handleReactionTokenChange}
+                InputProps={{
+                  className: "h-10",
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {ReactionIcon}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </div>
+          </div>
+          <div className="justify-self-end space-x-4">
+            <Button variant="outlined" onClick={handleApply}>
+              Apply changes
+            </Button>
+            <Button variant="outlined" color={"error"} onClick={() => router.push("/")}>
+              Cancel
+            </Button>
+          </div>
+        </Paper>
+      </AppLayout>
+    );
 }
 
 

@@ -27,6 +27,15 @@ export default function Home({ session }: HomeProps) {
     const newTrigger = {
       title: "New trigger",
       user_id: session.user?.id,
+      action: {
+        type: 'gmail',
+        event: 'receive',
+        token: 'google'
+      },
+      reaction: {
+        type: 'discord',
+        event: 'send'
+      }
     }
     try {
       const response = await toast.promise(axios.post(`${process.env.NEXT_PUBLIC_API_URL}/triggers`, {
@@ -41,7 +50,6 @@ export default function Home({ session }: HomeProps) {
         error: "An error occured while creating trigger.",
         success: "Trigger successfully created !"
       })
-      console.log(response);
       router.push(`/triggers/${response.data.trigger.id}`);
     } catch (e) {
       console.error(e)
@@ -57,8 +65,8 @@ export default function Home({ session }: HomeProps) {
   // Todo: make trigger list scrollable
 
   return (
-    <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4">
+    <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50" loggedIn={true}>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4 w-full sm:w-3/4">
           {state.triggers.map(function (trigger) {
             const handleDelete = async (e: any) => {
               try {
@@ -86,14 +94,12 @@ export default function Home({ session }: HomeProps) {
                   error: 'An error occured while turning trigger ' + (e.target.checked ? 'on.' : 'off.'),
                   success: 'Successfully turned trigger ' + (e.target.checked ? 'on.' : 'off.'),
                 })
-                console.log(e.target.checked)
                 setState({ triggers: state.triggers.map((t) => {
                   if (t.id !== trigger.id)
                     return (t)
                   else
                     return ({ ...t, active: e.target.checked })
                 })})
-                console.log(state.triggers)
               } catch (e) {
                 console.error(e);
               }
