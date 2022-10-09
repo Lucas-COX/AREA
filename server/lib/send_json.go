@@ -21,3 +21,14 @@ func SetCookie(w http.ResponseWriter, name string, value string) {
 	}
 	http.SetCookie(w, cookie)
 }
+
+func RemoveCookie(w http.ResponseWriter, name string) {
+	// remove the "area_token" cookie by setting its MaxAge to -1
+	cookie := &http.Cookie{
+		Name:     name,
+		Value:    "",
+		MaxAge:   -1,
+		HttpOnly: true,
+	}
+	http.SetCookie(w, cookie)
+}
