@@ -101,9 +101,6 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	user.GoogleToken = token.RefreshToken
 	database.User.Update(*user)
 
-	// Client pour faire des appels à l'api google
-	// client := conf.Client(context.Background(), token)
-
 	w.Header().Add("Location", string(state.Callback))
 	w.WriteHeader(http.StatusPermanentRedirect)
 }
