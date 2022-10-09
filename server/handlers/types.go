@@ -51,6 +51,7 @@ type ReactionResponseBody struct {
 	TriggerID uint                   `json:"trigger_id"`
 	CreatedAt time.Time              `json:"created_at"`
 	UpdatedAt time.Time              `json:"updated_at"`
+	Token     string                 `json:"token"`
 }
 
 // Bodies for user and trigger getters
