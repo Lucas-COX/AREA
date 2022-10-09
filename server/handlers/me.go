@@ -19,6 +19,9 @@ func Me(w http.ResponseWriter, r *http.Request) {
 
 	copier.Copy(&resp.User, &user)
 
+	if user.GoogleToken != "" {
+		resp.User.GoogleLogged = true
+	}
 	triggers, err := database.Trigger.Get(user.ID)
 	lib.CheckError(err)
 
