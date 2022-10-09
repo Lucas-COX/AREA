@@ -42,6 +42,14 @@ func (triggerController) GetByTitle(title string, user_id uint) (*models.Trigger
 
 func (triggerController) Update(trigger *models.Trigger) (*models.Trigger, error) {
 	err := db.Save(trigger).Error
+	if err != nil {
+		return nil, err
+	}
+	err = db.Save(&trigger.Action).Error
+	if err != nil {
+		return nil, err
+	}
+	err = db.Save(&trigger.Reaction).Error
 	return trigger, err
 }
 
