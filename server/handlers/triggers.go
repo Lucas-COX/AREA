@@ -34,17 +34,19 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 	var input TriggerRequestBody
 	var resp triggerResponse
+	var data models.Trigger
 
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 
 	err = json.NewDecoder(r.Body).Decode(&input)
 	lib.CheckError(err)
-	trigger, _ := database.Trigger.Create(models.Trigger{
-		Title:       input.Title,
-		Description: input.Description,
-		UserID:      user.ID,
-	})
+
+	copier.Copy(&data, &input)
+	data.UserID = user.ID
+
+	trigger, _ := database.Trigger.Create(data)
+
 	copier.Copy(&resp.Trigger, &trigger)
 	lib.SendJson(w, resp)
 }

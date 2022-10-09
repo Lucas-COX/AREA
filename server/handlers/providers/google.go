@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -31,7 +30,6 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 
 	callbackUrl, err := base64.RawStdEncoding.DecodeString(r.URL.Query().Get("callback"))
 	if err != nil || string(callbackUrl) == "" {
-		log.Println(err.Error())
 		lib.SendError(w, 400, "Missing callback url (base64 encoded)")
 		return
 	}
