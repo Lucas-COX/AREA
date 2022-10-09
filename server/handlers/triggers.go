@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/go-chi/chi/v5"
 	"github.com/jinzhu/copier"
 )
@@ -75,21 +76,19 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	lib.CheckError(err)
+
 	err = json.NewDecoder(r.Body).Decode(&input)
 	lib.CheckError(err)
 
 	trigger, err := database.Trigger.GetById(uint(id), user.ID)
 	lib.CheckError(err)
-	if user.ID != trigger.UserID {
-		lib.SendError(w, http.StatusUnauthorized, "Can't Modify this trigger")
-		return
-	}
 
 	copier.CopyWithOption(&trigger, &input, copier.Option{IgnoreEmpty: true, DeepCopy: true})
+	spew.Dump(trigger)
 	trigger, err = database.Trigger.Update(trigger)
 	lib.CheckError(err)
 
-	copier.Copy(&resp.Trigger, &trigger)
+	copier.Copy(&resp.Trigger, trigger)
 	lib.SendJson(w, resp)
 }
 
