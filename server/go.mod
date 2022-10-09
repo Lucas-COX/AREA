@@ -9,6 +9,7 @@ require (
 	github.com/go-chi/jwtauth/v5 v5.0.2
 	github.com/go-co-op/gocron v1.17.0
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/gtuk/discordwebhook v1.0.2
 	github.com/jinzhu/copier v0.3.5
 	github.com/lestrrat-go/jwx v1.2.21
 	github.com/spf13/viper v1.13.0

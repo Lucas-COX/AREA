@@ -1,26 +1,35 @@
 package reactions
 
 import (
+	"Area/database"
 	"Area/database/models"
 	"Area/lib"
 	"bytes"
-	"encoding/json"
-	"log"
-	"net/http"
+	"encoding/gob"
+	"fmt"
+
+	"github.com/gtuk/discordwebhook"
 )
 
-func React(reaction models.Reaction) {
-	url := "https://discord.com/api/webhooks/1028682673511727164/alasz7LSPL1mgLHarHssiAbSZtm-pK2KSkTwROdMOROhE903UrKsYWAgRI17h7-TzHFP"
+func React(reaction models.Reaction, user models.User) {
+	trigger, err := database.Trigger.GetById(reaction.TriggerID, user.ID)
+	var storedData models.TriggerData
+	var buf bytes.Buffer
+
+	lib.CheckError(err)
+	buf.Write(trigger.Data)
+	err = gob.NewDecoder(&buf).Decode(&storedData)
+
+	var username = "Area"
+	var content = fmt.Sprintf("New Event : %s\t\n %s\t\n %s\t\n", storedData.Author, storedData.Title, storedData.Description)
+	url := reaction.Token
 	switch reaction.Action {
 	case "send":
-		payload := new(bytes.Buffer)
-
-		err := json.NewEncoder(payload).Encode("message")
+		message := discordwebhook.Message{
+			Username: &username,
+			Content:  &content,
+		}
+		err := discordwebhook.SendMessage(url, message)
 		lib.CheckError(err)
-
-		resp, err := http.Post(url, "application/json", payload)
-		lib.CheckError(err)
-
-		log.Printf(resp.Status)
 	}
 }

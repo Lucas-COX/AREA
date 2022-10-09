@@ -6,7 +6,7 @@ import (
 	"Area/lib"
 	"bytes"
 	"context"
-	"encoding/binary"
+	"encoding/gob"
 	"log"
 	"os"
 	"time"
@@ -62,28 +62,30 @@ func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var buf bytes.Buffer
 
 	trigger, err := database.Trigger.GetById(triggerId, userId)
+	lib.CheckError(err)
 	buf.Write(trigger.Data)
 
-	binary.Read(&buf, binary.BigEndian, &storedData)
+	gob.NewDecoder(&buf).Decode(&storedData)
 
-	if err == nil {
-		newData.Timestamp = time.UnixMilli(mail.InternalDate)
-		if trigger.Data == nil || storedData.Timestamp.Before(newData.Timestamp) {
-			newData.Description = mail.Snippet
-			for i := range mail.Payload.Headers {
-				if mail.Payload.Headers[i].Name == "From" {
-					newData.Author = mail.Payload.Headers[i].Value
-				}
-				if mail.Payload.Headers[i].Name == "Subject" {
-					newData.Title = mail.Payload.Headers[i].Value
-				}
+	newData.Timestamp = time.UnixMilli(mail.InternalDate)
+	if trigger.Data == nil || storedData.Timestamp.Before(newData.Timestamp) {
+		newData.Description = mail.Snippet
+		for i := range mail.Payload.Headers {
+			if mail.Payload.Headers[i].Name == "From" {
+				newData.Author = mail.Payload.Headers[i].Value
 			}
-			trigger.Data = lib.EncodeToBytes(newData)
-			database.Trigger.Update(trigger)
-			if trigger.Data != nil {
-				return true
+			if mail.Payload.Headers[i].Name == "Subject" {
+				newData.Title = mail.Payload.Headers[i].Value
 			}
 		}
+
+		if trigger.Data != nil {
+			trigger.Data = lib.EncodeToBytes(newData)
+			database.Trigger.Update(trigger)
+			return true
+		}
+		trigger.Data = lib.EncodeToBytes(newData)
+		database.Trigger.Update(trigger)
 	}
 	return false
 }

@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-chi/chi/v5"
 	"github.com/jinzhu/copier"
 )
@@ -85,7 +84,6 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	lib.CheckError(err)
 
 	copier.CopyWithOption(&trigger, &input, copier.Option{IgnoreEmpty: true, DeepCopy: true})
-	spew.Dump(trigger)
 	trigger, err = database.Trigger.Update(trigger)
 	lib.CheckError(err)
 

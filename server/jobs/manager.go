@@ -39,7 +39,6 @@ func (jobsManager) Do() {
 	var triggered bool
 	triggers, err := database.Trigger.GetActive()
 	lib.CheckError(err)
-	// spew.Dump(triggers)
 	for _, v := range triggers {
 		switch v.Action.Type {
 		case models.GmailAction:
@@ -50,7 +49,7 @@ func (jobsManager) Do() {
 		if triggered {
 			switch v.Reaction.Type {
 			case models.DiscordReaction:
-				reactions.React(v.Reaction)
+				reactions.React(v.Reaction, v.User)
 			}
 		}
 	}
