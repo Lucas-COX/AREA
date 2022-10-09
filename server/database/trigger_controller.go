@@ -1,6 +1,8 @@
 package database
 
-import "Area/database/models"
+import (
+	"Area/database/models"
+)
 
 type triggerController struct{}
 

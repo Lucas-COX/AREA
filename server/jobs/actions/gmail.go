@@ -1,8 +1,12 @@
 package actions
 
 import (
+	"Area/database"
 	"Area/database/models"
+	"Area/lib"
+	"bytes"
 	"context"
+	"encoding/binary"
 	"log"
 	"os"
 	"time"
@@ -36,7 +40,7 @@ func createGmailService(refresh_token string) *gmail.Service {
 }
 
 func fetchLastMail(srv *gmail.Service) (*gmail.Message, error) {
-	res, err := srv.Users.Messages.List("me").Do()
+	res, err := srv.Users.Messages.List("me").Q("label:Inbox").Do()
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
@@ -51,37 +55,48 @@ func fetchLastMail(srv *gmail.Service) (*gmail.Message, error) {
 	return res2, nil
 }
 
-func checkReceive(srv *gmail.Service, triggerId uint) bool {
-	var data models.TriggerData
+func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
+	var newData models.TriggerData
+	var storedData models.TriggerData
 	var mail, err = fetchLastMail(srv)
+	var buf bytes.Buffer
+
+	trigger, err := database.Trigger.GetById(triggerId, userId)
+	buf.Write(trigger.Data)
+
+	binary.Read(&buf, binary.BigEndian, &storedData)
 
 	if err == nil {
-		data.Timestamp = time.UnixMilli(mail.InternalDate)
-		data.Description = mail.Snippet
-		for i := range mail.Payload.Headers {
-			if mail.Payload.Headers[i].Name == "From" {
-				data.Author = mail.Payload.Headers[i].Value
+		newData.Timestamp = time.UnixMilli(mail.InternalDate)
+		if trigger.Data == nil || storedData.Timestamp.Before(newData.Timestamp) {
+			newData.Description = mail.Snippet
+			for i := range mail.Payload.Headers {
+				if mail.Payload.Headers[i].Name == "From" {
+					newData.Author = mail.Payload.Headers[i].Value
+				}
+				if mail.Payload.Headers[i].Name == "Subject" {
+					newData.Title = mail.Payload.Headers[i].Value
+				}
 			}
-			if mail.Payload.Headers[i].Name == "Subject" {
-				data.Title = mail.Payload.Headers[i].Value
+			trigger.Data = lib.EncodeToBytes(newData)
+			database.Trigger.Update(trigger)
+			if trigger.Data != nil {
+				return true
 			}
 		}
-		// check if stored timestamp is smaller than lastMail timestamp
-		// if yes then store new mail in db
-		// if yes return true
-		// else return false
 	}
 	return false
 }
 
 func CheckGmailAction(action models.Action, user models.User) bool {
+	log.Println("checking gmail....")
 	var srv = createGmailService(user.GoogleToken)
 	if srv == nil {
 		return false
 	}
 	switch action.Event {
 	case "receive":
-		return checkReceive(srv, action.TriggerID)
+		return checkReceive(srv, action.TriggerID, user.ID)
 	}
 	return false
 }
