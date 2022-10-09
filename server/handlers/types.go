@@ -15,6 +15,10 @@ type AuthResponseBody struct {
 	Token string `json:"token"`
 }
 
+type LogoutResponseBody struct {
+	Message string `json:"message"`
+}
+
 type ActionRequestBody struct {
 	Type  models.ActionType      `json:"type"`
 	Event models.ActionEventType `json:"event"`
