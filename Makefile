@@ -8,6 +8,7 @@ db:
 
 install:
 	@make -C server install
+	@make -C web install
 
 run:
 	@make -C $(t) start
