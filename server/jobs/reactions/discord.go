@@ -20,6 +20,7 @@ func React(reaction models.Reaction, user models.User) {
 	buf.Write(trigger.Data)
 	err = gob.NewDecoder(&buf).Decode(&storedData)
 
+	lib.LogError(err)
 	var username = "Area"
 	var content = fmt.Sprintf("New Event : %s\t\n %s\t\n %s\t\n", storedData.Author, storedData.Title, storedData.Description)
 	url := reaction.Token
@@ -30,6 +31,6 @@ func React(reaction models.Reaction, user models.User) {
 			Content:  &content,
 		}
 		err := discordwebhook.SendMessage(url, message)
-		lib.CheckError(err)
+		lib.LogError(err)
 	}
 }
