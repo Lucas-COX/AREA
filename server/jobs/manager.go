@@ -38,7 +38,8 @@ func (j jobsManager) RunSync() {
 func (jobsManager) Do() {
 	var triggered bool
 	triggers, err := database.Trigger.GetActive()
-	lib.CheckError(err)
+	lib.LogError(err)
+
 	for _, v := range triggers {
 		switch v.Action.Type {
 		case models.GmailAction:
