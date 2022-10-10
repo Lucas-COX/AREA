@@ -84,6 +84,10 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	lib.CheckError(err)
 
 	copier.CopyWithOption(&trigger, &input, copier.Option{IgnoreEmpty: true, DeepCopy: true})
+	if !input.Active {
+		trigger.Active = false
+	}
+
 	trigger, err = database.Trigger.Update(trigger)
 	lib.CheckError(err)
 
