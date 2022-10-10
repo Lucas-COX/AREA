@@ -75,13 +75,11 @@ func (userController) GetByUsername(username string, loadTriggers bool) (*models
 }
 
 func (userController) Update(user models.User) (*models.User, error) {
-	var err error
-	err = db.Save(&user).Error
+	err := db.Save(&user).Error
 	return &user, err
 }
 
 func (userController) Delete(id string) error {
-	var err error
-	err = db.Delete(&id).Error
+	err := db.Delete(&id).Error
 	return err
 }

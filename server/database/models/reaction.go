@@ -11,7 +11,11 @@ type ReactionType string
 type ReactionActionType string
 
 const (
-	Discord ReactionType = "discord"
+	DiscordReaction ReactionType = "discord"
+)
+
+const (
+	SendReaction ReactionActionType = "send"
 )
 
 func (e *ReactionType) Scan(value interface{}) error {
