@@ -62,7 +62,7 @@ func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var buf bytes.Buffer
 
 	trigger, err := database.Trigger.GetById(triggerId, userId)
-	lib.CheckError(err)
+	lib.LogError(err)
 	buf.Write(trigger.Data)
 
 	gob.NewDecoder(&buf).Decode(&storedData)

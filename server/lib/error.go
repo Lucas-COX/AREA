@@ -2,6 +2,7 @@ package lib
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -22,4 +23,10 @@ func SendError(w http.ResponseWriter, code int, message string) {
 	bytes, err := json.Marshal(body)
 	CheckError(err)
 	http.Error(w, string(bytes), code)
+}
+
+func LogError(err error) {
+	if err != nil {
+		log.Println(err.Error())
+	}
 }
