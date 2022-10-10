@@ -21,9 +21,9 @@ const icons = {
 export default function Home({ session }: HomeProps) {
 
   const router = useRouter();
-  const [state, setState] = useState({triggers: session.user?.triggers ? session.user.triggers : []});
+  const [state, setState] = useState({ triggers: session.user?.triggers ? session.user.triggers.sort((a, b) => (a.updated_at < b.updated_at) ? 1 : -1) : []});
 
-  const handleCreate = async (e: any) => {
+  const handleCreate = async () => {
     const newTrigger = {
       title: "New trigger",
       user_id: session.user?.id,
@@ -58,14 +58,13 @@ export default function Home({ session }: HomeProps) {
     const diff = Math.ceil(Math.abs(now.valueOf() - date.valueOf()) / (1000 * 60 * 60 * 24));
     return String(diff) + (diff < 1 ? " days" : " day") +  " ago";
   }
-  // Todo: sort trigger list by updatedAt
   // Todo: make trigger list scrollable
 
   return (
     <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50" loggedIn={true}>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4 w-full sm:w-3/4">
           {state.triggers.map(function (trigger) {
-            const handleDelete = async (e: any) => {
+            const handleDelete = async () => {
               try {
                 await toast.promise(axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger?.id}`, {
                   headers: { 'Authorization': 'Bearer ' + session.token }
@@ -79,11 +78,10 @@ export default function Home({ session }: HomeProps) {
                 console.error(e);
               }
             }
-
             const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
               try {
                 await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger?.id}`, {
-                  active: e.target.checked,
+                  active: !trigger.active,
                 }, {
                   headers: { 'Authorization': 'Bearer ' + session.token, 'Content-Type': 'application/json' }
                 }), {
@@ -95,7 +93,7 @@ export default function Home({ session }: HomeProps) {
                   if (t.id !== trigger.id)
                     return (t)
                   else
-                    return ({ ...t, active: e.target.checked })
+                    return ({ ...t, active: !t.active })
                 })})
               } catch (e) {
                 console.error(e);
