@@ -91,7 +91,6 @@ func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 }
 
 func CheckGmailAction(action models.Action, user models.User) bool {
-	log.Println("checking gmail....")
 	var srv = createGmailService(user.GoogleToken)
 	if srv == nil {
 		return false

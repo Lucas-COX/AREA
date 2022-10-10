@@ -5,7 +5,7 @@ import { getSession } from '../../lib/session';
 import AppLayout from '../../components/AppLayout';
 import React from 'react'
 import { useState } from 'react'
-import { Paper, TextField, Button } from '@mui/material';
+import { Paper, TextField, Button, Switch } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios'
 import icons from '../../lib/icons';
@@ -54,6 +54,12 @@ export default function TriggerPage({ session }: TriggerProps) {
         }
       })
     }
+    const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      setState({ trigger: {
+        ...state.trigger,
+        active: !state.trigger.active
+      }})
+    }
     const handleApply = async (e: any) => {
       try {
         await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger.id}`, {
@@ -83,7 +89,6 @@ export default function TriggerPage({ session }: TriggerProps) {
         toast.error("Failed to redirect to Google authentication page.")
       }
     }
-
 
     const ActionIcon = <Image src={icons[trigger.action.type]} width="15" height="15" />
     const ReactionIcon = <Image src={icons[trigger.reaction.type]} width="15" height="15" />
@@ -150,6 +155,7 @@ export default function TriggerPage({ session }: TriggerProps) {
             <Button variant="outlined" color={"error"} onClick={() => router.push("/")}>
               Cancel
             </Button>
+            <Switch color={"secondary"} value={state.trigger.active} onChange={handleToggle} />
           </div>
         </Paper>
       </AppLayout>
