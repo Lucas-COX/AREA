@@ -1,0 +1,16 @@
+database:
+  user:
+  password:
+  address:
+  protocol:
+  name:
+  ParseTime:
+
+server:
+  address:
+
+environment:
+  - jwt_secret:
+  - salt:
+  - google_client_id:
+  - google_client_secret:

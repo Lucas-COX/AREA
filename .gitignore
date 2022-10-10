@@ -1,0 +1,20 @@
+# Environment variables
+.env
+
+# Temporary files
+tmp/
+web/.next
+web/node_modules
+
+# Configuration files
+server/config/config.yml
+
+# Compiled files
+server/server
+
+# Node temporary files
+web/node_modules/
+web/.next/
+
+# Log files
+*.log
