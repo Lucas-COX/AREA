@@ -88,6 +88,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 
 	code := r.URL.Query().Get("code")
 	token, err := conf.Exchange(context.Background(), code)
+
 	if err != nil {
 		lib.SendError(w, http.StatusBadRequest, "Invalid code provided")
 		return
@@ -99,9 +100,6 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	// Todo: crypt that token
 	user.GoogleToken = token.RefreshToken
 	database.User.Update(*user)
-
-	// Client pour faire des appels à l'api google
-	// client := conf.Client(context.Background(), token)
 
 	w.Header().Add("Location", string(state.Callback))
 	w.WriteHeader(http.StatusPermanentRedirect)
