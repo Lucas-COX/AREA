@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 import axios from 'axios';
 import { useRouter } from "next/router";
-
+import clsx from 'clsx';
 export type LayoutType = "centered"
 
 const LayoutMappings = {
@@ -36,10 +36,10 @@ export default function AppLayout({ type = "centered", className = "", children,
                 <link rel="icon" href={"/favicon.ico"} />
             </Head>
             <main className="w-screen h-screen">
-                <div className="w-full h-20 flex justify-end border-b border-secondary/30 bg-white shadow-md p-4 absolute">
+                <div className="w-full h-20 flex justify-end border-b top-0 left-0 border-secondary/30 bg-white shadow-md p-4 absolute">
                     {loggedIn && <Button variant={"outlined"} onClick={handleLogout}>Logout</Button>}
                 </div>
-                <Layout className={"pt-20 " + className}>
+                <Layout className={clsx(className, "pt-20")}>
                     {children}
                 </Layout>
             </main>
