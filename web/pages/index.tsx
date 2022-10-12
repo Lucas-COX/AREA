@@ -64,7 +64,7 @@ export default function Home({ session }: HomeProps) {
   return (
     <AppLayout type="centered" className="flex flex-col space-y-4 pb-10 pt-32 bg-blue-50/50" loggedIn={true}>
         <Button className="bg-white" variant="outlined" color="primary" startIcon={<AddIcon />} onClick={handleCreate}>Create Trigger</Button>
-        <div className="flex flex-col space-y-4 p-4 w-full max-h-fit sm:w-3/4 overflow-y-scroll">
+        <div className="flex flex-col space-y-4 p-4 w-full max-h-fit sm:w-3/4 overflow-y-scroll scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-primary/20 scrollbar-track-rounded-full scrollbar-track-gray-50 scrollbar-thin">
           {state.triggers.map(function (trigger) {
             const handleDelete = async () => {
               try {
