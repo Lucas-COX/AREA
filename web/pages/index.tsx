@@ -62,9 +62,9 @@ export default function Home({ session }: HomeProps) {
   // Todo: make trigger list scrollable
 
   return (
-    <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50" loggedIn={true}>
+    <AppLayout type="centered" className="flex flex-col space-y-4 pb-10 pt-32 bg-blue-50/50" loggedIn={true}>
         <Button className="bg-white" variant="outlined" color="primary" startIcon={<AddIcon />} onClick={handleCreate}>Create Trigger</Button>
-        <div className="flex flex-col space-y-4 p-4 w-full h-4/5 sm:w-3/4 overflow-scroll">
+        <div className="flex flex-col space-y-4 p-4 w-full max-h-fit sm:w-3/4 overflow-y-scroll">
           {state.triggers.map(function (trigger) {
             const handleDelete = async () => {
               try {
@@ -103,7 +103,7 @@ export default function Home({ session }: HomeProps) {
             }
 
             return (
-              <Card key={`trigger_${trigger.id}`} className="flex flex-col items-center h-64">
+              <Card key={`trigger_${trigger.id}`} className="flex flex-col items-center h-64 bg-white">
                 <CardActionArea onClick={function () {router.push(`/triggers/${trigger.id}`)}}>
                   <div className='flex items-center justify-evenly p-4'>
                     <div className="w-20 h-20">
