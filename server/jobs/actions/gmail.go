@@ -67,6 +67,9 @@ func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 
 	gob.NewDecoder(&buf).Decode(&storedData)
 
+	if mail == nil {
+		return false
+	}
 	newData.Timestamp = time.UnixMilli(mail.InternalDate)
 	if trigger.Data == nil || storedData.Timestamp.Before(newData.Timestamp) {
 		newData.Description = mail.Snippet
