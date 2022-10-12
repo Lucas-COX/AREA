@@ -1,15 +1,19 @@
 all: install
 
 install:
-	yarn install
+	@yarn install
+
+format:
+	@yarn run lint
 
 build:
-	yarn run build
+	@yarn run build
 
 start:
-	yarn dev
+	@yarn dev
 
 .PHONY: all \
 			install \
+			format \
 			build \
 			start
