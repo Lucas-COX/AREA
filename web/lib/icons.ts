@@ -5,7 +5,9 @@ export const discord = discordImg
 
 export const gmail = gmailImg
 
-export default {
+const mappings = {
     "gmail": gmail,
     "discord": discord
 }
+
+export default mappings

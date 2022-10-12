@@ -59,7 +59,6 @@ export default function Home({ session }: HomeProps) {
     const diff = Math.ceil(Math.abs(now.valueOf() - date.valueOf()) / (1000 * 60 * 60 * 24));
     return String(diff) + (diff < 1 ? " days" : " day") +  " ago";
   }
-  // Todo: make trigger list scrollable
 
   return (
     <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50 py-20 pt-32" loggedIn={true}>
@@ -107,11 +106,11 @@ export default function Home({ session }: HomeProps) {
                 <CardActionArea onClick={function () {router.push(`/triggers/${trigger.id}`)}}>
                   <div className='flex items-center justify-evenly p-4'>
                     <div className="w-20 h-20">
-                      <Image src={icons[trigger.action.type]} layout="responsive" />
+                      <Image src={icons[trigger.action.type]} layout="responsive" alt={`${trigger.action.type} icon`} />
                     </div>
                     <TrendingFlatOutlined fontSize='large' color="secondary" />
                     <div className="w-20 h-20">
-                      <Image src={icons[trigger.reaction.type]} layout="responsive" />
+                      <Image src={icons[trigger.reaction.type]} layout="responsive" alt={`${trigger.reaction.type} icon`} />
                     </div>
                   </div>
                   <CardContent>

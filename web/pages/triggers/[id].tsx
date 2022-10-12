@@ -19,46 +19,54 @@ export default function TriggerPage({ session }: TriggerProps) {
     const router = useRouter()
     const { id } = router.query
     const trigger = session?.user?.triggers?.find((t) => {return t.id === Number(id)})
-
-    if (trigger === undefined)
-      return router.push("/");
-
     const [state, setState] = useState({
       trigger: trigger,
     })
 
+    if (trigger === undefined) {
+      return router.push("/");
+    }
+
     const handleTitleChange = (e: any) => {
-      setState({
-        trigger: {
-          ...state.trigger,
-          title: e.target.value
-        }
-      })
+      if (state.trigger !== undefined) {
+        setState({
+          trigger: {
+            ...state.trigger,
+            title: e.target.value
+          }
+        })
+      }
     }
     const handleDescriptionChange = (e: any) => {
-      setState({
-        trigger: {
-          ...state.trigger,
-          description: e.target.value
-        }
-      })
+      if (state.trigger !== undefined) {
+        setState({
+          trigger: {
+            ...state.trigger,
+            description: e.target.value
+          }
+        })
+      }
     }
     const handleReactionTokenChange = (e: any) => {
-      setState({
-        trigger: {
-          ...state.trigger,
-          reaction: {
-            ...state.trigger.reaction,
-            token: e.target.value,
+      if (state.trigger !== undefined) {
+        setState({
+          trigger: {
+            ...state.trigger,
+            reaction: {
+              ...state.trigger.reaction,
+              token: e.target.value,
+            }
           }
-        }
-      })
+        })
+      }
     }
     const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      setState({ trigger: {
-        ...state.trigger,
-        active: !state.trigger.active
-      }})
+      if (state.trigger !== undefined) {
+        setState({ trigger: {
+          ...state.trigger,
+          active: !state.trigger.active
+        }})
+      }
     }
     const handleApply = async (e: any) => {
       try {
@@ -90,8 +98,8 @@ export default function TriggerPage({ session }: TriggerProps) {
       }
     }
 
-    const ActionIcon = <Image src={icons[trigger.action.type]} width="15" height="15" />
-    const ReactionIcon = <Image src={icons[trigger.reaction.type]} width="15" height="15" />
+    const ActionIcon = <Image src={icons[trigger.action.type]} alt={`${trigger.action.type} icon`} width="15" height="15" />
+    const ReactionIcon = <Image src={icons[trigger.reaction.type]} alt={`${trigger.reaction.type} icon`} width="15" height="15" />
 
     return (
       <AppLayout
@@ -135,7 +143,7 @@ export default function TriggerPage({ session }: TriggerProps) {
               <TextField
                 label={"Discord webhook url"}
                 className="bg-white"
-                value={state.trigger.reaction.token}
+                value={state.trigger && state.trigger.reaction.token}
                 onChange={handleReactionTokenChange}
                 InputProps={{
                   className: "h-10",
@@ -155,7 +163,7 @@ export default function TriggerPage({ session }: TriggerProps) {
             <Button variant="outlined" color={"error"} onClick={() => router.push("/")}>
               Cancel
             </Button>
-            <Switch color={"secondary"} value={state.trigger.active} onChange={handleToggle} />
+            <Switch color={"secondary"} checked={state.trigger && state.trigger.active} onChange={handleToggle} />
           </div>
         </Paper>
       </AppLayout>
