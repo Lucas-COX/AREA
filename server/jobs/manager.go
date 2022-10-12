@@ -37,20 +37,20 @@ func (j jobsManager) RunSync() {
 
 func (jobsManager) Do() {
 	var triggered bool
-	triggers, err := database.Trigger.GetActive()
+	triggers, err := database.Trigger.GetActive(true)
 	lib.LogError(err)
 
 	for _, v := range triggers {
 		switch v.Action.Type {
 		case models.GmailAction:
-			triggered = actions.CheckGmailAction(v.Action, v.User)
+			triggered = actions.CheckGmailAction(v.Action, v, v.User)
 		default:
 			triggered = false
 		}
 		if triggered {
 			switch v.Reaction.Type {
 			case models.DiscordReaction:
-				reactions.React(v.Reaction, v.User)
+				reactions.React(v.Reaction, v, v.User)
 			}
 		}
 	}

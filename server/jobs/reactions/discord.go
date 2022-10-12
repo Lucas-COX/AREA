@@ -1,7 +1,6 @@
 package reactions
 
 import (
-	"Area/database"
 	"Area/database/models"
 	"Area/lib"
 	"bytes"
@@ -10,16 +9,14 @@ import (
 	"github.com/gtuk/discordwebhook"
 )
 
-func React(reaction models.Reaction, user models.User) {
-	trigger, err := database.Trigger.GetById(reaction.TriggerID, user.ID)
+func React(reaction models.Reaction, trigger models.Trigger, user models.User) {
 	var storedData models.TriggerData
 	var buf bytes.Buffer
 	var embeds []discordwebhook.Embed
 	var fields []discordwebhook.Field
 
-	lib.LogError(err)
 	buf.Write(trigger.Data)
-	err = gob.NewDecoder(&buf).Decode(&storedData)
+	err := gob.NewDecoder(&buf).Decode(&storedData)
 
 	lib.LogError(err)
 	var username = "Area"
@@ -30,7 +27,7 @@ func React(reaction models.Reaction, user models.User) {
 		Text: &timestamp,
 	}
 
-	url := reaction.Token
+	url := storedData.ReactionToken
 	fields = append(fields, discordwebhook.Field{
 		Name:  &storedData.Title,
 		Value: &storedData.Description,

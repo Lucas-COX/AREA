@@ -22,12 +22,17 @@ type triggerResponse struct {
 
 func GetTriggers(w http.ResponseWriter, r *http.Request) {
 	var resp triggersResponse
+	all := r.URL.Query().Get("a")
 
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
-	triggers, _ := database.Trigger.Get(user.ID)
+	triggers, _ := database.Trigger.Get(user.ID, all == "true")
 
-	copier.Copy(&resp.Triggers, &triggers)
+	if all == "true" {
+		copier.Copy(&resp.Triggers, &triggers)
+	} else {
+		copier.CopyWithOption(&resp.Triggers, &triggers, copier.Option{DeepCopy: false})
+	}
 	lib.SendJson(w, resp)
 }
 
@@ -53,6 +58,7 @@ func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 
 func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 	var resp triggerResponse
+	all := r.URL.Query().Get("a")
 
 	user, err := database.User.GetFromContext(r.Context())
 
@@ -61,16 +67,21 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	lib.CheckError(err)
 
-	trigger, err := database.Trigger.GetById(uint(id), user.ID)
+	trigger, err := database.Trigger.GetById(uint(id), user.ID, all == "true")
 	lib.CheckError(err)
 
-	copier.Copy(&resp.Trigger, &trigger)
+	if all == "true" {
+		copier.Copy(&resp.Trigger, &trigger)
+	} else {
+		copier.CopyWithOption(&resp.Trigger, &trigger, copier.Option{DeepCopy: false})
+	}
 	lib.SendJson(w, resp)
 }
 
 func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	var input TriggerRequestBody
 	var resp triggerResponse
+
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 
@@ -80,7 +91,7 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	err = json.NewDecoder(r.Body).Decode(&input)
 	lib.CheckError(err)
 
-	trigger, err := database.Trigger.GetById(uint(id), user.ID)
+	trigger, err := database.Trigger.GetById(uint(id), user.ID, false)
 	lib.CheckError(err)
 
 	copier.CopyWithOption(&trigger, &input, copier.Option{IgnoreEmpty: true, DeepCopy: true})
@@ -102,7 +113,7 @@ func DeleteTrigger(w http.ResponseWriter, r *http.Request) {
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 
-	trigger, err := database.Trigger.GetById(uint(id), user.ID)
+	trigger, err := database.Trigger.GetById(uint(id), user.ID, false)
 	lib.CheckError(err)
 	if user.ID != trigger.UserID {
 		lib.SendError(w, http.StatusUnauthorized, "Can't delete this trigger")
