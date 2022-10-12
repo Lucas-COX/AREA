@@ -1,13 +1,13 @@
-import discordImg from "public/discord.png"
-import gmailImg from "public/gmail.png"
+import discordImg from 'public/discord.png';
+import gmailImg from 'public/gmail.png';
 
-export const discord = discordImg
+export const discord = discordImg;
 
-export const gmail = gmailImg
+export const gmail = gmailImg;
 
 const mappings = {
-    "gmail": gmail,
-    "discord": discord
-}
+  gmail,
+  discord,
+};
 
-export default mappings
+export default mappings;
