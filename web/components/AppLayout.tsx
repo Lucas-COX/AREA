@@ -1,51 +1,54 @@
-import Head from "next/head"
-import { withChildren, withClassName } from "../config/withs";
-import CenteredLayout from "./CenteredLayout";
-import { Button } from "@mui/material";
-import { toast } from "react-toastify";
+import Head from 'next/head';
+import { Button } from '@mui/material';
+import { toast } from 'react-toastify';
 import axios from 'axios';
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
+import clsx from 'clsx';
+import CenteredLayout from './CenteredLayout';
+import { withChildren, withClassName } from '../config/withs';
 
-export type LayoutType = "centered"
+export type LayoutType = 'centered'
 
 const LayoutMappings = {
-    "centered": CenteredLayout,
-}
+  centered: CenteredLayout,
+};
 
-export default function AppLayout({ type = "centered", className = "", children, loggedIn = false }: AppLayoutProps) {
-    const Layout = LayoutMappings[type]
-    const router = useRouter()
-    const handleLogout = async () => {
-        try {
-            await toast.promise(axios.get(`${process.env.NEXT_PUBLIC_API_URL}/logout`), {
-                pending: "Logging you out...",
-                error: "An error occurend while loggin you out.",
-                success: "Successfully logged out.",
-            })
-            router.push('/login')
-        } catch (e) {
-            console.error(e);
-        }
+export default function AppLayout({
+  type = 'centered', className = '', children, loggedIn = false,
+}: AppLayoutProps) {
+  const Layout = LayoutMappings[type];
+  const router = useRouter();
+  const handleLogout = async () => {
+    try {
+      await toast.promise(axios.get(`${process.env.NEXT_PUBLIC_API_URL}/logout`), {
+        pending: 'Logging you out...',
+        error: 'An error occurend while loggin you out.',
+        success: 'Successfully logged out.',
+      });
+      router.push('/login');
+    } catch (e) {
+      console.error(e);
     }
+  };
 
-    return (
-        <div>
-            <Head>
-                <title>Area</title>
-                <meta name="description" content="To Do List application" />
-                <link rel="icon" href={"/favicon.ico"} />
-            </Head>
-            <main className="w-screen h-screen">
-                <div className="w-full h-20 flex justify-end border-b border-secondary/30 bg-white shadow-md p-4 absolute">
-                    {loggedIn && <Button variant={"outlined"} onClick={handleLogout}>Logout</Button>}
-                </div>
-                <Layout className={"pt-20 " + className}>
-                    {children}
-                </Layout>
-            </main>
-            <footer></footer>
+  return (
+    <div>
+      <Head>
+        <title>Area</title>
+        <meta name="description" content="To Do List application" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="w-screen h-screen">
+        <div className="w-full h-20 flex justify-end border-b top-0 left-0 border-secondary/30 bg-white shadow-md p-4 absolute">
+          {loggedIn && <Button variant="outlined" onClick={handleLogout}>Logout</Button>}
         </div>
-    )
+        <Layout className={clsx(className, 'pt-20')}>
+          {children}
+        </Layout>
+      </main>
+      <footer />
+    </div>
+  );
 }
 
 export interface AppLayoutProps extends withChildren, withClassName {
