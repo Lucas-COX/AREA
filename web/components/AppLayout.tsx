@@ -36,10 +36,10 @@ export default function AppLayout({ type = "centered", className = "", children,
                 <link rel="icon" href={"/favicon.ico"} />
             </Head>
             <main className="w-screen h-screen">
-                <div className="w-full h-20 flex justify-end border-b border-secondary/30 shadow-md p-4">
+                <div className="w-full h-20 flex justify-end border-b border-secondary/30 bg-white shadow-md p-4 absolute">
                     {loggedIn && <Button variant={"outlined"} onClick={handleLogout}>Logout</Button>}
                 </div>
-                <Layout className={className}>
+                <Layout className={"pt-20 " + className}>
                     {children}
                 </Layout>
             </main>

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import AppLayout from '../components/AppLayout'
 import { getSession } from '../lib/session'
 import { withSession } from '../config/withs'
-import { IconButton, Card, Switch, CardActions, CardActionArea, CardContent, Typography, Button } from '@mui/material'
+import { IconButton, Switch, CardActions, CardActionArea, CardContent, Typography, Button } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios'
@@ -12,6 +12,7 @@ import { toast } from 'react-toastify'
 import Image from 'next/image';
 import { TrendingFlatOutlined } from '@mui/icons-material';
 import { gmail, discord } from '../lib/icons'
+import Card from '../components/Card';
 
 const icons = {
   "gmail": gmail,
@@ -61,8 +62,9 @@ export default function Home({ session }: HomeProps) {
   // Todo: make trigger list scrollable
 
   return (
-    <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50" loggedIn={true}>
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 p-4 w-full sm:w-3/4">
+    <AppLayout type="centered" className="flex flex-col space-y-4 pb-10 pt-32 bg-blue-50/50" loggedIn={true}>
+        <Button className="bg-white" variant="outlined" color="primary" startIcon={<AddIcon />} onClick={handleCreate}>Create Trigger</Button>
+        <div className="flex flex-col space-y-4 p-4 w-full max-h-fit sm:w-3/4 overflow-y-scroll scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-primary/20 scrollbar-track-rounded-full scrollbar-track-gray-50 scrollbar-thin">
           {state.triggers.map(function (trigger) {
             const handleDelete = async () => {
               try {
@@ -101,7 +103,7 @@ export default function Home({ session }: HomeProps) {
             }
 
             return (
-              <Card key={`trigger_${trigger.id}`} className="flex flex-col items-center">
+              <Card key={`trigger_${trigger.id}`} className="flex flex-col items-center h-64 bg-white">
                 <CardActionArea onClick={function () {router.push(`/triggers/${trigger.id}`)}}>
                   <div className='flex items-center justify-evenly p-4'>
                     <div className="w-20 h-20">
@@ -113,11 +115,16 @@ export default function Home({ session }: HomeProps) {
                     </div>
                   </div>
                   <CardContent>
-                    <Typography gutterBottom variant="h1" className="text-xl font-bold text-blue-400">
-                      {trigger?.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {`Last edited : ${trigger.updated_at && computeLastModified(trigger.updated_at)}`}
+                    <div className="flex justify-between items-center">
+                      <Typography gutterBottom className="text-xl font-bold text-blue-400">
+                        {trigger?.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {`Last edited : ${trigger.updated_at && computeLastModified(trigger.updated_at)}`}
+                      </Typography>
+                    </div>
+                    <Typography gutterBottom variant="body2" color="text.secondary">
+                      {trigger?.description}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -130,7 +137,6 @@ export default function Home({ session }: HomeProps) {
               </Card>
           )})}
         </div>
-        <Button className="bg-white" variant="outlined" color="primary" startIcon={<AddIcon />} onClick={handleCreate}>Create Trigger</Button>
     </AppLayout>
   )
 }
