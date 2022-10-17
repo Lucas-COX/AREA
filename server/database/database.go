@@ -17,6 +17,10 @@ var User userController
 
 var Trigger triggerController
 
+var Action actionController
+
+var Reaction reactionController
+
 func New(config *c.Config) *gorm.DB {
 	var err error
 	mysqlConfig := mysql.Config{

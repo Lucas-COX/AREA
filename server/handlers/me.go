@@ -22,7 +22,7 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	if user.GoogleToken != "" {
 		resp.User.GoogleLogged = true
 	}
-	triggers, err := database.Trigger.Get(user.ID)
+	triggers, err := database.Trigger.Get(user.ID, false)
 	lib.CheckError(err)
 
 	copier.Copy(&resp.User.Triggers, triggers)

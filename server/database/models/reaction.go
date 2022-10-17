@@ -29,10 +29,8 @@ func (e ReactionType) Value() (driver.Value, error) {
 
 type Reaction struct {
 	gorm.Model
-	Type      ReactionType       `gorm:"not null"`
-	Action    ReactionActionType `gorm:"not null"`
-	TriggerID uint
-	Token     string `gorm:"not null"`
+	Type   ReactionType       `gorm:"not null"`
+	Action ReactionActionType `gorm:"not null"`
 }
 
 func (r *Reaction) TableName() string { return "reactions" }

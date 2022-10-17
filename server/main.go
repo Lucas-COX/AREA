@@ -17,9 +17,15 @@ func main() {
 	db.AutoMigrate(&models.User{}, &models.Trigger{}, &models.Action{}, &models.Reaction{})
 	r := router.New()
 
-	// goth.UseProviders(
-	// 	google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_CLIENT_SECRET"), "http://localhost:8080/providers/google/callback", "https://www.googleapis.com/auth/gmail.readonly"),
-	// )
+	// Uncomment to create the actions for the first time
+	// db.Create(&models.Action{
+	// 	Type:  "gmail",
+	// 	Event: "receive",
+	// })
+	// db.Create(&models.Reaction{
+	// 	Type:   "discord",
+	// 	Action: "send",
+	// })
 
 	manager := jobs.NewManager()
 	manager.RunAsync()
