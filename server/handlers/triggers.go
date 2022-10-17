@@ -20,8 +20,15 @@ type triggerResponse struct {
 	Trigger TriggerBody `json:"trigger"`
 }
 
+type triggersSmallResponse struct {
+	Triggers []TriggerSmallBody `json:"triggers"`
+}
+
+type triggerSmallResponse struct {
+	Trigger TriggerSmallBody `json:"trigger"`
+}
+
 func GetTriggers(w http.ResponseWriter, r *http.Request) {
-	var resp triggersResponse
 	all := r.URL.Query().Get("a")
 
 	user, err := database.User.GetFromContext(r.Context())
@@ -29,16 +36,19 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 	triggers, _ := database.Trigger.Get(user.ID, all == "true")
 
 	if all == "true" {
+		var resp triggersResponse
 		copier.Copy(&resp.Triggers, &triggers)
+		lib.SendJson(w, resp)
 	} else {
+		var resp triggersSmallResponse
 		copier.CopyWithOption(&resp.Triggers, &triggers, copier.Option{DeepCopy: false})
+		lib.SendJson(w, resp)
 	}
-	lib.SendJson(w, resp)
 }
 
 func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 	var input TriggerRequestBody
-	var resp triggerResponse
+	var resp triggerSmallResponse
 	var data models.Trigger
 
 	user, err := database.User.GetFromContext(r.Context())
@@ -57,11 +67,8 @@ func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetTriggerById(w http.ResponseWriter, r *http.Request) {
-	var resp triggerResponse
 	all := r.URL.Query().Get("a")
-
 	user, err := database.User.GetFromContext(r.Context())
-
 	lib.CheckError(err)
 
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
@@ -71,11 +78,14 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 	lib.CheckError(err)
 
 	if all == "true" {
+		var resp triggerResponse
 		copier.Copy(&resp.Trigger, &trigger)
+		lib.SendJson(w, resp)
 	} else {
+		var resp triggerSmallResponse
 		copier.CopyWithOption(&resp.Trigger, &trigger, copier.Option{DeepCopy: false})
+		lib.SendJson(w, resp)
 	}
-	lib.SendJson(w, resp)
 }
 
 func UpdateTrigger(w http.ResponseWriter, r *http.Request) {

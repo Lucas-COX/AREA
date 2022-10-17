@@ -68,6 +68,22 @@ type TriggerBody struct {
 	ReactionData string               `json:"reaction_data"`
 }
 
+type TriggerSmallBody struct {
+	ID           uint                 `json:"id"`
+	CreatedAt    time.Time            `json:"created_at"`
+	UpdatedAt    time.Time            `json:"updated_at"`
+	Title        string               `json:"title"`
+	Description  string               `json:"description"`
+	UserID       uint                 `json:"user_id"`
+	Active       bool                 `json:"active"`
+	ActionID     uint                 `json:"action_id"`
+	Action       ActionResponseBody   `json:"-"`
+	ReactionID   uint                 `json:"reaction_id"`
+	Reaction     ReactionResponseBody `json:"-"`
+	ActionData   string               `json:"action_data"`
+	ReactionData string               `json:"reaction_data"`
+}
+
 type UserBody struct {
 	ID           uint          `json:"id"`
 	CreatedAt    time.Time     `json:"created_at"`
