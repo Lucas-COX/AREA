@@ -16,8 +16,8 @@ const (
 )
 
 const (
-	SendAction    ActionEventType = "send"
-	ReceiveAction ActionEventType = "receive"
+	SendEvent    ActionEventType = "send"
+	ReceiveEvent ActionEventType = "receive"
 )
 
 func (a *ActionType) Scan(value interface{}) error {
@@ -31,10 +31,8 @@ func (a ActionType) Value() (driver.Value, error) {
 
 type Action struct {
 	gorm.Model
-	Type      ActionType      `gorm:"not null"`
-	Event     ActionEventType `gorm:"not null"`
-	TriggerID uint
-	Token     string `gorm:"not null"`
+	Type  ActionType      `gorm:"not null"`
+	Event ActionEventType `gorm:"not null"`
 }
 
 func (a *Action) TableName() string { return "actions" }

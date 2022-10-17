@@ -61,7 +61,7 @@ func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var mail, err = fetchLastMail(srv)
 	var buf bytes.Buffer
 
-	trigger, err := database.Trigger.GetById(triggerId, userId)
+	trigger, err := database.Trigger.GetById(triggerId, userId, false)
 	lib.LogError(err)
 	buf.Write(trigger.Data)
 
@@ -93,14 +93,14 @@ func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	return false
 }
 
-func CheckGmailAction(action models.Action, user models.User) bool {
+func CheckGmailAction(action models.Action, trigger models.Trigger, user models.User) bool {
 	var srv = createGmailService(user.GoogleToken)
 	if srv == nil {
 		return false
 	}
 	switch action.Event {
 	case "receive":
-		return checkReceive(srv, action.TriggerID, user.ID)
+		return checkReceive(srv, trigger.ID, user.ID)
 	}
 	return false
 }

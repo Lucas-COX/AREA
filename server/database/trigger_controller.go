@@ -7,11 +7,11 @@ import (
 type triggerController struct{}
 
 type TriggerController interface {
-	Create(trigger models.Trigger) (*models.Trigger, error)
-	Get(user_id uint) ([]models.Trigger, error)
-	GetById(id uint, user_id uint) (*models.Trigger, error)
-	GetByTitle(title string, user_id uint) (*models.Trigger, error)
-	GetActive() ([]models.Trigger, error)
+	Create(trigger *models.Trigger) (*models.Trigger, error)
+	Get(user_id uint, all bool) ([]models.Trigger, error)
+	GetById(id uint, user_id uint, all bool) (*models.Trigger, error)
+	GetByTitle(title string, user_id uint, all bool) (*models.Trigger, error)
+	GetActive(all bool) ([]models.Trigger, error)
 	Update(trigger *models.Trigger) (*models.Trigger, error)
 	Delete(trigger *models.Trigger) error
 }
@@ -24,28 +24,46 @@ func (triggerController) Create(trigger models.Trigger) (*models.Trigger, error)
 	return &trigger, nil
 }
 
-func (triggerController) Get(user_id uint) ([]models.Trigger, error) {
+func (triggerController) Get(user_id uint, all bool) ([]models.Trigger, error) {
 	var triggers []models.Trigger
-	err := db.Model(&models.Trigger{}).Where("user_id = ?", user_id).Preload("Action").Preload("Reaction").Find(&triggers).Error
+	tx := db.Model(&models.Trigger{}).Where("user_id = ?", user_id)
+	if all {
+		tx = tx.Preload("Action").Preload("Reaction")
+	}
+	err := tx.Find(&triggers).Error
 
 	return triggers, err
 }
 
-func (triggerController) GetById(id uint, user_id uint) (*models.Trigger, error) {
+func (triggerController) GetById(id uint, user_id uint, all bool) (*models.Trigger, error) {
 	var trigger models.Trigger
-	err := db.Model(models.Trigger{}).Where("user_id = ?", user_id).Preload("Action").Preload("Reaction").First(&trigger, id).Error
+	tx := db.Model(models.Trigger{}).Where("user_id = ?", user_id)
+	if all {
+		tx = tx.Preload("Action").Preload("Reaction")
+	}
+	err := tx.First(&trigger, id).Error
 	return &trigger, err
 }
 
-func (triggerController) GetByTitle(title string, user_id uint) (*models.Trigger, error) {
+func (triggerController) GetByTitle(title string, user_id uint, all bool) (*models.Trigger, error) {
 	var trigger models.Trigger
-	err := db.Model(models.Trigger{}).Where("user_id = ?", user_id).Preload("Action").Preload("Reaction").Where("title = ?", title).First(&trigger).Error
+
+	tx := db.Model(models.Trigger{}).Where("user_id = ?, title = ?", user_id, title)
+	if all {
+		tx = tx.Preload("Action").Preload("Reaction")
+	}
+	err := tx.First(&trigger).Error
 	return &trigger, err
 }
 
-func (triggerController) GetActive() ([]models.Trigger, error) {
+func (triggerController) GetActive(all bool) ([]models.Trigger, error) {
 	var triggers []models.Trigger
-	err := db.Model(models.Trigger{}).Where("active = ?", 1).Preload("Action").Preload("Reaction").Preload("User").Find(&triggers).Error
+
+	tx := db.Model(models.Trigger{}).Where("active = ?", 1).Preload("User")
+	if all {
+		tx = tx.Preload("Action").Preload("Reaction")
+	}
+	err := tx.Find(&triggers).Error
 	return triggers, err
 }
 
