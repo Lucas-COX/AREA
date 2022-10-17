@@ -28,6 +28,7 @@ class _AccueilPageState extends State<AccueilPage> {
         title: const Text('Area',
             style: TextStyle(color: Color.fromRGBO(37, 36, 34, 1))),
         elevation: 0,
+        leading: const Text(''),
       ),
       body: Form(
         child: Column(

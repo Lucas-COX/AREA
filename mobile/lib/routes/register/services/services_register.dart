@@ -4,20 +4,18 @@ import 'dart:convert';
 import 'dart:async';
 
 class ServicesRegister {
-  static String url = dotenv.env['API_URL']!;
-
   static Future register(String username, String password) async {
     var completer = Completer();
+    String url = const String.fromEnvironment('API_URL');
     try {
-      final response =
-          await http.post(Uri.parse('http://167.71.52.187:8080/register'),
-              headers: <String, String>{
-                'Content-Type': 'application/json; charset=UTF-8',
-              },
-              body: jsonEncode(<String, String>{
-                'username': username,
-                'password': password,
-              }));
+      final response = await http.post(Uri.parse('$url/register'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'username': username,
+            'password': password,
+          }));
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
       completer.complete(response);

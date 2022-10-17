@@ -14,7 +14,9 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Register'),
+        leading: const Text(''),
         backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
       ),
       body: Form(

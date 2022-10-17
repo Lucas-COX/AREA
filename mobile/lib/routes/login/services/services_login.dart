@@ -9,16 +9,16 @@ class ServicesLogin {
 
   static Future login(String username, String password) async {
     var completer = Completer();
+    String url = const String.fromEnvironment('API_URL');
     try {
-      final response =
-          await http.post(Uri.parse('http://167.71.52.187:8080/login'),
-              headers: <String, String>{
-                'Content-Type': 'application/json; charset=UTF-8',
-              },
-              body: jsonEncode(<String, String>{
-                'username': username,
-                'password': password,
-              }));
+      final response = await http.post(Uri.parse('$url/login'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'username': username,
+            'password': password,
+          }));
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
       completer.complete(response);
