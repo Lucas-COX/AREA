@@ -62,24 +62,24 @@ export default function Home({ session }: HomeProps) {
   };
 
   return (
-    <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50 py-20 pt-32" loggedIn>
-      <Button className="bg-white" variant="outlined" color="primary" startIcon={<AddIcon />} onClick={handleCreate}>Create Trigger</Button>
-      <div className="flex flex-col space-y-4 p-4 w-full max-h-fit sm:w-3/4 overflow-y-scroll scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-primary/20 scrollbar-track-rounded-full scrollbar-track-gray-50 scrollbar-thin">
-        {state.triggers.map((trigger) => {
-          const handleDelete = async () => {
-            try {
-              await toast.promise(axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger?.id}`, {
-                headers: { Authorization: `Bearer ${session.token}` },
-              }), {
-                pending: 'Loading...',
-                error: 'An error occured while deleting trigger.',
-                success: 'Trigger successfully deleted !',
-              });
-              setState({ triggers: state.triggers.filter((t) => t.id !== trigger.id) });
-            } catch (e) {
-              console.error(e);
+    <AppLayout type="centered" className="flex flex-col space-y-4 bg-blue-50/50 py-20 pt-32" loggedIn={true}>
+        <Button className="bg-white" variant="outlined" color="primary" startIcon={<AddIcon />} onClick={handleCreate}>Create Trigger</Button>
+        <div className="flex flex-col space-y-4 p-4 w-full max-h-fit sm:w-3/4 overflow-y-scroll scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-primary/20 scrollbar-track-rounded-full scrollbar-track-primary/20 scrollbar-thin border-solid border-2 rounded-lg visible empty:invisible bg-primary/10">
+          {state.triggers.map(function (trigger) {
+            const handleDelete = async () => {
+              try {
+                await toast.promise(axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger?.id}`, {
+                  headers: { 'Authorization': 'Bearer ' + session.token }
+                }), {
+                  pending: 'Loading...',
+                  error: 'An error occured while deleting trigger.',
+                  success: 'Trigger successfully deleted !'
+                })
+                setState({ triggers: state.triggers.filter((t) => t.id !== trigger.id )});
+              } catch (e) {
+                console.error(e);
+              }
             }
-          };
           const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
             try {
               await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger?.id}`, {
@@ -136,7 +136,7 @@ export default function Home({ session }: HomeProps) {
               </CardActions>
             </Card>
           );
-        })}
+          })}
       </div>
     </AppLayout>
   );
