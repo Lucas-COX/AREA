@@ -22,9 +22,9 @@ type Trigger struct {
 	Active      bool `gorm:"default:false"`
 	UserID      uint
 	User        User
-	ActionID    uint
+	ActionID    *uint
 	Action      Action `gorm:"not null"`
-	ReactionID  uint
+	ReactionID  *uint
 	Reaction    Reaction `gorm:"not null"`
 	Data        []byte
 }
