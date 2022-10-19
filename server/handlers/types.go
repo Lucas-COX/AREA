@@ -31,8 +31,8 @@ type ReactionRequestBody struct {
 type TriggerRequestBody struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	ActionID    uint   `json:"action_id"`
-	ReactionID  uint   `json:"reaction_id"`
+	ActionID    *uint  `json:"action_id"`
+	ReactionID  *uint  `json:"reaction_id"`
 	Active      bool   `json:"active"`
 }
 
@@ -60,9 +60,9 @@ type TriggerBody struct {
 	Description  string               `json:"description"`
 	UserID       uint                 `json:"user_id"`
 	Active       bool                 `json:"active"`
-	ActionID     uint                 `json:"action_id"`
+	ActionID     *uint                `json:"action_id"`
 	Action       ActionResponseBody   `json:"action,omitempty"`
-	ReactionID   uint                 `json:"reaction_id"`
+	ReactionID   *uint                `json:"reaction_id"`
 	Reaction     ReactionResponseBody `json:"reaction,omitempty"`
 	ActionData   string               `json:"action_data"`
 	ReactionData string               `json:"reaction_data"`

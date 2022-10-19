@@ -19,12 +19,18 @@ func main() {
 
 	// Uncomment to create the actions for the first time
 	// db.Create(&models.Action{
-	// 	Type:  "gmail",
-	// 	Event: "receive",
+	//	Type: "undefined",
+	// })
+	// db.Create(&models.Action{
+	//	Type:  "gmail",
+	//	Event: "receive",
 	// })
 	// db.Create(&models.Reaction{
-	// 	Type:   "discord",
-	// 	Action: "send",
+	//	Type: "undefined",
+	// })
+	// db.Create(&models.Reaction{
+	//	Type:   "discord",
+	//	Action: "send",
 	// })
 
 	manager := jobs.NewManager()
