@@ -14,6 +14,10 @@ import icons from '../../lib/icons';
 import AppLayout from '../../components/AppLayout';
 import { getSession } from '../../lib/session';
 import { withSession } from '../../config/withs';
+import useActions from '../../hooks/useActions';
+import useReactions from '../../hooks/useReactions';
+import Spinner from '../../components/Spinner';
+
 
 export default function TriggerPage({ session }: TriggerProps) {
   const router = useRouter();
@@ -22,6 +26,8 @@ export default function TriggerPage({ session }: TriggerProps) {
   const [state, setState] = useState({
     trigger,
   });
+  const actionsState = useActions(session.token as string)
+  const reactionsState = useReactions(session.token as string)
 
   if (trigger === undefined) {
     return router.push('/');
@@ -47,19 +53,19 @@ export default function TriggerPage({ session }: TriggerProps) {
       });
     }
   };
-  const handleReactionTokenChange = (e: any) => {
-    if (state.trigger !== undefined) {
-      setState({
-        trigger: {
-          ...state.trigger,
-          reaction: {
-            ...state.trigger.reaction,
-            token: e.target.value,
-          },
-        },
-      });
-    }
-  };
+  // const handleReactionTokenChange = (e: any) => {
+  //   if (state.trigger !== undefined) {
+  //     setState({
+  //       trigger: {
+  //         ...state.trigger,
+  //         reaction: {
+  //           ...state.trigger.reaction,
+  //           token: e.target.value,
+  //         },
+  //       },
+  //     });
+  //   }
+  // };
   const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (state.trigger !== undefined) {
       setState({
@@ -86,6 +92,8 @@ export default function TriggerPage({ session }: TriggerProps) {
       console.error(e);
     }
   };
+
+
   const handleGoogleLogin = async () => {
     try {
       const location = `http://localhost:3000${router.asPath}`;
@@ -100,8 +108,19 @@ export default function TriggerPage({ session }: TriggerProps) {
     }
   };
 
-  const ActionIcon = <Image src={icons[trigger.action.type]} alt={`${trigger.action.type} icon`} width="15" height="15" />;
-  const ReactionIcon = <Image src={icons[trigger.reaction.type]} alt={`${trigger.reaction.type} icon`} width="15" height="15" />;
+  if (actionsState.loading || reactionsState.loading) {
+    return (
+      <AppLayout
+        type="centered"
+        loggedIn
+      >
+        <Spinner />
+      </AppLayout>
+    )
+  }
+
+  // const ActionIcon = <Image src={icons[actionsState.actions[trigger.action_id].type]} alt={`${actionsState.actions[trigger.action_id].type} icon`} width="15" height="15" />;
+  // const ReactionIcon = <Image src={icons[reactionsState.reactions[trigger.reaction_id].type]} alt={`${reactionsState.reactions[trigger.action_id].type} icon`} width="15" height="15" />;
 
   return (
     <AppLayout
@@ -128,21 +147,20 @@ export default function TriggerPage({ session }: TriggerProps) {
         <div className="h-full flex items-center space-x-6">
           <div className="flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-primary/5">
             <div>Action</div>
-            <Button
+            {trigger.action_id && <Button
               variant="outlined"
               color="primary"
-              startIcon={ActionIcon}
+              // startIcon={ActionIcon}
               className="h-10"
               disabled={session.user?.google_logged}
-              onClick={handleGoogleLogin}
             >
-              {session.user?.google_logged ? 'Logged in' : 'Login with Google'}
-            </Button>
+              {session.user?.google_logged ? 'Logged in' : `Login with ${actionsState.actions[trigger.action_id]}`}
+            </Button>}
           </div>
           <TrendingFlatOutlined fontSize="large" color="secondary" />
           <div className="flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-secondary/5">
             <div>Reaction</div>
-            <TextField
+            {/* <TextField
               label="Discord webhook url"
               className="bg-white"
               value={state.trigger && state.trigger.reaction.token}
@@ -155,7 +173,7 @@ export default function TriggerPage({ session }: TriggerProps) {
                   </InputAdornment>
                 ),
               }}
-            />
+            /> */}
           </div>
         </div>
         <div className="justify-self-end space-x-4">

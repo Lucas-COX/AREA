@@ -1,5 +1,5 @@
 export type Action = {
-    id: Number,
+    id: number,
     type: "gmail",
     event: String,
     token: String,
@@ -9,29 +9,29 @@ export type Action = {
 }
 
 export type Reaction = {
-    id: Number,
+    id: number,
     type: "discord",
     action: String,
-    token: String,
     created_at: Date,
     updated_at: Date,
-    trigger_id: Number,
 }
 
 export type Trigger = {
-    id: Number,
+    id: number,
     title: String,
     description?: String,
     active: boolean,
     created_at: Date,
     updated_at: Date,
-    user_id: Number,
-    action: Action,
-    reaction: Reaction,
+    user_id: number,
+    action_id: number,
+    reaction_id: number,
+    action?: Action,
+    reaction?: Reaction,
 }
 
 export type User = {
-    id: Number,
+    id: number,
     username: String,
     created_at: Date,
     updated_at: Date,
