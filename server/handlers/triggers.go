@@ -57,7 +57,7 @@ func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 	err = json.NewDecoder(r.Body).Decode(&input)
 	lib.CheckError(err)
 
-	copier.Copy(&data, &input)
+	copier.CopyWithOption(&data, &input, copier.Option{IgnoreEmpty: true})
 	data.UserID = user.ID
 
 	trigger, _ := database.Trigger.Create(data)
