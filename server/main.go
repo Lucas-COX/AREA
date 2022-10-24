@@ -18,20 +18,20 @@ func main() {
 	r := router.New()
 
 	// Uncomment to create the actions for the first time
-	// db.Create(&models.Action{
-	//	Type: "undefined",
-	// })
-	// db.Create(&models.Action{
-	//	Type:  "gmail",
-	//	Event: "receive",
-	// })
-	// db.Create(&models.Reaction{
-	//	Type: "undefined",
-	// })
-	// db.Create(&models.Reaction{
-	//	Type:   "discord",
-	//	Action: "send",
-	// })
+	db.Create(&models.Action{
+		Type: "undefined",
+	})
+	db.Create(&models.Action{
+		Type:  "gmail",
+		Event: "receive",
+	})
+	db.Create(&models.Reaction{
+		Type: "undefined",
+	})
+	db.Create(&models.Reaction{
+		Type:   "discord",
+		Action: "send",
+	})
 
 	manager := jobs.NewManager()
 	manager.RunAsync()
