@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -31,11 +32,13 @@ func Read() *Config {
 	viper.AddConfigPath(filepath.Join(".", "config"))
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("failed to read config file: %w", err))
+		log.Println(fmt.Errorf("failed to read config file: %w", err))
+		return nil
 	}
 	err = viper.Unmarshal(&c)
 	if err != nil {
-		panic(fmt.Errorf("failed to parse config file: %w", err))
+		log.Println(fmt.Errorf("failed to parse config file: %w", err))
+		return nil
 	}
 	for k, v := range c.Environment {
 		os.Setenv(strings.ToUpper(k), v)
