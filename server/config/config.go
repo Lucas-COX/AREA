@@ -15,6 +15,7 @@ type Config struct {
 		User      string
 		Password  string
 		Address   string
+		Port      string
 		Protocol  string
 		Name      string
 		ParseTime string
