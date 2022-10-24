@@ -27,6 +27,7 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 	var res urlResponse
 	var state oauthState
 	var user, err = database.User.GetFromContext(r.Context())
+	api := r.URL.Query().Get("api")
 
 	callbackUrl, err := base64.RawStdEncoding.DecodeString(r.URL.Query().Get("callback"))
 	if err != nil || string(callbackUrl) == "" {
@@ -36,10 +37,15 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 	state.Callback = r.URL.Query().Get("callback")
 	state.UserId = user.ID
 
+	redirect := "http://localhost:8080/providers/google/callback"
+	if api != "" {
+		redirect = api + "/providers/google/callback"
+	}
+
 	var conf = &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		RedirectURL:  "http://localhost:8080/providers/google/callback", // add source query parameter
+		RedirectURL:  redirect,
 		Scopes: []string{
 			"https://www.googleapis.com/auth/gmail.readonly",
 		},
