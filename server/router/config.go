@@ -22,6 +22,7 @@ func ProtectedRoutes(r chi.Router) {
 	r.Get("/me", handlers.Me)
 	r.Get("/providers/{provider}/auth", handlers.ProviderLogin)
 	r.Get("/actions", handlers.GetActions)
+	r.Post("/actions", handlers.CreateAction)
 	r.Get("/reactions", handlers.GetReactions)
 }
 

@@ -15,23 +15,8 @@ func main() {
 	config := config.Read()
 	db := database.New(config)
 	db.AutoMigrate(&models.User{}, &models.Trigger{}, &models.Action{}, &models.Reaction{})
+	database.Seed(db)
 	r := router.New()
-
-	// Uncomment to create the actions for the first time
-	db.Create(&models.Action{
-		Type: "undefined",
-	})
-	db.Create(&models.Action{
-		Type:  "gmail",
-		Event: "receive",
-	})
-	db.Create(&models.Reaction{
-		Type: "undefined",
-	})
-	db.Create(&models.Reaction{
-		Type:   "discord",
-		Action: "send",
-	})
 
 	manager := jobs.NewManager()
 	manager.RunAsync()
