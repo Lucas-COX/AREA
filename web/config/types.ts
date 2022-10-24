@@ -1,6 +1,6 @@
 export type Action = {
     id: number,
-    type: "gmail",
+    type: String,
     event: String,
     token: String,
     created_at: Date,

@@ -1,16 +1,14 @@
 import type { GetServerSidePropsContext } from 'next';
+import type { Trigger } from '../../config/types';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
-  Paper, TextField, Button, Switch,
+  Paper, TextField, Button, Switch, Select, InputLabel, MenuItem, SelectChangeEvent
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import Image from 'next/image';
-import InputAdornment from '@mui/material/InputAdornment';
 import { TrendingFlatOutlined } from '@mui/icons-material';
 import URLSafeBase64 from 'urlsafe-base64';
-import icons from '../../lib/icons';
 import AppLayout from '../../components/AppLayout';
 import { getSession } from '../../lib/session';
 import { withSession } from '../../config/withs';
@@ -18,13 +16,21 @@ import useActions from '../../hooks/useActions';
 import useReactions from '../../hooks/useReactions';
 import Spinner from '../../components/Spinner';
 
+interface TriggerPageState {
+  trigger: Trigger;
+  actionType?: String;
+  reactionType?: String;
+}
+
 
 export default function TriggerPage({ session }: TriggerProps) {
   const router = useRouter();
   const { id } = router.query;
   const trigger = session?.user?.triggers?.find((t) => t.id === Number(id));
-  const [state, setState] = useState({
-    trigger,
+  const [state, setState] = useState<TriggerPageState>({
+    trigger: trigger as Trigger,
+    actionType: undefined,
+    reactionType: undefined
   });
   const actionsState = useActions(session.token as string)
   const reactionsState = useReactions(session.token as string)
@@ -36,6 +42,7 @@ export default function TriggerPage({ session }: TriggerProps) {
   const handleTitleChange = (e: any) => {
     if (state.trigger !== undefined) {
       setState({
+        ...state,
         trigger: {
           ...state.trigger,
           title: e.target.value,
@@ -46,6 +53,7 @@ export default function TriggerPage({ session }: TriggerProps) {
   const handleDescriptionChange = (e: any) => {
     if (state.trigger !== undefined) {
       setState({
+        ...state,
         trigger: {
           ...state.trigger,
           description: e.target.value,
@@ -69,6 +77,7 @@ export default function TriggerPage({ session }: TriggerProps) {
   const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (state.trigger !== undefined) {
       setState({
+        ...state,
         trigger: {
           ...state.trigger,
           active: !state.trigger.active,
@@ -108,6 +117,18 @@ export default function TriggerPage({ session }: TriggerProps) {
     }
   };
 
+  const handleActionTypeChange = (e: SelectChangeEvent) => {
+    setState({ ...state, actionType: e.target.value })
+  }
+  const handleActionEventChange = (e: SelectChangeEvent) => {
+    setState({ ...state,
+      trigger: {
+        ...state.trigger,
+        action_id: Number(e.target.value)
+      }
+    })
+  }
+
   if (actionsState.loading || reactionsState.loading) {
     return (
       <AppLayout
@@ -122,6 +143,10 @@ export default function TriggerPage({ session }: TriggerProps) {
   // const ActionIcon = <Image src={icons[actionsState.actions[trigger.action_id].type]} alt={`${actionsState.actions[trigger.action_id].type} icon`} width="15" height="15" />;
   // const ReactionIcon = <Image src={icons[reactionsState.reactions[trigger.reaction_id].type]} alt={`${reactionsState.reactions[trigger.action_id].type} icon`} width="15" height="15" />;
 
+  const filteredActions = actionsState.actions.filter((action) => action.type === state.actionType)
+  const filteredReactions = reactionsState.reactions.filter((reaction) => reaction.type === state.reactionType)
+
+  console.log(state.trigger.action_id)
   return (
     <AppLayout
       type="centered"
@@ -147,6 +172,26 @@ export default function TriggerPage({ session }: TriggerProps) {
         <div className="h-full flex items-center space-x-6">
           <div className="flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-primary/5">
             <div>Action</div>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={state.actionType ? state.actionType : String(actionsState.actions.find(({ id }) => id == state.trigger.action_id).type) }
+              label="Age"
+              onChange={handleActionTypeChange}
+            >
+              {actionsState.actions.map((action) => (
+                <MenuItem value={action.type}>{action.type.toUpperCase()}</MenuItem>
+              ))}
+            </Select>
+            {state.actionType !== "undefined" && <Select
+              value={String(state.trigger?.action_id) || String(filteredActions[0].id)}
+              label="Event"
+              onChange={handleActionEventChange}
+            >
+              {filteredActions.map((action) => (
+                <MenuItem value={String(action.id)}>{action.event}</MenuItem>
+              ))}
+            </Select>}
             {trigger.action_id && <Button
               variant="outlined"
               color="primary"
