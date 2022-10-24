@@ -10,6 +10,7 @@ import (
 
 func ProviderLogin(w http.ResponseWriter, r *http.Request) {
 	provider, err := providers.Parse(chi.URLParam(r, "provider"))
+
 	if err != nil {
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
 	}
