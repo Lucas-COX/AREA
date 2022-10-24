@@ -59,7 +59,7 @@ func (triggerController) GetByTitle(title string, user_id uint, all bool) (*mode
 func (triggerController) GetActive(all bool) ([]models.Trigger, error) {
 	var triggers []models.Trigger
 
-	tx := db.Model(models.Trigger{}).Where("active = ?", 1).Preload("User")
+	tx := db.Model(models.Trigger{}).Where("active = ?", true).Preload("User")
 	if all {
 		tx = tx.Preload("Action").Preload("Reaction")
 	}
