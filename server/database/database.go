@@ -30,9 +30,8 @@ func New(config *c.Config) *gorm.DB {
 	if os.Getenv("DATABASE_URL") != "" {
 		dsn = os.Getenv("DATABASE_URL")
 	} else {
-		dsn = fmt.Sprintf("%s:%s@%s(%s)/%s?charset=utf8mb4&parseTime=%s&loc=Local",
-			config.Database.User, config.Database.Password, config.Database.Protocol,
-			config.Database.Address, config.Database.Name, config.Database.ParseTime)
+		dsn = fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+			config.Database.User, config.Database.Password, config.Database.Address, config.Database.Port, config.Database.Name)
 	}
 
 	postgresConfig = postgres.Config{
