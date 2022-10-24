@@ -5,6 +5,7 @@ import (
 	"os"
 
 	c "Area/config"
+	"Area/database/models"
 	"Area/lib"
 
 	"gorm.io/driver/postgres"
@@ -44,4 +45,20 @@ func New(config *c.Config) *gorm.DB {
 	lib.CheckError(err)
 
 	return db
+}
+
+func Seed(db *gorm.DB) {
+	var actions = []models.Action{
+		{Type: "none", Event: "none"},
+		{Type: "gmail", Event: "receive"},
+		{Type: "gmail", Event: "send"},
+	}
+	var reactions = []models.Reaction{
+		{Type: "none", Action: "none"},
+		{Type: "discord", Action: "send"},
+	}
+	db.Exec("DELETE FROM actions")
+	db.Exec("DELETE FROM reactions")
+	db.Create(actions)
+	db.Create(reactions)
 }
