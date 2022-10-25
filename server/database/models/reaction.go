@@ -1,8 +1,6 @@
 package models
 
 import (
-	"database/sql/driver"
-
 	"gorm.io/gorm"
 )
 
@@ -19,15 +17,6 @@ const (
 	NoneReactionAction ReactionActionType = "none"
 	SendReaction       ReactionActionType = "send"
 )
-
-func (e *ReactionType) Scan(value interface{}) error {
-	*e = ReactionType(value.([]byte))
-	return nil
-}
-
-func (e ReactionType) Value() (driver.Value, error) {
-	return string(e), nil
-}
 
 type Reaction struct {
 	gorm.Model

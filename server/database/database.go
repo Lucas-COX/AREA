@@ -59,6 +59,8 @@ func Seed(db *gorm.DB) {
 	}
 	db.Exec("DELETE FROM actions")
 	db.Exec("DELETE FROM reactions")
+	db.Exec("ALTER SEQUENCE actions_id_seq RESTART WITH 1")
+	db.Exec("ALTER SEQUENCE reactions_id_seq RESTART WITH 1")
 	db.Create(actions)
 	db.Create(reactions)
 }
