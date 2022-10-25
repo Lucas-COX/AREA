@@ -4,7 +4,10 @@ import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
+	"bytes"
+	"encoding/gob"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -29,6 +32,8 @@ type triggerSmallResponse struct {
 }
 
 func GetTriggers(w http.ResponseWriter, r *http.Request) {
+	var buf bytes.Buffer
+	var data models.TriggerData
 	all := r.URL.Query().Get("a")
 
 	user, err := database.User.GetFromContext(r.Context())
@@ -38,10 +43,24 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 	if all == "true" {
 		var resp triggersResponse
 		copier.Copy(&resp.Triggers, &triggers)
+		for i := range triggers {
+			buf.Reset()
+			buf.Write(triggers[i].Data)
+			gob.NewDecoder(&buf).Decode(&data)
+			resp.Triggers[i].ActionData = data.ActionData
+			resp.Triggers[i].ReactionData = data.ReactionData
+		}
 		lib.SendJson(w, resp)
 	} else {
 		var resp triggersSmallResponse
 		copier.CopyWithOption(&resp.Triggers, &triggers, copier.Option{DeepCopy: false})
+		for i := range triggers {
+			buf.Reset()
+			buf.Write(triggers[i].Data)
+			gob.NewDecoder(&buf).Decode(&data)
+			resp.Triggers[i].ActionData = data.ActionData
+			resp.Triggers[i].ReactionData = data.ReactionData
+		}
 		lib.SendJson(w, resp)
 	}
 }
@@ -50,6 +69,8 @@ func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 	var input TriggerRequestBody
 	var resp triggerSmallResponse
 	var data models.Trigger
+	var buf bytes.Buffer
+	var triggerData models.TriggerData
 
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
@@ -62,11 +83,18 @@ func CreateTriggers(w http.ResponseWriter, r *http.Request) {
 
 	trigger, _ := database.Trigger.Create(data)
 
+	buf.Write(trigger.Data)
+	gob.NewDecoder(&buf).Decode(&triggerData)
+	copier.CopyWithOption(&trigger, &triggerData, copier.Option{IgnoreEmpty: true})
+
 	copier.Copy(&resp.Trigger, &trigger)
 	lib.SendJson(w, resp)
 }
 
 func GetTriggerById(w http.ResponseWriter, r *http.Request) {
+	var buf bytes.Buffer
+	var data models.TriggerData
+
 	all := r.URL.Query().Get("a")
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
@@ -76,6 +104,10 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 
 	trigger, err := database.Trigger.GetById(uint(id), user.ID, all == "true")
 	lib.CheckError(err)
+
+	buf.Write(trigger.Data)
+	gob.NewDecoder(&buf).Decode(&data)
+	copier.CopyWithOption(&trigger, &data, copier.Option{IgnoreEmpty: true})
 
 	if all == "true" {
 		var resp triggerResponse
@@ -90,7 +122,9 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 
 func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	var input TriggerRequestBody
-	var resp triggerResponse
+	var resp triggerSmallResponse
+	var buf bytes.Buffer
+	var data models.TriggerData
 
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
@@ -109,10 +143,18 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 		trigger.Active = false
 	}
 
+	buf.Write(trigger.Data)
+	gob.NewDecoder(&buf).Decode(&data)
+	copier.CopyWithOption(&data, &input, copier.Option{IgnoreEmpty: true})
+	trigger.Data = lib.EncodeToBytes(data)
+
 	trigger, err = database.Trigger.Update(trigger)
 	lib.CheckError(err)
 
-	copier.Copy(&resp.Trigger, trigger)
+	log.Println(trigger.Title)
+
+	copier.Copy(&resp.Trigger, &trigger)
+	copier.CopyWithOption(&resp.Trigger, &data, copier.Option{IgnoreEmpty: true})
 	lib.SendJson(w, resp)
 }
 

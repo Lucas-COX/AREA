@@ -20,11 +20,6 @@ type JobsManager interface {
 	Do()
 }
 
-// méthode New() -> Manager
-// méthode RunAsync() -> Lance une go-routine de la méthode RunSync() -> check toutes les minutes les triggers qui sont activés et
-// exécuter les tâches correspondantes
-// Quand tu lances le traitement d'un nouveau trigger utilise des goroutines pour accélérer le process
-
 func NewManager() jobsManager {
 	return jobsManager{}
 }
@@ -50,7 +45,7 @@ func (jobsManager) Do() {
 		if triggered {
 			switch v.Reaction.Type {
 			case models.DiscordReaction:
-				reactions.React(v.Reaction, v, v.User)
+				reactions.Discord(v.Reaction, v, v.User)
 			}
 		}
 	}

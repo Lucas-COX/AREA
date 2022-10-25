@@ -4,18 +4,15 @@ import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
-	"errors"
+	"strings"
 
 	"encoding/json"
 	"net/http"
-
-	"github.com/go-sql-driver/mysql"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	var input AuthRequestBody
 	var resp AuthResponseBody
-	var mysqlErr *mysql.MySQLError
 
 	err := json.NewDecoder(r.Body).Decode(&input)
 	lib.CheckError(err)
@@ -26,10 +23,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		Username: input.Username,
 		Password: password,
 	})
-	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 {
+	if strings.Contains(err.Error(), "23505") {
 		lib.SendError(w, http.StatusBadRequest, "User already exists")
 		return
 	}
+
 	lib.CheckError(err)
 	resp.Token, err = lib.CreateToken(map[string]interface{}{
 		"username": user.Username,
