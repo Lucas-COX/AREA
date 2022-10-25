@@ -49,13 +49,13 @@ func New(config *c.Config) *gorm.DB {
 
 func Seed(db *gorm.DB) {
 	var actions = []models.Action{
-		{Type: "none", Event: "none"},
-		{Type: "gmail", Event: "receive"},
-		{Type: "gmail", Event: "send"},
+		{Type: models.NoneAction, Event: models.NoneEvent},
+		{Type: models.GmailAction, Event: models.ReceiveEvent},
+		{Type: models.GmailAction, Event: models.SendEvent},
 	}
 	var reactions = []models.Reaction{
-		{Type: "none", Action: "none"},
-		{Type: "discord", Action: "send"},
+		{Type: models.NoneReaction, Action: models.NoneReactionAction},
+		{Type: models.DiscordReaction, Action: models.SendReaction},
 	}
 	db.Exec("DELETE FROM actions")
 	db.Exec("DELETE FROM reactions")
