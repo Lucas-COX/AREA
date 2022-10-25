@@ -29,11 +29,13 @@ type ReactionRequestBody struct {
 }
 
 type TriggerRequestBody struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	ActionID    *uint  `json:"action_id"`
-	ReactionID  *uint  `json:"reaction_id"`
-	Active      bool   `json:"active"`
+	Title        string `json:"title"`
+	Description  string `json:"description"`
+	ActionID     *uint  `json:"action_id"`
+	ReactionID   *uint  `json:"reaction_id"`
+	ActionData   string `json:"action_data"`
+	ReactionData string `json:"reaction_data"`
+	Active       bool   `json:"active"`
 }
 
 type ActionResponseBody struct {
