@@ -11,11 +11,13 @@ type ActionType string
 type ActionEventType string
 
 const (
+	NoneAction    ActionType = "none"
 	GmailAction   ActionType = "gmail"
 	DiscordAction ActionType = "discord"
 )
 
 const (
+	NoneEvent    ActionEventType = "none"
 	SendEvent    ActionEventType = "send"
 	ReceiveEvent ActionEventType = "receive"
 )
