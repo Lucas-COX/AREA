@@ -7,12 +7,12 @@ import (
 )
 
 type TriggerData struct {
-	Timestamp     time.Time
-	Author        string
-	Title         string
-	Description   string
-	ActionToken   string
-	ReactionToken string
+	Timestamp    time.Time `copier:"-"`
+	Author       string    `copier:"-"`
+	Title        string    `copier:"-"`
+	Description  string    `copier:"-"`
+	ActionData   string
+	ReactionData string
 }
 
 type Trigger struct {

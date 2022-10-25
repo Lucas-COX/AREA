@@ -72,12 +72,7 @@ func (triggerController) Update(trigger *models.Trigger) (*models.Trigger, error
 	if err != nil {
 		return nil, err
 	}
-	err = db.Save(&trigger.Action).Error
-	if err != nil {
-		return nil, err
-	}
-	err = db.Save(&trigger.Reaction).Error
-	return trigger, err
+	return trigger, nil
 }
 
 func (triggerController) Delete(trigger *models.Trigger) error {

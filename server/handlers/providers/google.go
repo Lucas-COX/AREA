@@ -39,7 +39,10 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 
 	redirect := "http://localhost:8080/providers/google/callback"
 	if api != "" {
-		redirect = api + "/providers/google/callback"
+		apiUrl, err := base64.RawStdEncoding.DecodeString(api)
+		if err != nil {
+			redirect = string(apiUrl) + "/providers/google/callback"
+		}
 	}
 
 	var conf = &oauth2.Config{

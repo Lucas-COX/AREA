@@ -30,6 +30,10 @@ func createGmailService(refresh_token string) *gmail.Service {
 		RefreshToken: refresh_token,
 	}
 
+	if refresh_token == "" {
+		return nil
+	}
+
 	client := conf.Client(context.Background(), &token)
 	srv, err := gmail.NewService(context.Background(), option.WithHTTPClient(client))
 	if err != nil {
@@ -48,30 +52,26 @@ func fetchLastMail(srv *gmail.Service) (*gmail.Message, error) {
 
 	id := res.Messages[0].Id
 	res2, err := srv.Users.Messages.Get("me", id).Do()
+	lib.LogError(err)
+	return res2, nil
+}
+
+func fetchLastSent(srv *gmail.Service) (*gmail.Message, error) {
+	res, err := srv.Users.Messages.List("me").Q("label:Sent").Do()
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
 	}
-	return res2, nil
+
+	id := res.Messages[0].Id
+	res2, err := srv.Users.Messages.Get("me", id).Do()
+	lib.LogError(err)
+	return res2, err
 }
 
-func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
-	var newData models.TriggerData
-	var storedData models.TriggerData
-	var mail, err = fetchLastMail(srv)
-	var buf bytes.Buffer
-
-	trigger, err := database.Trigger.GetById(triggerId, userId, false)
-	lib.LogError(err)
-	buf.Write(trigger.Data)
-
-	gob.NewDecoder(&buf).Decode(&storedData)
-
-	if mail == nil {
-		return false
-	}
+func compareMailData(newData models.TriggerData, oldData models.TriggerData, mail *gmail.Message, trigger *models.Trigger) bool {
 	newData.Timestamp = time.UnixMilli(mail.InternalDate)
-	if trigger.Data == nil || storedData.Timestamp.Before(newData.Timestamp) {
+	if trigger.Data == nil || oldData.Timestamp.Before(newData.Timestamp) {
 		newData.Description = mail.Snippet
 		for i := range mail.Payload.Headers {
 			if mail.Payload.Headers[i].Name == "From" {
@@ -93,14 +93,52 @@ func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	return false
 }
 
+func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
+	var newData models.TriggerData
+	var storedData models.TriggerData
+	var mail, err = fetchLastMail(srv)
+	var buf bytes.Buffer
+
+	trigger, err := database.Trigger.GetById(triggerId, userId, false)
+	lib.LogError(err)
+	buf.Write(trigger.Data)
+
+	gob.NewDecoder(&buf).Decode(&storedData)
+
+	if mail == nil {
+		return false
+	}
+	return compareMailData(newData, storedData, mail, trigger)
+}
+
+func checkSend(srv *gmail.Service, triggerId uint, userId uint) bool {
+	var newData models.TriggerData
+	var storedData models.TriggerData
+	var mail, err = fetchLastSent(srv)
+	var buf bytes.Buffer
+
+	trigger, err := database.Trigger.GetById(triggerId, userId, false)
+	lib.LogError(err)
+	buf.Write(trigger.Data)
+
+	gob.NewDecoder(&buf).Decode(&storedData)
+
+	if mail == nil {
+		return false
+	}
+	return compareMailData(newData, storedData, mail, trigger)
+}
+
 func CheckGmailAction(action models.Action, trigger models.Trigger, user models.User) bool {
 	var srv = createGmailService(user.GoogleToken)
 	if srv == nil {
 		return false
 	}
 	switch action.Event {
-	case "receive":
+	case models.ReceiveEvent:
 		return checkReceive(srv, trigger.ID, user.ID)
+	case models.SendEvent:
+		return checkSend(srv, trigger.ID, user.ID)
 	}
 	return false
 }
