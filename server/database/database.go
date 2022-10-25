@@ -5,7 +5,6 @@ import (
 	"os"
 
 	c "Area/config"
-	"Area/database/models"
 	"Area/lib"
 
 	"gorm.io/driver/postgres"
@@ -48,19 +47,19 @@ func New(config *c.Config) *gorm.DB {
 }
 
 func Seed(db *gorm.DB) {
-	var actions = []models.Action{
-		{Type: models.NoneAction, Event: models.NoneEvent},
-		{Type: models.GmailAction, Event: models.ReceiveEvent},
-		{Type: models.GmailAction, Event: models.SendEvent},
-	}
-	var reactions = []models.Reaction{
-		{Type: models.NoneReaction, Action: models.NoneReactionAction},
-		{Type: models.DiscordReaction, Action: models.SendReaction},
-	}
-	db.Exec("DELETE FROM actions")
-	db.Exec("DELETE FROM reactions")
-	db.Exec("ALTER SEQUENCE actions_id_seq RESTART WITH 1")
-	db.Exec("ALTER SEQUENCE reactions_id_seq RESTART WITH 1")
-	db.Create(actions)
-	db.Create(reactions)
+	// var actions = []models.Action{
+	// 	{Type: models.NoneAction, Event: models.NoneEvent},
+	// 	{Type: models.GmailAction, Event: models.ReceiveEvent},
+	// 	{Type: models.GmailAction, Event: models.SendEvent},
+	// }
+	// var reactions = []models.Reaction{
+	// 	{Type: models.NoneReaction, Action: models.NoneReactionAction},
+	// 	{Type: models.DiscordReaction, Action: models.SendReaction},
+	// }
+	// db.Exec("DELETE FROM actions")
+	// db.Exec("DELETE FROM reactions")
+	// db.Exec("ALTER SEQUENCE actions_id_seq RESTART WITH 1")
+	// db.Exec("ALTER SEQUENCE reactions_id_seq RESTART WITH 1")
+	// db.Create(actions)
+	// db.Create(reactions)
 }

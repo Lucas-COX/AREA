@@ -87,6 +87,8 @@ func compareMailData(newData models.TriggerData, oldData models.TriggerData, mai
 			database.Trigger.Update(trigger)
 			return true
 		}
+		newData.ActionData = oldData.ActionData
+		newData.ReactionData = oldData.ReactionData
 		trigger.Data = lib.EncodeToBytes(newData)
 		database.Trigger.Update(trigger)
 	}
