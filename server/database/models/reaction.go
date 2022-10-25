@@ -11,11 +11,13 @@ type ReactionType string
 type ReactionActionType string
 
 const (
+	NoneReaction    ReactionType = "none"
 	DiscordReaction ReactionType = "discord"
 )
 
 const (
-	SendReaction ReactionActionType = "send"
+	NoneReactionAction ReactionActionType = "none"
+	SendReaction       ReactionActionType = "send"
 )
 
 func (e *ReactionType) Scan(value interface{}) error {
