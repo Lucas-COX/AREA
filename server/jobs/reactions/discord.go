@@ -6,13 +6,12 @@ import (
 	"bytes"
 	"encoding/gob"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gtuk/discordwebhook"
 )
 
-func sendMessage(storedData models.TriggerData) {
+func sendMessage(storedData models.TriggerData, action models.Action) {
 	var username = "Area"
-	var title = "New event in Area"
+	var title = "New " + string(action.Event) + " in " + string(action.Type)
 	var color = "1668818"
 	var embeds []discordwebhook.Embed
 	var fields []discordwebhook.Field
@@ -22,8 +21,6 @@ func sendMessage(storedData models.TriggerData) {
 	}
 
 	url := storedData.ReactionData
-
-	// Todo : Pourquoi url est vide ?
 
 	fields = append(fields, discordwebhook.Field{
 		Name:  &storedData.Title,
@@ -52,10 +49,8 @@ func Discord(reaction models.Reaction, trigger models.Trigger, user models.User)
 	err := gob.NewDecoder(&buf).Decode(&storedData)
 	lib.LogError(err)
 
-	spew.Dump(storedData)
-
 	switch reaction.Action {
 	case models.SendReaction:
-		sendMessage(storedData)
+		sendMessage(storedData, trigger.Action)
 	}
 }
