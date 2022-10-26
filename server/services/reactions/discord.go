@@ -3,15 +3,13 @@ package reactions
 import (
 	"Area/database/models"
 	"Area/lib"
-	"bytes"
-	"encoding/gob"
 
 	"github.com/gtuk/discordwebhook"
 )
 
-func sendMessage(storedData models.TriggerData, action models.Action) {
+func SendDiscordMessage(storedData models.TriggerData, action string, service string) {
 	var username = "Area"
-	var title = "New " + string(action.Event) + " in " + string(action.Type)
+	var title = "New " + string(action) + " in " + string(service)
 	var color = "1668818"
 	var embeds []discordwebhook.Embed
 	var fields []discordwebhook.Field
@@ -39,18 +37,4 @@ func sendMessage(storedData models.TriggerData, action models.Action) {
 	}
 	err := discordwebhook.SendMessage(url, message)
 	lib.LogError(err)
-}
-
-func Discord(reaction models.Reaction, trigger models.Trigger, user models.User) {
-	var storedData models.TriggerData
-	var buf bytes.Buffer
-
-	buf.Write(trigger.Data)
-	err := gob.NewDecoder(&buf).Decode(&storedData)
-	lib.LogError(err)
-
-	switch reaction.Action {
-	case models.SendReaction:
-		sendMessage(storedData, trigger.Action)
-	}
 }

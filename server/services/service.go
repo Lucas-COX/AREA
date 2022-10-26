@@ -1,0 +1,31 @@
+package services
+
+import "Area/database/models"
+
+type Action struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type Reaction struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type OauthState struct {
+	Callback string `json:"callback"`
+	UserId   uint   `json:"user_id"`
+}
+
+type Service interface {
+	Authenticate(redirect string, callback string, userId uint) string    // returns the url to start the authentication process
+	AuthenticateCallback(base64State string, code string) (string, error) // handles the authentication success or failure
+	GetActions() []Action                                                 // returns the actions the service handles
+	GetReactions() []Reaction                                             // returns the reactions the service handles
+	GetName() string                                                      // returns the name of the service
+	Check(action string, trigger models.Trigger) bool                     // checks if the action happened
+	React(reaction string, trigger models.Trigger)                        // executes the reaction
+}
+
+var Gmail Service = NewGmailService()
+var Discord Service = NewDiscordService()

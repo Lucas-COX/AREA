@@ -2,10 +2,8 @@ package jobs
 
 import (
 	"Area/database"
-	"Area/database/models"
-	"Area/jobs/actions"
-	"Area/jobs/reactions"
 	"Area/lib"
+	"Area/services"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -32,20 +30,20 @@ func (j jobsManager) RunSync() {
 
 func (jobsManager) Do() {
 	var triggered bool
-	triggers, err := database.Trigger.GetActive(true)
+	triggers, err := database.Trigger.GetActive()
 	lib.LogError(err)
 
 	for _, v := range triggers {
-		switch v.Action.Type {
-		case models.GmailAction:
-			triggered = actions.CheckGmailAction(v.Action, v, v.User)
+		switch v.ActionService {
+		case "gmail":
+			triggered = services.Gmail.Check(v.Action, v)
 		default:
 			triggered = false
 		}
 		if triggered {
-			switch v.Reaction.Type {
-			case models.DiscordReaction:
-				reactions.Discord(v.Reaction, v, v.User)
+			switch v.ReactionService {
+			case "discord":
+				services.Discord.React(v.Reaction, v)
 			}
 		}
 	}
