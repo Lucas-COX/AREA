@@ -107,15 +107,18 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 
 	buf.Write(trigger.Data)
 	gob.NewDecoder(&buf).Decode(&data)
-	copier.CopyWithOption(&trigger, &data, copier.Option{IgnoreEmpty: true})
 
 	if all == "true" {
 		var resp triggerResponse
 		copier.Copy(&resp.Trigger, &trigger)
+		resp.Trigger.ActionData = data.ActionData
+		resp.Trigger.ReactionData = data.ReactionData
 		lib.SendJson(w, resp)
 	} else {
 		var resp triggerSmallResponse
 		copier.CopyWithOption(&resp.Trigger, &trigger, copier.Option{DeepCopy: false})
+		resp.Trigger.ActionData = data.ActionData
+		resp.Trigger.ReactionData = data.ReactionData
 		lib.SendJson(w, resp)
 	}
 }
@@ -139,7 +142,7 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	lib.CheckError(err)
 
 	copier.CopyWithOption(&trigger, &input, copier.Option{IgnoreEmpty: true, DeepCopy: true})
-	if !input.Active {
+	if input.Active != nil && !*input.Active {
 		trigger.Active = false
 	}
 
@@ -154,7 +157,8 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 	log.Println(trigger.Title)
 
 	copier.Copy(&resp.Trigger, &trigger)
-	copier.CopyWithOption(&resp.Trigger, &data, copier.Option{IgnoreEmpty: true})
+	resp.Trigger.ActionData = data.ActionData
+	resp.Trigger.ReactionData = data.ReactionData
 	lib.SendJson(w, resp)
 }
 
