@@ -14,7 +14,7 @@ import (
 func main() {
 	config := config.Read()
 	db := database.New(config)
-	db.AutoMigrate(&models.User{}, &models.Trigger{}, &models.Action{}, &models.Reaction{})
+	db.AutoMigrate(&models.User{}, &models.Trigger{})
 	database.Seed(db)
 	r := router.New()
 

@@ -17,7 +17,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createGmailService(refresh_token string) *gmail.Service {
+func CreateGmailConnection(refresh_token string) *gmail.Service {
 	var conf = &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
@@ -95,13 +95,13 @@ func compareMailData(newData models.TriggerData, oldData models.TriggerData, mai
 	return false
 }
 
-func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
+func GmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var newData models.TriggerData
 	var storedData models.TriggerData
 	var mail, err = fetchLastMail(srv)
 	var buf bytes.Buffer
 
-	trigger, err := database.Trigger.GetById(triggerId, userId, false)
+	trigger, err := database.Trigger.GetById(triggerId, userId)
 	lib.LogError(err)
 	buf.Write(trigger.Data)
 
@@ -113,13 +113,13 @@ func checkReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	return compareMailData(newData, storedData, mail, trigger)
 }
 
-func checkSend(srv *gmail.Service, triggerId uint, userId uint) bool {
+func GmailSend(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var newData models.TriggerData
 	var storedData models.TriggerData
 	var mail, err = fetchLastSent(srv)
 	var buf bytes.Buffer
 
-	trigger, err := database.Trigger.GetById(triggerId, userId, false)
+	trigger, err := database.Trigger.GetById(triggerId, userId)
 	lib.LogError(err)
 	buf.Write(trigger.Data)
 
@@ -129,18 +129,4 @@ func checkSend(srv *gmail.Service, triggerId uint, userId uint) bool {
 		return false
 	}
 	return compareMailData(newData, storedData, mail, trigger)
-}
-
-func CheckGmailAction(action models.Action, trigger models.Trigger, user models.User) bool {
-	var srv = createGmailService(user.GoogleToken)
-	if srv == nil {
-		return false
-	}
-	switch action.Event {
-	case models.ReceiveEvent:
-		return checkReceive(srv, trigger.ID, user.ID)
-	case models.SendEvent:
-		return checkSend(srv, trigger.ID, user.ID)
-	}
-	return false
 }
