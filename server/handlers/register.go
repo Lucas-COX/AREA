@@ -23,7 +23,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		Username: input.Username,
 		Password: password,
 	})
-	if strings.Contains(err.Error(), "23505") {
+	if err != nil && strings.Contains(err.Error(), "23505") {
 		lib.SendError(w, http.StatusBadRequest, "User already exists")
 		return
 	}
