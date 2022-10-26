@@ -21,9 +21,6 @@ func ProtectedRoutes(r chi.Router) {
 	r.Delete("/triggers/{id}", handlers.DeleteTrigger)
 	r.Get("/me", handlers.Me)
 	r.Get("/providers/{provider}/auth", handlers.ProviderLogin)
-	r.Get("/actions", handlers.GetActions)
-	r.Post("/actions", handlers.CreateAction)
-	r.Get("/reactions", handlers.GetReactions)
 }
 
 func UnprotectedRoutes(r chi.Router) {

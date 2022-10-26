@@ -14,13 +14,9 @@ import (
 
 var db *gorm.DB
 
-var User userController
+var User UserController = userController{}
 
-var Trigger triggerController
-
-var Action actionController
-
-var Reaction reactionController
+var Trigger TriggerController = triggerController{}
 
 func New(config *c.Config) *gorm.DB {
 	var err error

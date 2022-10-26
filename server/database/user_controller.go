@@ -13,9 +13,10 @@ type userController struct {
 
 type UserController interface {
 	Create(user models.User) (*models.User, error)
-	Get(loadTriggers bool) (*models.User, error)
+	Get(loadTriggers bool) ([]models.User, error)
 	GetById(id uint, loadTriggers bool) (*models.User, error)
 	GetByUsername(username string, loadTriggers bool) (*models.User, error)
+	GetFromContext(ctx context.Context) (*models.User, error)
 	Update(user models.User) (*models.User, error)
 	Delete(id uint) error
 }
@@ -79,7 +80,7 @@ func (userController) Update(user models.User) (*models.User, error) {
 	return &user, err
 }
 
-func (userController) Delete(id string) error {
+func (userController) Delete(id uint) error {
 	err := db.Delete(&id).Error
 	return err
 }
