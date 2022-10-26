@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'services/services_login.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 class AccueilPage extends StatefulWidget {
   const AccueilPage({Key? key, required this.title}) : super(key: key);
@@ -16,9 +14,9 @@ class AccueilPage extends StatefulWidget {
 }
 
 class _AccueilPageState extends State<AccueilPage> {
-  @override
   String username = '', password = '';
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
@@ -98,7 +96,7 @@ class _AccueilPageState extends State<AccueilPage> {
                 onPressed: () async {
                   final response = await ServicesLogin.login(
                       username.trim(), password.trim());
-                  print(response.statusCode);
+                  debugPrint(response.statusCode.toString());
                   if (response.statusCode == 200) {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.setString(

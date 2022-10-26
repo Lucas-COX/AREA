@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,11 +20,11 @@ class ServicesLogin {
             'username': username,
             'password': password,
           }));
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response body: ${response.body}');
       completer.complete(response);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
     return completer.future;
   }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -42,20 +41,26 @@ class TriggerActionBody {
 class TriggerBody {
   String title;
   String description;
-  TriggerActionBody action;
-  TriggerReactionBody reaction;
+  num actionId;
+  num reactionId;
+  String reactionData;
+  String actionData;
 
   TriggerBody(
       {required this.title,
       required this.description,
-      required this.action,
-      required this.reaction});
+      required this.actionId,
+      required this.reactionId,
+      required this.actionData,
+      required this.reactionData});
 
   Map<String, dynamic> toJson() => {
         'title': title,
         'description': description,
-        'action': action.toJson(),
-        'reaction': reaction.toJson(),
+        'action_id': actionId,
+        'reaction_id': reactionId,
+        'action_data': actionData,
+        'reaction_data': reactionData,
       };
 }
 
@@ -67,13 +72,14 @@ class TriggersService {
     final TriggerBody triggerBody = TriggerBody(
         title: "New trigger",
         description: "",
-        action: TriggerActionBody(type: "gmail", event: "receive", token: ""),
-        reaction:
-            TriggerReactionBody(type: "discord", action: "send", token: ""));
+        actionId: 1,
+        reactionId: 1,
+        actionData: "",
+        reactionData: "");
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('area_token');
-      print(token);
+      debugPrint(token);
 
       final response = await http.post(Uri.parse('$url/triggers'),
           headers: <String, String>{
@@ -81,8 +87,8 @@ class TriggersService {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(triggerBody.toJson()));
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response body: ${response.body}');
       completer.complete(response);
     } catch (e) {
       completer.completeError(e);
@@ -99,8 +105,8 @@ class TriggersService {
           .delete(Uri.parse('$url/triggers/$id'), headers: <String, String>{
         'Authorization': 'Bearer $token',
       });
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response body: ${response.body}');
       completer.complete(response);
     } catch (e) {
       completer.completeError(e);
@@ -119,8 +125,8 @@ class TriggersService {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(triggerBody.toJson()));
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      debugPrint('Response status: ${response.statusCode}');
+      debugPrint('Response body: ${response.body}');
       completer.complete(response);
     } catch (e) {
       completer.completeError(e);

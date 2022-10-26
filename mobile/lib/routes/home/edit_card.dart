@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobil/routes/home/services/service_google_sign_in.dart';
 import '../../services/services_session.dart';
 import '../login/login.dart';
 import 'services/service_triggers.dart';
@@ -26,7 +27,7 @@ class _EditCardState extends State<EditCard> {
             return AccueilPage(title: widget.title);
           }
           final trigger = ModalRoute.of(context)!.settings.arguments as Trigger;
-          print(trigger);
+          debugPrint('trigger = $trigger');
 
           return (Scaffold(
               backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
@@ -144,7 +145,7 @@ class _EditCardState extends State<EditCard> {
                                               padding: const EdgeInsets.all(10),
                                               child: TextFormField(
                                                 initialValue:
-                                                    trigger.reaction.token,
+                                                    trigger.reactionData,
                                                 decoration:
                                                     const InputDecoration(
                                                   focusedBorder:
@@ -174,7 +175,7 @@ class _EditCardState extends State<EditCard> {
                                                           37, 36, 34, 1)),
                                                 ),
                                                 onChanged: (value) {
-                                                  trigger.reaction.token =
+                                                  trigger.reactionData =
                                                       value.trim();
                                                 },
                                               )),
@@ -198,8 +199,9 @@ class _EditCardState extends State<EditCard> {
                     const SizedBox(height: 50),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(255, 252, 242, 1),
-                          onPrimary: const Color.fromRGBO(235, 94, 40, 1),
+                          foregroundColor: const Color.fromRGBO(235, 94, 40, 1),
+                          backgroundColor:
+                              const Color.fromRGBO(255, 252, 242, 1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -253,7 +255,10 @@ class _ActionGoogleState extends State<ActionGoogle> {
               ),
             ),
             IconButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  final url = await Openwindow.getUrl();
+                  await Openwindow.openwindow(url['url']);
+                },
                 icon: const Icon(
                   Icons.g_mobiledata_rounded,
                   size: 50,

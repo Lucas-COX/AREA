@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'routes/register/register.dart';
 import 'routes/login/login.dart';
 import 'routes/home/home.dart';

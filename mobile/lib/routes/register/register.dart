@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/services_register.dart';
@@ -119,7 +118,7 @@ class RegisterPage extends StatelessWidget {
               onPressed: () async {
                 final response = await ServicesRegister.register(
                     username.trim(), password.trim());
-                print(response.statusCode);
+                debugPrint(response.statusCode.toString());
                 if (response.statusCode == 200) {
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setString(
@@ -135,7 +134,7 @@ class RegisterPage extends StatelessWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
-                primary: const Color.fromRGBO(235, 94, 40, 1),
+                backgroundColor: const Color.fromRGBO(235, 94, 40, 1),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),

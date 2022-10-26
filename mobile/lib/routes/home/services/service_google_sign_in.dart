@@ -1,21 +1,43 @@
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-final GoogleSignIn googleSignIn = GoogleSignIn(
-  scopes: <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ],
-  clientId:
-      '613091759382-6tq4hm6et3iad5u70hkk96imjvv0ee6d.apps.googleusercontent.com',
-  serverClientId:
-      '613091759382-6hjja3qv3866thps1mru6v139pti64ju.apps.googleusercontent.com',
-  forceCodeForRefreshToken: true,
-);
+class Openwindow {
+  static Future getUrl() async {
+    var completer = Completer();
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('area_token');
+    const apiUrl = String.fromEnvironment('API_URL');
+    Codec<String, String> stringToBase64Url = utf8.fuse(base64Url);
+    var encoded = stringToBase64Url.encode(apiUrl);
+    encoded = encoded.substring(0, encoded.length - 1);
+    String url =
+        '${const String.fromEnvironment('API_URL')}/providers/google/auth?callback=${stringToBase64Url.encode('https://google.com')}&api=$encoded';
+    if (token != null) {
+      try {
+        debugPrint(url);
+        final response =
+            await http.get(Uri.parse(url), headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        });
+        debugPrint('Response status: ${response.statusCode}');
+        debugPrint('Response body: ${response.body}');
+        completer.complete(jsonDecode(response.body));
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+      return completer.future;
+    }
+  }
 
-Future<void> handleSignIn() async {
-  try {
-    await googleSignIn.signIn();
-  } catch (error) {
-    print(error);
+  static Future openwindow(String url) async {
+    debugPrint(url);
+    if (!await launchUrl(Uri.parse(url),
+        mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
   }
 }

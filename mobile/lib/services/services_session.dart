@@ -1,76 +1,51 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../routes/home/services/service_triggers.dart';
 
-class TriggerAction {
-  num id;
-  String type;
-  String event;
-  num triggerId;
-
-  TriggerAction(this.id, this.type, this.event, this.triggerId);
-  TriggerAction.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        type = json['type'],
-        event = json['event'],
-        triggerId = json['trigger_id'];
-}
-
-class TriggerReaction {
-  num id;
-  String type;
-  String action;
-  num triggerId;
-  String token;
-
-  TriggerReaction(this.id, this.type, this.action, this.triggerId, this.token);
-  TriggerReaction.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        type = json['type'],
-        action = json['action'],
-        triggerId = json['trigger_id'],
-        token = json['token'];
-}
-
 class Trigger {
   num id;
   String title;
   String description;
-  TriggerAction action;
-  TriggerReaction reaction;
+  num actionId;
+  num reactionId;
   String createdAt;
   String updatedAt;
+  String reactionData;
+  String actionData;
 
   Trigger(
       {required this.id,
       required this.title,
       required this.description,
-      required this.action,
-      required this.reaction,
+      required this.actionId,
+      required this.reactionId,
       required this.createdAt,
-      required this.updatedAt});
+      required this.updatedAt,
+      required this.reactionData,
+      required this.actionData});
 
   Trigger.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title'],
         description = json['description'],
-        action = TriggerAction.fromJson(json['action']),
-        reaction = TriggerReaction.fromJson(json['reaction']),
+        actionId = json['action_id'],
+        reactionId = json['reaction_id'],
         createdAt = json['created_at'],
-        updatedAt = json['updated_at'];
+        updatedAt = json['updated_at'],
+        reactionData = json['reaction_data'],
+        actionData = json['action_data'];
 
   TriggerBody toTriggerBody() {
     return TriggerBody(
         title: title,
         description: description,
-        action: TriggerActionBody(
-            type: action.type, event: action.event, token: ''),
-        reaction: TriggerReactionBody(
-            type: reaction.type,
-            action: reaction.action,
-            token: reaction.token));
+        actionId: actionId,
+        reactionId: reactionId,
+        actionData: actionData,
+        reactionData: reactionData);
   }
 }
 
@@ -110,15 +85,19 @@ class ServicesSession {
   static Future<Session> get() async {
     var completer = Completer<Session>();
     String url = const String.fromEnvironment('API_URL');
+    debugPrint(url);
     try {
       final prefs = await SharedPreferences.getInstance();
+
       final token = prefs.getString('area_token');
+      debugPrint('token = $token');
       if (token == null) {
         return Session(null, false);
       }
       final response = await http.get(Uri.parse('$url/me'),
           headers: {'Authorization': 'Bearer $token'});
-      print('Response status session: ${response.statusCode}');
+      debugPrint('Response status session: ${response.statusCode}');
+      debugPrint('Response body session: ${response.body}');
       final json = jsonDecode(response.body);
       if (!json.containsKey('me')) {
         completer.complete(Session(null, false));
@@ -128,6 +107,7 @@ class ServicesSession {
     } catch (e) {
       completer.completeError(e);
     }
+    print('completer = ${completer.future}');
     return completer.future;
   }
 }

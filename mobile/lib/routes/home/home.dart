@@ -1,6 +1,7 @@
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
 import 'package:mobil/routes/login/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'services/service_triggers.dart';
 
 import '../../services/services_session.dart';
@@ -21,14 +22,18 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context, AsyncSnapshot<Session> snapshot) {
           if (!snapshot.hasData) {
             return (const Scaffold(
-                body: Center(child: CircularProgressIndicator())));
+                body: Center(
+                    child: CircularProgressIndicator(
+              color: Colors.amberAccent,
+            ))));
           }
           final session = snapshot.data;
+          print(session);
           if (session?.isLoggedIn != null && !(session?.isLoggedIn ?? false)) {
             return AccueilPage(title: widget.title);
           }
           final triggers = session?.user == null ? [] : session?.user?.triggers;
-          print('the triggers = $triggers');
+          debugPrint('the triggers = $triggers');
           return (DraggableHome(
               title: const Text("",
                   style: TextStyle(color: Color.fromRGBO(37, 36, 34, 1))),
@@ -72,7 +77,9 @@ class _HomePageState extends State<HomePage> {
                                       final response =
                                           await TriggersService.delete(
                                               triggers?[index].id);
-                                      print('index = $index');
+                                      debugPrint('index = $index');
+                                      debugPrint(
+                                          'response = ${response.statusCode}');
                                       setState(() {
                                         triggers?.removeAt(index);
                                       });
@@ -124,8 +131,8 @@ Widget headerWidget(BuildContext context, final session) {
         const SizedBox(height: 30),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: const Color.fromRGBO(235, 94, 40, 1),
-            onPrimary: Colors.white,
+            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromRGBO(235, 94, 40, 1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(32.0),
             ),
@@ -133,7 +140,7 @@ Widget headerWidget(BuildContext context, final session) {
           ),
           onPressed: () async {
             final response = await TriggersService.post();
-            print('response = $response');
+            debugPrint('response = $response');
             if (response.statusCode == 200) {
               Navigator.pushNamed(context, '/');
             }

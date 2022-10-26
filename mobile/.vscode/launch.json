@@ -10,7 +10,7 @@
             "type": "dart",
             "flutterMode": "debug",
             "args": [
-                "--dart-define","API_URL=http://167.71.52.187:8080",
+                "--dart-define","API_URL=https://areeeeeeea.herokuapp.com",
             ]
         },
         {
