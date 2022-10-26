@@ -17,16 +17,16 @@ type TriggerData struct {
 
 type Trigger struct {
 	gorm.Model
-	Title       string `gorm:"not null"`
-	Description string
-	Active      bool `gorm:"default:false"`
-	UserID      uint
-	User        User
-	ActionID    *uint
-	Action      Action `gorm:"not null"`
-	ReactionID  *uint
-	Reaction    Reaction `gorm:"not null"`
-	Data        []byte
+	Title           string `gorm:"not null"`
+	Description     string
+	Active          bool `gorm:"default:false"`
+	UserID          uint
+	User            User
+	ActionService   string
+	Action          string
+	ReactionService string
+	Reaction        string `gorm:"not null"`
+	Data            []byte
 }
 
 func (t *Trigger) TableName() string { return "triggers" }
