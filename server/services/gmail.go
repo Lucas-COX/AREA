@@ -15,8 +15,8 @@ import (
 )
 
 type GmailService struct {
-	Actions   []Action
-	Reactions []Reaction
+	actions   []Action
+	reactions []Reaction
 }
 
 func (gmail *GmailService) Authenticate(redirect string, callback string, userId uint) string {
@@ -68,11 +68,11 @@ func (gmail *GmailService) AuthenticateCallback(base64State string, code string)
 }
 
 func (gmail *GmailService) GetActions() []Action {
-	return gmail.Actions
+	return gmail.actions
 }
 
 func (gmail *GmailService) GetReactions() []Reaction {
-	return gmail.Reactions
+	return gmail.reactions
 }
 
 func (gmail *GmailService) GetName() string {
@@ -96,12 +96,20 @@ func (gmail *GmailService) Check(action string, trigger models.Trigger) bool {
 func (gmail *GmailService) React(reaction string, trigger models.Trigger) {
 }
 
+func (gmail *GmailService) ToJson() JsonService {
+	return JsonService{
+		Name:      gmail.GetName(),
+		Actions:   gmail.GetActions(),
+		Reactions: gmail.GetReactions(),
+	}
+}
+
 func NewGmailService() *GmailService {
 	return &GmailService{
-		Actions: []Action{
+		actions: []Action{
 			{Name: "receive", Description: "When the user receives an email"},
 			{Name: "send", Description: "When the user sends an email"},
 		},
-		Reactions: []Reaction{},
+		reactions: []Reaction{},
 	}
 }
