@@ -26,7 +26,7 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 	redirect := "http://localhost:8080/providers/google/callback"
 	if api != "" {
 		apiUrl, err := base64.RawStdEncoding.DecodeString(api)
-		if err != nil {
+		if err == nil {
 			redirect = string(apiUrl) + "/providers/google/callback"
 		}
 	}
