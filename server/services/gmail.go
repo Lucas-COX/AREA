@@ -3,6 +3,7 @@ package services
 import (
 	"Area/database"
 	"Area/database/models"
+	"Area/lib"
 	"Area/services/actions"
 	"context"
 	"encoding/base64"
@@ -61,7 +62,8 @@ func (gmail *GmailService) AuthenticateCallback(base64State string, code string)
 		},
 		Endpoint: google.Endpoint,
 	}
-	token, _ := conf.Exchange(context.Background(), code)
+	token, err := conf.Exchange(context.Background(), code)
+	lib.CheckError(err)
 	user.GoogleToken = token.RefreshToken
 	database.User.Update(*user)
 	return state.Callback, nil
