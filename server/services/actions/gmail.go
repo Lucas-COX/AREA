@@ -73,6 +73,7 @@ func compareMailData(newData models.TriggerData, oldData models.TriggerData, mai
 	newData.Timestamp = time.UnixMilli(mail.InternalDate)
 	if trigger.Data == nil || oldData.Timestamp.Before(newData.Timestamp) {
 		newData.Description = mail.Snippet
+
 		for i := range mail.Payload.Headers {
 			if mail.Payload.Headers[i].Name == "From" {
 				newData.Author = mail.Payload.Headers[i].Value
@@ -81,14 +82,14 @@ func compareMailData(newData models.TriggerData, oldData models.TriggerData, mai
 				newData.Title = mail.Payload.Headers[i].Value
 			}
 		}
+		newData.ActionData = oldData.ActionData
+		newData.ReactionData = oldData.ReactionData
 
 		if trigger.Data != nil {
 			trigger.Data = lib.EncodeToBytes(newData)
 			database.Trigger.Update(trigger)
 			return true
 		}
-		newData.ActionData = oldData.ActionData
-		newData.ReactionData = oldData.ReactionData
 		trigger.Data = lib.EncodeToBytes(newData)
 		database.Trigger.Update(trigger)
 	}
