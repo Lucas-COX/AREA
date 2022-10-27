@@ -18,7 +18,6 @@ func ProviderLogin(w http.ResponseWriter, r *http.Request) {
 	switch provider {
 	case authentication.Google:
 		authentication.GoogleLogin(w, r)
-		// break
 	default:
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
 	}
