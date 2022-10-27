@@ -25,7 +25,22 @@ type Service interface {
 	GetName() string                                                      // returns the name of the service
 	Check(action string, trigger models.Trigger) bool                     // checks if the action happened
 	React(reaction string, trigger models.Trigger)                        // executes the reaction
+	ToJson() JsonService                                                  // returns the json representation of the service
+}
+
+type JsonService struct {
+	Name      string     `json:"name"`
+	Actions   []Action   `json:"actions"`
+	Reactions []Reaction `json:"reactions"`
 }
 
 var Gmail Service = NewGmailService()
 var Discord Service = NewDiscordService()
+
+func Get() []Service {
+	var result = []Service{
+		Gmail,
+		Discord,
+	}
+	return result
+}

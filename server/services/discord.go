@@ -9,8 +9,8 @@ import (
 )
 
 type DiscordService struct {
-	Actions   []Action
-	Reactions []Reaction
+	actions   []Action
+	reactions []Reaction
 }
 
 func (discord *DiscordService) Authenticate(redirect string, callback string, userId uint) string {
@@ -22,11 +22,11 @@ func (discord *DiscordService) AuthenticateCallback(base64State string, code str
 }
 
 func (discord *DiscordService) GetActions() []Action {
-	return discord.Actions
+	return discord.actions
 }
 
 func (discord *DiscordService) GetReactions() []Reaction {
-	return discord.Reactions
+	return discord.reactions
 }
 
 func (discord *DiscordService) GetName() string {
@@ -51,10 +51,18 @@ func (discord *DiscordService) React(reaction string, trigger models.Trigger) {
 	}
 }
 
+func (discord *DiscordService) ToJson() JsonService {
+	return JsonService{
+		Name:      discord.GetName(),
+		Actions:   discord.GetActions(),
+		Reactions: discord.GetReactions(),
+	}
+}
+
 func NewDiscordService() *DiscordService {
 	return &DiscordService{
-		Actions: []Action{},
-		Reactions: []Reaction{
+		actions: []Action{},
+		reactions: []Reaction{
 			{Name: "send", Description: "Sends a message through a webhook url"},
 		},
 	}
