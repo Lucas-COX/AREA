@@ -13,7 +13,7 @@ type DiscordService struct {
 	reactions []Reaction
 }
 
-func (discord *DiscordService) Authenticate(redirect string, callback string, userId uint) string {
+func (discord *DiscordService) Authenticate(callback string, userId uint) string {
 	return ""
 }
 
