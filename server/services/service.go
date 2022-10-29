@@ -38,6 +38,7 @@ var Gmail Service = NewGmailService()
 var Discord Service = NewDiscordService()
 var Outlook Service = NewOutlookService()
 var Github Service = NewGithubService()
+var Notion Service = NewNotionService()
 
 func Get() []Service {
 	var result = []Service{
