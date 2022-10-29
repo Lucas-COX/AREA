@@ -28,6 +28,9 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	if user.GithubToken != "" {
 		resp.User.GithubLogged = true
 	}
+	if user.NotionToken != "" {
+		resp.User.NotionLogged = true
+	}
 	triggers, err := database.Trigger.Get(user.ID)
 	lib.CheckError(err)
 
