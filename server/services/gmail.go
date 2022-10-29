@@ -37,7 +37,7 @@ func (gmail *GmailService) Authenticate(callback string, userId uint) string {
 	}
 	bytes, _ := json.Marshal(state)
 	str := base64.RawStdEncoding.EncodeToString(bytes)
-	return conf.AuthCodeURL(str, oauth2.AccessTypeOffline)
+	return conf.AuthCodeURL(str, oauth2.AccessTypeOffline, oauth2.ApprovalForce)
 }
 
 func (gmail *GmailService) AuthenticateCallback(base64State string, code string) (string, error) {
