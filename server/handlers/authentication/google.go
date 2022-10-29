@@ -15,7 +15,6 @@ type urlResponse struct {
 func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 	var res urlResponse
 	var user, err = database.User.GetFromContext(r.Context())
-	api := r.URL.Query().Get("api")
 
 	callbackUrl, err := base64.RawStdEncoding.DecodeString(r.URL.Query().Get("callback"))
 	if err != nil || string(callbackUrl) == "" {
@@ -23,15 +22,7 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	redirect := "http://localhost:8080/providers/google/callback"
-	if api != "" {
-		apiUrl, err := base64.RawStdEncoding.DecodeString(api)
-		if err == nil {
-			redirect = string(apiUrl) + "/providers/google/callback"
-		}
-	}
-
-	res.Url = services.Gmail.Authenticate(redirect, string(callbackUrl), user.ID)
+	res.Url = services.Gmail.Authenticate(string(callbackUrl), user.ID)
 
 	lib.SendJson(w, res)
 }
