@@ -15,12 +15,12 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
-type GmailService struct {
+type gmailService struct {
 	actions   []Action
 	reactions []Reaction
 }
 
-func (gmail *GmailService) Authenticate(callback string, userId uint) string {
+func (*gmailService) Authenticate(callback string, userId uint) string {
 	var state OauthState
 
 	state.Callback = callback
@@ -40,7 +40,7 @@ func (gmail *GmailService) Authenticate(callback string, userId uint) string {
 	return conf.AuthCodeURL(str, oauth2.AccessTypeOffline, oauth2.ApprovalForce)
 }
 
-func (gmail *GmailService) AuthenticateCallback(base64State string, code string) (string, error) {
+func (*gmailService) AuthenticateCallback(base64State string, code string) (string, error) {
 	var state OauthState
 
 	bytes, _ := base64.RawStdEncoding.DecodeString(base64State)
@@ -69,19 +69,19 @@ func (gmail *GmailService) AuthenticateCallback(base64State string, code string)
 	return state.Callback, nil
 }
 
-func (gmail *GmailService) GetActions() []Action {
+func (gmail *gmailService) GetActions() []Action {
 	return gmail.actions
 }
 
-func (gmail *GmailService) GetReactions() []Reaction {
+func (gmail *gmailService) GetReactions() []Reaction {
 	return gmail.reactions
 }
 
-func (gmail *GmailService) GetName() string {
+func (gmail *gmailService) GetName() string {
 	return "gmail"
 }
 
-func (gmail *GmailService) Check(action string, trigger models.Trigger) bool {
+func (*gmailService) Check(action string, trigger models.Trigger) bool {
 	var srv = actions.CreateGmailConnection(trigger.User.GoogleToken)
 	if srv == nil {
 		return false
@@ -95,10 +95,10 @@ func (gmail *GmailService) Check(action string, trigger models.Trigger) bool {
 	return false
 }
 
-func (gmail *GmailService) React(reaction string, trigger models.Trigger) {
+func (*gmailService) React(reaction string, trigger models.Trigger) {
 }
 
-func (gmail *GmailService) ToJson() JsonService {
+func (gmail *gmailService) ToJson() JsonService {
 	return JsonService{
 		Name:      gmail.GetName(),
 		Actions:   gmail.GetActions(),
@@ -106,8 +106,8 @@ func (gmail *GmailService) ToJson() JsonService {
 	}
 }
 
-func NewGmailService() *GmailService {
-	return &GmailService{
+func NewGmailService() *gmailService {
+	return &gmailService{
 		actions: []Action{
 			{Name: "receive", Description: "When the user receives an email"},
 			{Name: "send", Description: "When the user sends an email"},

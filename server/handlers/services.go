@@ -16,6 +16,7 @@ func GetServices(w http.ResponseWriter, r *http.Request) {
 		services.Gmail.ToJson(),
 		services.Discord.ToJson(),
 		services.Outlook.ToJson(),
+		services.Github.ToJson(),
 	}
 
 	lib.SendJson(w, resp)
