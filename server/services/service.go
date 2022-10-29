@@ -18,7 +18,7 @@ type OauthState struct {
 }
 
 type Service interface {
-	Authenticate(redirect string, callback string, userId uint) string    // returns the url to start the authentication process
+	Authenticate(callback string, userId uint) string                     // returns the url to start the authentication process
 	AuthenticateCallback(base64State string, code string) (string, error) // handles the authentication success or failure
 	GetActions() []Action                                                 // returns the actions the service handles
 	GetReactions() []Reaction                                             // returns the reactions the service handles
