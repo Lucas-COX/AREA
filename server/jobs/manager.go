@@ -37,13 +37,30 @@ func (jobsManager) Do() {
 		switch v.ActionService {
 		case "gmail":
 			triggered = services.Gmail.Check(v.Action, v)
+		case "outlook":
+			triggered = services.Outlook.Check(v.Action, v)
+		case "github":
+			triggered = services.Github.Check(v.Action, v)
+		case "notion":
+			triggered = services.Notion.Check(v.Action, v)
+		case "discord":
+			triggered = services.Discord.Check(v.Action, v)
 		default:
 			triggered = false
 		}
 		if triggered {
+			updated, _ := database.Trigger.GetById(v.ID, v.UserID)
 			switch v.ReactionService {
+			case "gmail":
+				services.Gmail.React(v.Reaction, *updated)
+			case "outlook":
+				services.Outlook.React(v.Reaction, *updated)
+			case "github":
+				services.Github.Check(v.Reaction, *updated)
+			case "notion":
+				services.Notion.React(v.Reaction, *updated)
 			case "discord":
-				services.Discord.React(v.Reaction, v)
+				services.Discord.React(v.Reaction, *updated)
 			}
 		}
 	}
