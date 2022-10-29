@@ -10,17 +10,16 @@ import (
 	"errors"
 	"os"
 
-	"github.com/davecgh/go-spew/spew"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/microsoft"
 )
 
-type OutlookService struct {
+type outlookService struct {
 	actions   []Action
 	reactions []Reaction
 }
 
-func (outlook *OutlookService) Authenticate(callback string, userId uint) string {
+func (*outlookService) Authenticate(callback string, userId uint) string {
 	var state OauthState
 
 	state.Callback = callback
@@ -42,7 +41,7 @@ func (outlook *OutlookService) Authenticate(callback string, userId uint) string
 	return conf.AuthCodeURL(str, oauth2.AccessTypeOffline, oauth2.ApprovalForce)
 }
 
-func (outlook *OutlookService) AuthenticateCallback(base64State string, code string) (string, error) {
+func (*outlookService) AuthenticateCallback(base64State string, code string) (string, error) {
 	var state OauthState
 
 	bytes, _ := base64.RawStdEncoding.DecodeString(base64State)
@@ -68,32 +67,31 @@ func (outlook *OutlookService) AuthenticateCallback(base64State string, code str
 	}
 	token, err := conf.Exchange(context.Background(), code)
 	lib.CheckError(err)
-	spew.Dump(token)
 	user.MicrosoftToken = token.RefreshToken
 	database.User.Update(*user)
 	return state.Callback, nil
 }
 
-func (outlook *OutlookService) GetActions() []Action {
+func (outlook *outlookService) GetActions() []Action {
 	return outlook.actions
 }
 
-func (outlook *OutlookService) GetReactions() []Reaction {
+func (outlook *outlookService) GetReactions() []Reaction {
 	return outlook.reactions
 }
 
-func (outlook *OutlookService) GetName() string {
+func (outlook *outlookService) GetName() string {
 	return "outlook"
 }
 
-func (outlook *OutlookService) Check(action string, trigger models.Trigger) bool {
+func (*outlookService) Check(action string, trigger models.Trigger) bool {
 	return false
 }
 
-func (outlook *OutlookService) React(reaction string, trigger models.Trigger) {
+func (*outlookService) React(reaction string, trigger models.Trigger) {
 }
 
-func (outlook *OutlookService) ToJson() JsonService {
+func (outlook *outlookService) ToJson() JsonService {
 	return JsonService{
 		Name:      outlook.GetName(),
 		Actions:   outlook.GetActions(),
@@ -101,8 +99,8 @@ func (outlook *OutlookService) ToJson() JsonService {
 	}
 }
 
-func NewOutlookService() *OutlookService {
-	return &OutlookService{
+func NewOutlookService() *outlookService {
+	return &outlookService{
 		actions:   []Action{},
 		reactions: []Reaction{},
 	}

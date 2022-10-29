@@ -25,6 +25,9 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	if user.MicrosoftToken != "" {
 		resp.User.MicrosoftLogged = true
 	}
+	if user.GithubToken != "" {
+		resp.User.GithubLogged = true
+	}
 	triggers, err := database.Trigger.Get(user.ID)
 	lib.CheckError(err)
 
