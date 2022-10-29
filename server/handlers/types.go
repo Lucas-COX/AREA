@@ -71,4 +71,5 @@ type UserBody struct {
 	Triggers        []TriggerBody   `json:"triggers"`
 	GoogleLogged    bool            `json:"google_logged"`
 	MicrosoftLogged bool            `json:"microsoft_logged"`
+	GithubLogged    bool            `json:"github_logged"`
 }

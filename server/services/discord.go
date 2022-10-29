@@ -8,36 +8,36 @@ import (
 	"encoding/gob"
 )
 
-type DiscordService struct {
+type discordService struct {
 	actions   []Action
 	reactions []Reaction
 }
 
-func (discord *DiscordService) Authenticate(callback string, userId uint) string {
+func (*discordService) Authenticate(callback string, userId uint) string {
 	return ""
 }
 
-func (discord *DiscordService) AuthenticateCallback(base64State string, code string) (string, error) {
+func (*discordService) AuthenticateCallback(base64State string, code string) (string, error) {
 	return "", nil
 }
 
-func (discord *DiscordService) GetActions() []Action {
+func (discord *discordService) GetActions() []Action {
 	return discord.actions
 }
 
-func (discord *DiscordService) GetReactions() []Reaction {
+func (discord *discordService) GetReactions() []Reaction {
 	return discord.reactions
 }
 
-func (discord *DiscordService) GetName() string {
+func (discord *discordService) GetName() string {
 	return "discord"
 }
 
-func (discord *DiscordService) Check(action string, trigger models.Trigger) bool {
+func (*discordService) Check(action string, trigger models.Trigger) bool {
 	return false
 }
 
-func (discord *DiscordService) React(reaction string, trigger models.Trigger) {
+func (*discordService) React(reaction string, trigger models.Trigger) {
 	var storedData models.TriggerData
 	var buf bytes.Buffer
 
@@ -51,7 +51,7 @@ func (discord *DiscordService) React(reaction string, trigger models.Trigger) {
 	}
 }
 
-func (discord *DiscordService) ToJson() JsonService {
+func (discord *discordService) ToJson() JsonService {
 	return JsonService{
 		Name:      discord.GetName(),
 		Actions:   discord.GetActions(),
@@ -59,8 +59,8 @@ func (discord *DiscordService) ToJson() JsonService {
 	}
 }
 
-func NewDiscordService() *DiscordService {
-	return &DiscordService{
+func NewDiscordService() *discordService {
+	return &discordService{
 		actions: []Action{},
 		reactions: []Reaction{
 			{Name: "send", Description: "Sends a message through a webhook url"},

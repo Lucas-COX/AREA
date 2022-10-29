@@ -37,6 +37,7 @@ type JsonService struct {
 var Gmail Service = NewGmailService()
 var Discord Service = NewDiscordService()
 var Outlook Service = NewOutlookService()
+var Github Service = NewGithubService()
 
 func Get() []Service {
 	var result = []Service{

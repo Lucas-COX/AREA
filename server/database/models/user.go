@@ -17,6 +17,7 @@ type User struct {
 	Triggers       []Trigger
 	GoogleToken    string
 	MicrosoftToken string
+	GithubToken    string
 }
 
 func (u *User) TableName() string { return "users" }
