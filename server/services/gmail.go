@@ -20,7 +20,7 @@ type GmailService struct {
 	reactions []Reaction
 }
 
-func (gmail *GmailService) Authenticate(redirect string, callback string, userId uint) string {
+func (gmail *GmailService) Authenticate(callback string, userId uint) string {
 	var state OauthState
 
 	state.Callback = callback
@@ -29,7 +29,7 @@ func (gmail *GmailService) Authenticate(redirect string, callback string, userId
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		RedirectURL:  redirect,
+		RedirectURL:  os.Getenv("OAUTH_REDIRECT_URL") + "/providers/google/callback",
 		Scopes: []string{
 			"https://www.googleapis.com/auth/gmail.readonly",
 		},
@@ -56,7 +56,7 @@ func (gmail *GmailService) AuthenticateCallback(base64State string, code string)
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		RedirectURL:  "http://localhost:8080/providers/google/callback",
+		RedirectURL:  os.Getenv("OAUTH_REDIRECT_URL") + "/providers/google/callback",
 		Scopes: []string{
 			"https://www.googleapis.com/auth/gmail.readonly",
 		},

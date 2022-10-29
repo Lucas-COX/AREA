@@ -15,4 +15,5 @@ environment:
   - salt:
   - google_client_id:
   - google_client_secret:
+  - oauth_redirect_url:
   # - database_url:
