@@ -7,26 +7,29 @@ type Provider int
 const (
 	Google Provider = iota + 1
 	Discord
-	Spotify
+	Notion
 	Github
+	Microsoft
 )
 
 func (p Provider) String() string {
 	var stringMap = map[Provider]string{
-		Google:  "google",
-		Discord: "discord",
-		Spotify: "spotify",
-		Github:  "github",
+		Google:    "google",
+		Discord:   "discord",
+		Notion:    "notion",
+		Github:    "github",
+		Microsoft: "microsoft",
 	}
 	return stringMap[p]
 }
 
 func Parse(s string) (Provider, error) {
 	var providersMap = map[string]Provider{
-		"google":  Google,
-		"discord": Discord,
-		"spotify": Spotify,
-		"github":  Github,
+		"google":    Google,
+		"discord":   Discord,
+		"notion":    Notion,
+		"github":    Github,
+		"microsoft": Microsoft,
 	}
 	if p, ok := providersMap[s]; ok {
 		return p, nil
