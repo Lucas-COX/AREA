@@ -72,4 +72,5 @@ type UserBody struct {
 	GoogleLogged    bool            `json:"google_logged"`
 	MicrosoftLogged bool            `json:"microsoft_logged"`
 	GithubLogged    bool            `json:"github_logged"`
+	NotionLogged    bool            `json:"notion_logged"`
 }
