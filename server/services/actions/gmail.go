@@ -43,17 +43,17 @@ func CreateGmailConnection(refresh_token string) *gmail.Service {
 	return srv
 }
 
-func fetchLastMail(srv *gmail.Service) (*gmail.Message, error) {
+func fetchLastGmailReceive(srv *gmail.Service) *gmail.Message {
 	res, err := srv.Users.Messages.List("me").Q("label:Inbox").Do()
 	if err != nil {
-		log.Println(err.Error())
-		return nil, err
+		lib.LogError(err)
+		return nil
 	}
 
 	id := res.Messages[0].Id
 	res2, err := srv.Users.Messages.Get("me", id).Do()
 	lib.LogError(err)
-	return res2, nil
+	return res2
 }
 
 func fetchLastSent(srv *gmail.Service) (*gmail.Message, error) {
@@ -69,7 +69,7 @@ func fetchLastSent(srv *gmail.Service) (*gmail.Message, error) {
 	return res2, err
 }
 
-func compareMailData(newData models.TriggerData, oldData models.TriggerData, mail *gmail.Message, trigger *models.Trigger) bool {
+func compareGmailData(newData models.TriggerData, oldData models.TriggerData, mail *gmail.Message, trigger *models.Trigger) bool {
 	newData.Timestamp = time.UnixMilli(mail.InternalDate)
 	if trigger.Data == nil || oldData.Timestamp.Before(newData.Timestamp) {
 		newData.Description = mail.Snippet
@@ -99,7 +99,7 @@ func compareMailData(newData models.TriggerData, oldData models.TriggerData, mai
 func GmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var newData models.TriggerData
 	var storedData models.TriggerData
-	var mail, err = fetchLastMail(srv)
+	var mail = fetchLastGmailReceive(srv)
 	var buf bytes.Buffer
 
 	trigger, err := database.Trigger.GetById(triggerId, userId)
@@ -111,7 +111,7 @@ func GmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	if mail == nil {
 		return false
 	}
-	return compareMailData(newData, storedData, mail, trigger)
+	return compareGmailData(newData, storedData, mail, trigger)
 }
 
 func GmailSend(srv *gmail.Service, triggerId uint, userId uint) bool {
@@ -129,5 +129,5 @@ func GmailSend(srv *gmail.Service, triggerId uint, userId uint) bool {
 	if mail == nil {
 		return false
 	}
-	return compareMailData(newData, storedData, mail, trigger)
+	return compareGmailData(newData, storedData, mail, trigger)
 }
