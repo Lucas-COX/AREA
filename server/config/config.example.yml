@@ -19,5 +19,7 @@ environment:
   - microsoft_client_secret:
   - github_client_id:
   - github_client_secret:
+  - notion_client_id:
+  - notion_client_secret:
   - oauth_redirect_url:
   # - database_url:
