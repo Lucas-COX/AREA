@@ -11,11 +11,12 @@ const (
 
 type User struct {
 	gorm.Model
-	Username    string   `gorm:"not null;uniqueIndex"`
-	Password    string   `gorm:"not null"`
-	Role        UserRole `gorm:"default:member"`
-	Triggers    []Trigger
-	GoogleToken string
+	Username       string   `gorm:"not null;uniqueIndex"`
+	Password       string   `gorm:"not null"`
+	Role           UserRole `gorm:"default:member"`
+	Triggers       []Trigger
+	GoogleToken    string
+	MicrosoftToken string
 }
 
 func (u *User) TableName() string { return "users" }

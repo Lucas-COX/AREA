@@ -18,6 +18,8 @@ func ProviderLogin(w http.ResponseWriter, r *http.Request) {
 	switch provider {
 	case authentication.Google:
 		authentication.GoogleLogin(w, r)
+	case authentication.Microsoft:
+		authentication.MicrosoftLogin(w, r)
 	default:
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
 	}
@@ -32,7 +34,8 @@ func ProviderCallback(w http.ResponseWriter, r *http.Request) {
 	switch provider {
 	case authentication.Google:
 		authentication.GoogleCallback(w, r)
-		// break
+	case authentication.Microsoft:
+		authentication.MicrosoftCallback(w, r)
 	default:
 		lib.SendError(w, http.StatusBadRequest, "Invalid profiler")
 	}
