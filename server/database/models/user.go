@@ -18,6 +18,7 @@ type User struct {
 	GoogleToken    string
 	MicrosoftToken string
 	GithubToken    string
+	NotionToken    string
 }
 
 func (u *User) TableName() string { return "users" }

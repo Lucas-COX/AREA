@@ -22,6 +22,8 @@ func ProviderLogin(w http.ResponseWriter, r *http.Request) {
 		authentication.MicrosoftLogin(w, r)
 	case authentication.Github:
 		authentication.GithubLogin(w, r)
+	case authentication.Notion:
+		authentication.NotionLogin(w, r)
 	default:
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
 	}
@@ -40,6 +42,8 @@ func ProviderCallback(w http.ResponseWriter, r *http.Request) {
 		authentication.MicrosoftCallback(w, r)
 	case authentication.Github:
 		authentication.GithubCallback(w, r)
+	case authentication.Notion:
+		authentication.NotionCallback(w, r)
 	default:
 		lib.SendError(w, http.StatusBadRequest, "Invalid profiler")
 	}
