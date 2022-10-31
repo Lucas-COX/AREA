@@ -36,3 +36,32 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	lib.SetCookie(w, "area_token", resp.Token)
 	lib.SendJson(w, resp)
 }
+
+func LoginDone(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	w.Write([]byte(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Area</title>
+    <style>
+        .container {
+            width: 350px;
+    		height: 100px;
+    		position: absolute;
+			top:0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+
+			margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <p class="container">Successfully connected, you can close this page.</p>
+</body>
+</html>
+`))
+}
