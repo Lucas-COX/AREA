@@ -29,4 +29,5 @@ func UnprotectedRoutes(r chi.Router) {
 	r.Post("/register", handlers.Register)
 	r.Get("/providers/{provider}/callback", handlers.ProviderCallback)
 	r.Get("/logout", handlers.Logout)
+	r.Get("/login/done", handlers.LoginDone)
 }
