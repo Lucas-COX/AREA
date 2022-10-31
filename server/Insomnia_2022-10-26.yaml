@@ -1,0 +1,585 @@
+_type: export
+__export_format: 4
+__export_date: 2022-10-26T14:37:19.320Z
+__export_source: insomnia.desktop.app:v2022.6.0
+resources:
+  - _id: req_c38938a595594c12a5dffafb2c166756
+    parentId: fld_8ad76facb26046ae9dd42baf267166aa
+    modified: 1666082384346
+    created: 1666082355722
+    url: "{{ _.base_url }}/reactions"
+    name: Get All Reactions
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_69aeb567a2fa4e05a3feeed259ff9196
+        name: Authorization
+        value: Bearer
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0.oc4ScbFk73T0V5tDil1v8DJ6z-z8vJuOWFMmQjHfonw
+        description: ""
+    authentication: {}
+    metaSortKey: -1666082355722
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_8ad76facb26046ae9dd42baf267166aa
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1666082354568
+    created: 1666082354568
+    name: Reactions CRUD
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1666082354568
+    _type: request_group
+  - _id: wrk_b012a7cc8d824ce0a75814230143e8e1
+    parentId: null
+    modified: 1664281056153
+    created: 1664281056153
+    name: Area
+    description: ""
+    scope: design
+    _type: workspace
+  - _id: req_04e65d1626ee4c8c84fa0560364a753f
+    parentId: fld_ec5ccfb1ea354949901ba2e234bee297
+    modified: 1666082376397
+    created: 1666081892795
+    url: "{{ _.base_url }}/actions"
+    name: Get All Actions
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_beb300416f894584a8d832dc7ae070c5
+        name: Authorization
+        value: Bearer
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0.oc4ScbFk73T0V5tDil1v8DJ6z-z8vJuOWFMmQjHfonw
+        description: ""
+    authentication: {}
+    metaSortKey: -1666081892795
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_ec5ccfb1ea354949901ba2e234bee297
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1666081891182
+    created: 1666081891182
+    name: Actions CRUD
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1666081891182
+    _type: request_group
+  - _id: req_23c961aa9ba84cbb8bd16f02de85c059
+    parentId: fld_d0391bad13f34b5a97e9bb6194553d3c
+    modified: 1665587371754
+    created: 1664284374036
+    url: "{{ _.base_url }}/triggers?a=true"
+    name: Get all Triggers
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_20a517ecba2c416d90c650285dff3e4b
+        name: Authorization
+        value: Bearer
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0.oc4ScbFk73T0V5tDil1v8DJ6z-z8vJuOWFMmQjHfonw
+        description: ""
+    authentication: {}
+    metaSortKey: -1665336520643
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_d0391bad13f34b5a97e9bb6194553d3c
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1665584135722
+    created: 1665584135722
+    name: Trigger CRUD
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1665584135722
+    _type: request_group
+  - _id: req_c910445674f344fab8c792dde175bbdd
+    parentId: fld_d0391bad13f34b5a97e9bb6194553d3c
+    modified: 1666771735626
+    created: 1665586511739
+    url: "{{ _.base_url }}/triggers/2?a=true"
+    name: Get Trigger By Id
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_02aff460ea6e428ba55864de4fe488d5
+        name: Authorization
+        value: Bearer
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0.oc4ScbFk73T0V5tDil1v8DJ6z-z8vJuOWFMmQjHfonw
+        description: ""
+    authentication: {}
+    metaSortKey: -1665336520618
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_f009718e450044e29d9f7fbfbe3cd32b
+    parentId: fld_d0391bad13f34b5a97e9bb6194553d3c
+    modified: 1666795016450
+    created: 1665336520593
+    url: "{{ _.base_url }}/triggers"
+    name: Create Trigger
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"title": "Gmail send to discord send",
+        	"description": "Yeah",
+        	"action": "receive",
+        	"action_service": "gmail",
+        	"reaction": "receive",
+        	"reaction_service": "discord",
+        	"reaction_data": "https://discord.com/api/webhooks/1027238222302027967/fneiUiJk26J_f4CzB9in4GKE-sz9z7J1M1keiIOr0mzyJKiQLTOkFs99yz4qs9v4nuXd"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_e56ad6913d6f48e0aa0ad599234d487b
+      - id: pair_135c8ddc1e5548c68f9ef39ba538864e
+        name: Authorization
+        value: Bearer
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0.oc4ScbFk73T0V5tDil1v8DJ6z-z8vJuOWFMmQjHfonw
+        description: ""
+    authentication: {}
+    metaSortKey: -1665336520593
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_f84a0d64b9f84a82a7cc430573a29ba7
+    parentId: fld_d0391bad13f34b5a97e9bb6194553d3c
+    modified: 1666771586842
+    created: 1664956226024
+    url: http://localhost:8080/triggers/2
+    name: Update Trigger
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: >-
+        {
+
+        "reaction_data": "https://discord.com/api/webhooks/1027238222302027967/fneiUiJk26J_f4CzB9in4GKE-sz9z7J1M1keiIOr0mzyJKiQLTOkFs99yz4qs9v4nuXd"
+
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_2bfa5057b4854889bb20c9b6be4d4939
+      - id: pair_d88d2f3b02a345b193ada34259f280dc
+        name: Authorization
+        value: Bearer {{ _.test_token }}
+        description: ""
+    authentication: {}
+    metaSortKey: -1665336520543
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_8ffcaa60bfb749d19a1c629fee3165dc
+    parentId: fld_d0391bad13f34b5a97e9bb6194553d3c
+    modified: 1665584141731
+    created: 1665414522275
+    url: "{{ base_url }}/triggers/16"
+    name: Delete Trigger
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_31663eb6a5e7448d80fb4411e9b56c6b
+        name: Authorization
+        value: Bearer
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsInVzZXJuYW1lIjoidXNlcm5hbWU4In0._EKIjwZT1NhlYD7jHutgERiqmiGrdozuZ7cKfOpfwWI
+        description: ""
+    authentication: {}
+    metaSortKey: -1665336520493
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_aec573783f4b47f7b5e7b6bebdf69023
+    parentId: fld_9ca826d29f1c434e963997a36854b161
+    modified: 1666702133704
+    created: 1664641858392
+    url: "{{ _.base_url }}/register"
+    name: Register
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "Havok",
+        	"password": "Havok"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_feded495caaf4d02ad810a5a62d6067c
+    authentication: {}
+    metaSortKey: -1664376043715
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_9ca826d29f1c434e963997a36854b161
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1665585027930
+    created: 1664378871431
+    name: Authentication
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1665121345832.5
+    _type: request_group
+  - _id: req_42264df40e844285ab542cd753b49767
+    parentId: fld_9ca826d29f1c434e963997a36854b161
+    modified: 1666705215932
+    created: 1664376043565
+    url: "{{ _.base_url }}/login"
+    name: Login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "Havok",
+        	"password": "Havok"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_fd76a021f1c041d1a3d6fe27980d365c
+    authentication: {}
+    metaSortKey: -1664376043708.75
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_5fe144a1754f4ba09b5ffff6f090eedc
+    parentId: fld_9ca826d29f1c434e963997a36854b161
+    modified: 1665318149124
+    created: 1665318124057
+    url: "{{ _.base_url }}/logout"
+    name: Logout
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1664376043705.625
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_218e44238344492e802f46eb094f58b1
+    parentId: fld_9ca826d29f1c434e963997a36854b161
+    modified: 1666707095983
+    created: 1665073888447
+    url: http://localhost:8080/providers/google/auth?callback=aHR0cHM6Ly9nb29nbGUuY29t&api=aHR0cHM6Ly9hcmVlZWVlZWVhLmhlcm9rdWFwcC5jb20
+    name: Google Oauth
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_f4575634b13b4de99bf34347e1c0f8a2
+        name: Authorization
+        value: Bearer {{ _.test_token }}
+        description: ""
+    authentication: {}
+    metaSortKey: -1664376043702.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_b1daf781a6204ee997ba49a32f61d9df
+    parentId: fld_f8026c517e6f492a854199115fc58ec9
+    modified: 1664659210306
+    created: 1664659196039
+    url: "{{ _.base_url }}"
+    name: /
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1664284374086
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_f8026c517e6f492a854199115fc58ec9
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664658555943
+    created: 1664658555943
+    name: Miscallenous
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1664658555943
+    _type: request_group
+  - _id: req_9f5652eaabf54443bb498d2d54563af6
+    parentId: fld_f8026c517e6f492a854199115fc58ec9
+    modified: 1666626015369
+    created: 1664805983351
+    url: "{{ _.base_url }}/me"
+    name: Me
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - id: pair_4737f15776b444b098c8ea24de21106c
+        name: Authorization
+        value: Bearer
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJIYXZvayJ9.LheLsnApb-R-gDk_Ckxl-4HXVCan6yDwvvncjcYkmKg
+        description: ""
+    authentication: {}
+    metaSortKey: -1664284374061
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_ea2b50d853854ff0bc92f1791c4d9408
+    parentId: fld_f8026c517e6f492a854199115fc58ec9
+    modified: 1664658564673
+    created: 1664281064550
+    url: "{{ _.base_url }}/ping"
+    name: Heartbeat
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1664284374036
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_abc9fe4ff08d4464ac8e49610cc76ebc
+    parentId: fld_f8026c517e6f492a854199115fc58ec9
+    modified: 1664658560084
+    created: 1664646201794
+    url: "{{ _.base_url }}/toto"
+    name: Not found
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1664284373986
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_58357f115cd3203b0c66879644875ecf27656b77
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664281078218
+    created: 1664281056158
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: {}
+    color: null
+    isPrivate: false
+    metaSortKey: 1664281056158
+    _type: environment
+  - _id: jar_58357f115cd3203b0c66879644875ecf27656b77
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1666705206424
+    created: 1664281056162
+    name: Default Jar
+    cookies:
+      - key: area_token
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJIYXZvayJ9.LheLsnApb-R-gDk_Ckxl-4HXVCan6yDwvvncjcYkmKg
+        domain: localhost
+        path: /
+        httpOnly: true
+        hostOnly: true
+        pathIsDefault: true
+        creation: 2022-10-03T19:22:52.437Z
+        lastAccessed: 2022-10-25T13:40:06.423Z
+        id: "979560204818281"
+      - key: _gothic_session
+        value: MTY2NTA3NDY4MXxEdi1CQkFFQ180SUFBUkFCRUFBQV9nRzRfNElBQVFaemRISnBibWNNQ0FBR1oyOXZaMnhsQm5OMGNtbHVad3otQVpnQV9nR1VINHNJQUFBQUFBQUFfMHlSWFd2Yk1CUkFfNHRBYl9tUXJkVjJER0U0ZFR4Qy03STI2N1l5Q0lwOEhjdFZKRlc2VHBhT19mZmhKQzJEaXg2RU9PZEkta09LSHR0dkRfY2tKeTJpQ19sMEtxUzB2Y0V3MlZtNzB6Q1Jkai0xVXl0NmJPUHBzSDRXVWtJSUd6dzVtTnVtMGNyQXI1NnhPSkZhZ2NHTnF1ZEp4TmtzU205bVBJdkhTZHQxZ3I4ZWVKWWsyTG9RN1gyZkhDSS1jNmlTVDEwX0VjNjk2X29BWGxxRFlIQXdYN2dlYXVWQjRxYjNhajUwVWw3UXVLSnhwYTBVdXJVQktTOHlsakVhVjg3Ymc2ckJCeHBYRnlhTkt5bTAzZ3I1OHM0THpwb0FseXRJVzFfN2c3UU96b0x3WVRnZWo5YzA0VlFZbW1oY0RjOHc0UGRDNllrSFVWdWpUMWNHQ29UNXZUeHNWazg3M3p5bFVOM3lkaF9lX0xLRHgtNExiMHJfNDRhdnNxemRMaGFMM1MxZjNwV28wNV9GZHYxZGNURmpXSHkxajF3Vm9ubTFhV251bmhkVmVCdW45YW1ndktTOEpDTlNuSDlnYlZfQWtKeVFFWG1BeGtOb185dFpfbmJLUXlpUTVJUXhGbzNQczJZc1A4OHpHWkZWLVhILTd6OEFBQURfX3dFQUFQX19kY1ZWWndvQ0FBQT18YIyhJKJx8aUeNZ24xudID5jjBrJDkFFnHKfxCGL6lHo=
+        expires: 2022-11-05T16:44:41.000Z
+        maxAge: 2592000
+        domain: localhost
+        path: /
+        httpOnly: true
+        hostOnly: true
+        creation: 2022-10-06T16:39:20.578Z
+        lastAccessed: 2022-10-06T16:44:41.099Z
+        id: "583425470580037"
+      - key: __Host-GAPS
+        value: 1:5cmwHbvr0SumTWqVoYwsZH4KPhVL-g:hlTWSxSUtLpuxRXh
+        expires: 2024-10-05T16:44:40.000Z
+        domain: localhost
+        path: /
+        secure: true
+        httpOnly: true
+        extensions:
+          - Priority=HIGH
+        hostOnly: true
+        creation: 2022-10-06T16:39:20.578Z
+        lastAccessed: 2022-10-06T16:44:41.099Z
+        id: "8418169878974353"
+      - key: GEM
+        value: CgptaW51dGVtYWlkEK6pvfG6MA==
+        domain: localhost
+        path: /
+        secure: true
+        httpOnly: true
+        hostOnly: true
+        creation: 2022-10-06T16:39:20.578Z
+        lastAccessed: 2022-10-06T16:44:41.099Z
+        id: "13021449910516325"
+      - key: area_token
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsInVzZXJuYW1lIjoiWW8ifQ._12US5EySLrz2clb2tmInXAALGgJqdOlrH6uK5FgsxQ
+        domain: 167.71.52.187
+        path: /
+        httpOnly: true
+        hostOnly: true
+        pathIsDefault: true
+        creation: 2022-10-24T11:07:51.947Z
+        lastAccessed: 2022-10-24T11:07:51.947Z
+        id: "3711020545235719"
+      - key: area_token
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJIYXZvayJ9.CRLqu7noGXrfx6aruhB0Qv3ln72-L66shCx-pvVTqC4
+        domain: areeeeeeea.herokuapp.com
+        path: /
+        httpOnly: true
+        hostOnly: true
+        pathIsDefault: true
+        creation: 2022-10-24T13:57:18.833Z
+        lastAccessed: 2022-10-24T13:57:18.833Z
+        id: "5185278630437249"
+    _type: cookie_jar
+  - _id: spc_efe531e7214a49a9adda5d3880e2bbb0
+    parentId: wrk_b012a7cc8d824ce0a75814230143e8e1
+    modified: 1664281056154
+    created: 1664281056154
+    fileName: Area
+    contents: ""
+    contentType: yaml
+    _type: api_spec
+  - _id: env_57b725c2e89c4ce18a2948e3a96ae763
+    parentId: env_58357f115cd3203b0c66879644875ecf27656b77
+    modified: 1666619453179
+    created: 1664281081896
+    name: Area Prod
+    data:
+      base_url: https://areeeeeeea.herokuapp.com
+      test_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJ1c2VybmFtZSJ9.f5MGX7GNSu61jDYqDker5XHYTmo6qL9XoksZ8Tzh7fU
+    dataPropertyOrder:
+      "&":
+        - base_url
+        - test_token
+    color: "#a723d7"
+    isPrivate: false
+    metaSortKey: 1664281081896
+    _type: environment
+  - _id: env_45da4e320a3c45b7917a129acd38b7bb
+    parentId: env_58357f115cd3203b0c66879644875ecf27656b77
+    modified: 1666794958455
+    created: 1664824891192
+    name: Area Local
+    data:
+      base_url: http://localhost:8080
+      test_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJIYXZvayJ9.LheLsnApb-R-gDk_Ckxl-4HXVCan6yDwvvncjcYkmKg
+    dataPropertyOrder:
+      "&":
+        - base_url
+        - test_token
+    color: "#23e1c1"
+    isPrivate: false
+    metaSortKey: 1664824891192
+    _type: environment
