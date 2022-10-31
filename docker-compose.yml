@@ -1,26 +1,51 @@
-version: "3"
+version: "3.3"
 services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
   app_server:
     image: application_server
-    build: .
+    build:
+      context: server
+      dockerfile: dockerfile
     volumes:
-      - ./server
-    ports:
-      -8080:8080
+      - .:/server
     restart: always
   
   mobile_service:
     depends_on:
       - app_server
+    build:
+      context: mobile
+      dockerfile: dockerfile
     image: mobile
     volumes:
-      -./mobile
+      - .:/mobile
     restart: always
   
   web_service:
     depends_on:
       - app_server
     image: web
+    build:
+      context: web
+      dockerfile: Dockerfile
     volumes:
-      -./web
+      - .:/web
     restart: always
+
+volumes:
+  my-db:
+    driver: local
+  
