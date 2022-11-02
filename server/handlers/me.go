@@ -3,6 +3,7 @@ package handlers
 import (
 	"Area/database"
 	"Area/lib"
+	"Area/services"
 	"net/http"
 
 	"github.com/jinzhu/copier"
@@ -20,16 +21,16 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	copier.Copy(&resp.User, &user)
 
 	if user.GoogleToken != "" {
-		resp.User.GoogleLogged = true
+		resp.User.Services = append(resp.User.Services, services.Google.GetName())
 	}
 	if user.MicrosoftToken != "" {
-		resp.User.MicrosoftLogged = true
+		resp.User.Services = append(resp.User.Services, services.Microsoft.GetName())
 	}
 	if user.GithubToken != "" {
-		resp.User.GithubLogged = true
+		resp.User.Services = append(resp.User.Services, services.Github.GetName())
 	}
 	if user.NotionToken != "" {
-		resp.User.NotionLogged = true
+		resp.User.Services = append(resp.User.Services, services.Notion.GetName())
 	}
 	triggers, err := database.Trigger.Get(user.ID)
 	lib.CheckError(err)
