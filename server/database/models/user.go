@@ -19,6 +19,7 @@ type User struct {
 	MicrosoftToken string
 	GithubToken    string
 	NotionToken    string
+	DiscordEnabled bool
 }
 
 func (u *User) TableName() string { return "users" }
