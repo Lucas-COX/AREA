@@ -17,12 +17,12 @@ import (
 	"google.golang.org/api/option"
 )
 
-func CreateGmailConnection(refresh_token string) *gmail.Service {
+func CreateGoogleConnection(refresh_token string) *gmail.Service {
 	var conf = &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
 		Scopes: []string{
-			"https://www.googleapis.com/auth/gmail.readonly",
+			"https://www.googleapis.com/auth/google.readonly",
 		},
 		Endpoint: google.Endpoint,
 	}
@@ -56,7 +56,7 @@ func fetchLastGmailReceive(srv *gmail.Service) *gmail.Message {
 	return res2
 }
 
-func fetchLastSent(srv *gmail.Service) (*gmail.Message, error) {
+func fetchLastGmailSend(srv *gmail.Service) (*gmail.Message, error) {
 	res, err := srv.Users.Messages.List("me").Q("label:Sent").Do()
 	if err != nil {
 		log.Println(err.Error())
@@ -117,7 +117,7 @@ func GmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 func GmailSend(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var newData models.TriggerData
 	var storedData models.TriggerData
-	var mail, err = fetchLastSent(srv)
+	var mail, err = fetchLastGmailSend(srv)
 	var buf bytes.Buffer
 
 	trigger, err := database.Trigger.GetById(triggerId, userId)

@@ -14,12 +14,12 @@ import (
 	"golang.org/x/oauth2/microsoft"
 )
 
-type outlookService struct {
+type microsoftService struct {
 	actions   []Action
 	reactions []Reaction
 }
 
-func (*outlookService) Authenticate(callback string, userId uint) string {
+func (*microsoftService) Authenticate(callback string, userId uint) string {
 	var state OauthState
 
 	state.Callback = callback
@@ -41,7 +41,7 @@ func (*outlookService) Authenticate(callback string, userId uint) string {
 	return conf.AuthCodeURL(str, oauth2.AccessTypeOffline, oauth2.ApprovalForce)
 }
 
-func (*outlookService) AuthenticateCallback(base64State string, code string) (string, error) {
+func (*microsoftService) AuthenticateCallback(base64State string, code string) (string, error) {
 	var state OauthState
 
 	bytes, _ := base64.RawStdEncoding.DecodeString(base64State)
@@ -72,20 +72,20 @@ func (*outlookService) AuthenticateCallback(base64State string, code string) (st
 	return state.Callback, nil
 }
 
-func (outlook *outlookService) GetActions() []Action {
-	return outlook.actions
+func (microsoft *microsoftService) GetActions() []Action {
+	return microsoft.actions
 }
 
-func (outlook *outlookService) GetReactions() []Reaction {
-	return outlook.reactions
+func (microsoft *microsoftService) GetReactions() []Reaction {
+	return microsoft.reactions
 }
 
-func (outlook *outlookService) GetName() string {
-	return "outlook"
+func (microsoft *microsoftService) GetName() string {
+	return "microsoft"
 }
 
-func (*outlookService) Check(action string, trigger models.Trigger) bool {
-	// var srv = actions.CreateOutlookConnection(trigger.User.MicrosoftToken)
+func (*microsoftService) Check(action string, trigger models.Trigger) bool {
+	// var srv = actions.CreateMicrosoftConnection(trigger.User.MicrosoftToken)
 	// if srv == nil {
 	// 	return false
 	// }
@@ -96,19 +96,19 @@ func (*outlookService) Check(action string, trigger models.Trigger) bool {
 	return false
 }
 
-func (*outlookService) React(reaction string, trigger models.Trigger) {
+func (*microsoftService) React(reaction string, trigger models.Trigger) {
 }
 
-func (outlook *outlookService) ToJson() JsonService {
+func (microsoft *microsoftService) ToJson() JsonService {
 	return JsonService{
-		Name:      outlook.GetName(),
-		Actions:   outlook.GetActions(),
-		Reactions: outlook.GetReactions(),
+		Name:      microsoft.GetName(),
+		Actions:   microsoft.GetActions(),
+		Reactions: microsoft.GetReactions(),
 	}
 }
 
-func NewOutlookService() *outlookService {
-	return &outlookService{
+func NewMicrosoftService() *microsoftService {
+	return &microsoftService{
 		actions: []Action{
 			{Name: "receive", Description: "When the user receives an email"},
 		},
