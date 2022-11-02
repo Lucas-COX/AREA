@@ -31,7 +31,7 @@ func (*googleService) Authenticate(callback string, userId uint) string {
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
 		RedirectURL:  os.Getenv("OAUTH_REDIRECT_URL") + "/providers/google/callback",
 		Scopes: []string{
-			"https://www.googleapis.com/auth/google.readonly",
+			"https://www.googleapis.com/auth/gmail.readonly",
 		},
 		Endpoint: google.Endpoint,
 	}
@@ -58,7 +58,7 @@ func (*googleService) AuthenticateCallback(base64State string, code string) (str
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
 		RedirectURL:  os.Getenv("OAUTH_REDIRECT_URL") + "/providers/google/callback",
 		Scopes: []string{
-			"https://www.googleapis.com/auth/google.readonly",
+			"https://www.googleapis.com/auth/gmail.readonly",
 		},
 		Endpoint: google.Endpoint,
 	}
