@@ -1,8 +1,11 @@
 API
 ===
 
+.. _api:
 .. autosummary::
    :toctree: generated
+
+
 
 Le principe du projet Area est de réaliser des action et reaction sur des services choisie.
 Pour ce faire nous avons selectionner certain api qui sont répértorier ci-dessous.
