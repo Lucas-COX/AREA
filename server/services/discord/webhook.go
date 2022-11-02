@@ -1,4 +1,4 @@
-package reactions
+package discord
 
 import (
 	"Area/database/models"
@@ -7,7 +7,7 @@ import (
 	"github.com/gtuk/discordwebhook"
 )
 
-func SendDiscordMessage(storedData models.TriggerData, action string, service string) {
+func sendMessage(storedData models.TriggerData, action string, service string) {
 	var username = "Area"
 	var title = "New " + string(action) + " in " + string(service)
 	var color = "1668818"

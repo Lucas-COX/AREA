@@ -1,9 +1,10 @@
-package services
+package github
 
 import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
+	"Area/services/types"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -15,12 +16,12 @@ import (
 )
 
 type githubService struct {
-	actions   []Action
-	reactions []Reaction
+	actions   []types.Action
+	reactions []types.Reaction
 }
 
 func (*githubService) Authenticate(callback string, userId uint) string {
-	var state OauthState
+	var state types.OauthState
 
 	state.Callback = callback
 	state.UserId = userId
@@ -40,7 +41,7 @@ func (*githubService) Authenticate(callback string, userId uint) string {
 }
 
 func (*githubService) AuthenticateCallback(base64State string, code string) (string, error) {
-	var state OauthState
+	var state types.OauthState
 
 	bytes, _ := base64.RawStdEncoding.DecodeString(base64State)
 	err := json.Unmarshal(bytes, &state)
@@ -68,11 +69,11 @@ func (*githubService) AuthenticateCallback(base64State string, code string) (str
 	return state.Callback, nil
 }
 
-func (gh *githubService) GetActions() []Action {
+func (gh *githubService) GetActions() []types.Action {
 	return gh.actions
 }
 
-func (gh *githubService) GetReactions() []Reaction {
+func (gh *githubService) GetReactions() []types.Reaction {
 	return gh.reactions
 }
 
@@ -87,17 +88,17 @@ func (*githubService) Check(action string, trigger models.Trigger) bool {
 func (*githubService) React(reaction string, trigger models.Trigger) {
 }
 
-func (gh *githubService) ToJson() JsonService {
-	return JsonService{
+func (gh *githubService) ToJson() types.JsonService {
+	return types.JsonService{
 		Name:      gh.GetName(),
 		Actions:   gh.GetActions(),
 		Reactions: gh.GetReactions(),
 	}
 }
 
-func NewGithubService() *githubService {
+func New() *githubService {
 	return &githubService{
-		actions:   []Action{},
-		reactions: []Reaction{},
+		actions:   []types.Action{},
+		reactions: []types.Reaction{},
 	}
 }

@@ -1,9 +1,10 @@
-package services
+package microsoft
 
 import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
+	"Area/services/types"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -15,12 +16,12 @@ import (
 )
 
 type microsoftService struct {
-	actions   []Action
-	reactions []Reaction
+	actions   []types.Action
+	reactions []types.Reaction
 }
 
 func (*microsoftService) Authenticate(callback string, userId uint) string {
-	var state OauthState
+	var state types.OauthState
 
 	state.Callback = callback
 	state.UserId = userId
@@ -42,7 +43,7 @@ func (*microsoftService) Authenticate(callback string, userId uint) string {
 }
 
 func (*microsoftService) AuthenticateCallback(base64State string, code string) (string, error) {
-	var state OauthState
+	var state types.OauthState
 
 	bytes, _ := base64.RawStdEncoding.DecodeString(base64State)
 	err := json.Unmarshal(bytes, &state)
@@ -72,11 +73,11 @@ func (*microsoftService) AuthenticateCallback(base64State string, code string) (
 	return state.Callback, nil
 }
 
-func (microsoft *microsoftService) GetActions() []Action {
+func (microsoft *microsoftService) GetActions() []types.Action {
 	return microsoft.actions
 }
 
-func (microsoft *microsoftService) GetReactions() []Reaction {
+func (microsoft *microsoftService) GetReactions() []types.Reaction {
 	return microsoft.reactions
 }
 
@@ -99,19 +100,19 @@ func (*microsoftService) Check(action string, trigger models.Trigger) bool {
 func (*microsoftService) React(reaction string, trigger models.Trigger) {
 }
 
-func (microsoft *microsoftService) ToJson() JsonService {
-	return JsonService{
+func (microsoft *microsoftService) ToJson() types.JsonService {
+	return types.JsonService{
 		Name:      microsoft.GetName(),
 		Actions:   microsoft.GetActions(),
 		Reactions: microsoft.GetReactions(),
 	}
 }
 
-func NewMicrosoftService() *microsoftService {
+func New() *microsoftService {
 	return &microsoftService{
-		actions: []Action{
+		actions: []types.Action{
 			{Name: "receive", Description: "When the user receives an email"},
 		},
-		reactions: []Reaction{},
+		reactions: []types.Reaction{},
 	}
 }
