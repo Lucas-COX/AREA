@@ -21,6 +21,18 @@ Le back-end est Architecturer de la manière suivante :
 Front-web
 ---------
 
+front web:
 
-Front-mobile
+.. image:: images/front-web.png
+    :width: 400
+
+
+Front mobile
 ------------
+
+
+front mobile:
+
+.. image:: images/front-mobile.png
+    :width: 400
+    :alt: Alternative text
