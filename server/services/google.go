@@ -15,12 +15,12 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
-type gmailService struct {
+type googleService struct {
 	actions   []Action
 	reactions []Reaction
 }
 
-func (*gmailService) Authenticate(callback string, userId uint) string {
+func (*googleService) Authenticate(callback string, userId uint) string {
 	var state OauthState
 
 	state.Callback = callback
@@ -31,7 +31,7 @@ func (*gmailService) Authenticate(callback string, userId uint) string {
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
 		RedirectURL:  os.Getenv("OAUTH_REDIRECT_URL") + "/providers/google/callback",
 		Scopes: []string{
-			"https://www.googleapis.com/auth/gmail.readonly",
+			"https://www.googleapis.com/auth/google.readonly",
 		},
 		Endpoint: google.Endpoint,
 	}
@@ -40,7 +40,7 @@ func (*gmailService) Authenticate(callback string, userId uint) string {
 	return conf.AuthCodeURL(str, oauth2.AccessTypeOffline, oauth2.ApprovalForce)
 }
 
-func (*gmailService) AuthenticateCallback(base64State string, code string) (string, error) {
+func (*googleService) AuthenticateCallback(base64State string, code string) (string, error) {
 	var state OauthState
 
 	bytes, _ := base64.RawStdEncoding.DecodeString(base64State)
@@ -58,7 +58,7 @@ func (*gmailService) AuthenticateCallback(base64State string, code string) (stri
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
 		RedirectURL:  os.Getenv("OAUTH_REDIRECT_URL") + "/providers/google/callback",
 		Scopes: []string{
-			"https://www.googleapis.com/auth/gmail.readonly",
+			"https://www.googleapis.com/auth/google.readonly",
 		},
 		Endpoint: google.Endpoint,
 	}
@@ -69,20 +69,20 @@ func (*gmailService) AuthenticateCallback(base64State string, code string) (stri
 	return state.Callback, nil
 }
 
-func (gmail *gmailService) GetActions() []Action {
-	return gmail.actions
+func (google *googleService) GetActions() []Action {
+	return google.actions
 }
 
-func (gmail *gmailService) GetReactions() []Reaction {
-	return gmail.reactions
+func (google *googleService) GetReactions() []Reaction {
+	return google.reactions
 }
 
-func (gmail *gmailService) GetName() string {
-	return "gmail"
+func (google *googleService) GetName() string {
+	return "google"
 }
 
-func (*gmailService) Check(action string, trigger models.Trigger) bool {
-	var srv = actions.CreateGmailConnection(trigger.User.GoogleToken)
+func (*googleService) Check(action string, trigger models.Trigger) bool {
+	var srv = actions.CreateGoogleConnection(trigger.User.GoogleToken)
 	if srv == nil {
 		return false
 	}
@@ -95,22 +95,22 @@ func (*gmailService) Check(action string, trigger models.Trigger) bool {
 	return false
 }
 
-func (*gmailService) React(reaction string, trigger models.Trigger) {
+func (*googleService) React(reaction string, trigger models.Trigger) {
 }
 
-func (gmail *gmailService) ToJson() JsonService {
+func (google *googleService) ToJson() JsonService {
 	return JsonService{
-		Name:      gmail.GetName(),
-		Actions:   gmail.GetActions(),
-		Reactions: gmail.GetReactions(),
+		Name:      google.GetName(),
+		Actions:   google.GetActions(),
+		Reactions: google.GetReactions(),
 	}
 }
 
-func NewGmailService() *gmailService {
-	return &gmailService{
+func NewGoogleService() *googleService {
+	return &googleService{
 		actions: []Action{
-			{Name: "receive", Description: "When the user receives an email"},
-			{Name: "send", Description: "When the user sends an email"},
+			{Name: "receive", Description: "When the user receives an email on gmail"},
+			{Name: "send", Description: "When the user sends an email with gmail"},
 		},
 		reactions: []Reaction{},
 	}

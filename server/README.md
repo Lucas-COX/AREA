@@ -1,8 +1,8 @@
 # Area backend
 
 Handled Actions :
-- Gmail mail received
-- Gmail mail sent
+- Google mail received
+- Google mail sent
 
 Handled Reactions :
 - Discord message send

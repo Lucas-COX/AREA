@@ -22,7 +22,7 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res.Url = services.Gmail.Authenticate(string(callbackUrl), user.ID)
+	res.Url = services.Google.Authenticate(string(callbackUrl), user.ID)
 
 	lib.SendJson(w, res)
 }
@@ -41,7 +41,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	url, err := services.Gmail.AuthenticateCallback(state, code)
+	url, err := services.Google.AuthenticateCallback(state, code)
 	if err != nil {
 		lib.SendError(w, http.StatusBadRequest, err.Error())
 		return

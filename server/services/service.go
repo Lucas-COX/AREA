@@ -34,15 +34,15 @@ type JsonService struct {
 	Reactions []Reaction `json:"reactions"`
 }
 
-var Gmail Service = NewGmailService()
+var Google Service = NewGoogleService()
 var Discord Service = NewDiscordService()
-var Outlook Service = NewOutlookService()
+var Microsoft Service = NewMicrosoftService()
 var Github Service = NewGithubService()
 var Notion Service = NewNotionService()
 
 func Get() []Service {
 	var result = []Service{
-		Gmail,
+		Google,
 		Discord,
 	}
 	return result

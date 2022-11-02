@@ -27,7 +27,7 @@ package actions
 // 	return t.token, nil
 // }
 
-// func CreateOutlookConnection(refresh_token string) *msgraphsdkgo.GraphServiceClient {
+// func CreateMicrosoftConnection(refresh_token string) *msgraphsdkgo.GraphServiceClient {
 // 	conf := &oauth2.Config{
 // 		ClientID:     os.Getenv("MICROSOFT_CLIENT_ID"),
 // 		ClientSecret: os.Getenv("MICROSOFT_CLIENT_SECRET"),
@@ -57,7 +57,7 @@ package actions
 // func fetchLastOutlookReceive(srv *msgraphsdkgo.GraphServiceClient) *models.Messageable {
 // 	options := messages.MessagesRequestBuilderGetRequestConfiguration{
 // 		Headers: map[string]string{
-// 			"Prefer": "outlook.body-content-type=\"text\"",
+// 			"Prefer": "microsoft.body-content-type=\"text\"",
 // 		},
 // 		QueryParameters: &messages.MessagesRequestBuilderGetQueryParameters{
 // 			Select: []string{"body", "sender", "subject"},
@@ -65,7 +65,7 @@ package actions
 // 	}
 // 	itemOptions := item.MessageItemRequestBuilderGetRequestConfiguration{
 // 		Headers: map[string]string{
-// 			"Prefer": "outlook.body-content-type=\"text\"",
+// 			"Prefer": "microsoft.body-content-type=\"text\"",
 // 		},
 // 		QueryParameters: &item.MessageItemRequestBuilderGetQueryParameters{
 // 			Select: []string{"body", "sender", "subject", "bodyPreview", "receivedDateTime"},
@@ -109,7 +109,7 @@ package actions
 // func OutlookReceive(srv *msgraphsdkgo.GraphServiceClient, triggerId uint, userId uint) bool {
 // 	var newData m.TriggerData
 // 	var storedData m.TriggerData
-// 	var mail = fetchLastOutlookReceive(srv)
+// 	var mail = fetchLastMicrosoftReceive(srv)
 // 	var buf bytes.Buffer
 
 // 	trigger, err := database.Trigger.GetById(triggerId, userId)
@@ -120,5 +120,5 @@ package actions
 // 	if mail == nil {
 // 		return false
 // 	}
-// 	return compareOutlookData(newData, storedData, *mail, trigger)
+// 	return compareMicrosoftData(newData, storedData, *mail, trigger)
 // }

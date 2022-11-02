@@ -45,8 +45,8 @@ func New(config *c.Config) *gorm.DB {
 func Seed(db *gorm.DB) {
 	// var actions = []models.Action{
 	// 	{Type: models.NoneAction, Event: models.NoneEvent},
-	// 	{Type: models.GmailAction, Event: models.ReceiveEvent},
-	// 	{Type: models.GmailAction, Event: models.SendEvent},
+	// 	{Type: models.GoogleAction, Event: models.ReceiveEvent},
+	// 	{Type: models.GoogleAction, Event: models.SendEvent},
 	// }
 	// var reactions = []models.Reaction{
 	// 	{Type: models.NoneReaction, Action: models.NoneReactionAction},
