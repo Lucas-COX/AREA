@@ -25,7 +25,7 @@ This software suite will be broken into three parts :
 .. toctree::
 
    usage
-   api
    details
+   api
    architecture
 
