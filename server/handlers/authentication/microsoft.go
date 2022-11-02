@@ -18,7 +18,7 @@ func MicrosoftLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res.Url = services.Outlook.Authenticate(string(callbackUrl), user.ID)
+	res.Url = services.Microsoft.Authenticate(string(callbackUrl), user.ID)
 
 	lib.SendJson(w, res)
 }
@@ -37,7 +37,7 @@ func MicrosoftCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	url, err := services.Outlook.AuthenticateCallback(state, code)
+	url, err := services.Microsoft.AuthenticateCallback(state, code)
 	if err != nil {
 		lib.SendError(w, http.StatusBadRequest, err.Error())
 		return
