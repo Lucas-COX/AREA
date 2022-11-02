@@ -24,6 +24,8 @@ func ProviderLogin(w http.ResponseWriter, r *http.Request) {
 		authentication.GithubLogin(w, r)
 	case authentication.Notion:
 		authentication.NotionLogin(w, r)
+	case authentication.Discord:
+		authentication.DiscordLogin(w, r)
 	default:
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
 	}
