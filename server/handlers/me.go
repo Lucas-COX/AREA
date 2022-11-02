@@ -20,6 +20,7 @@ func Me(w http.ResponseWriter, r *http.Request) {
 
 	copier.Copy(&resp.User, &user)
 
+	resp.User.Services = []string{}
 	if user.GoogleToken != "" {
 		resp.User.Services = append(resp.User.Services, services.Google.GetName())
 	}

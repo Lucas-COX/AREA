@@ -46,3 +46,13 @@ func MicrosoftCallback(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Location", url)
 	w.WriteHeader(http.StatusPermanentRedirect)
 }
+
+func MicrosoftLogout(w http.ResponseWriter, r *http.Request) {
+	user, err := database.User.GetFromContext(r.Context())
+
+	lib.CheckError(err)
+	user.MicrosoftToken = ""
+	_, err = database.User.Update(*user)
+	lib.CheckError(err)
+	lib.SendJson(w, InfoResponse{Message: "OK"})
+}
