@@ -32,6 +32,9 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	if user.NotionToken != "" {
 		resp.User.Services = append(resp.User.Services, services.Notion.GetName())
 	}
+	if user.DiscordEnabled {
+		resp.User.Services = append(resp.User.Services, services.Discord.GetName())
+	}
 	triggers, err := database.Trigger.Get(user.ID)
 	lib.CheckError(err)
 
