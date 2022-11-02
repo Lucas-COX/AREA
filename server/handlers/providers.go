@@ -50,3 +50,24 @@ func ProviderCallback(w http.ResponseWriter, r *http.Request) {
 		lib.SendError(w, http.StatusBadRequest, "Invalid profiler")
 	}
 }
+
+func ProviderLogout(w http.ResponseWriter, r *http.Request) {
+	provider, err := authentication.Parse(chi.URLParam(r, "provider"))
+
+	if err != nil {
+		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
+	}
+
+	switch provider {
+	case authentication.Google:
+		authentication.GoogleLogout(w, r)
+	case authentication.Microsoft:
+		authentication.MicrosoftLogout(w, r)
+	case authentication.Github:
+		authentication.GithubLogout(w, r)
+	case authentication.Notion:
+		authentication.NotionLogout(w, r)
+	case authentication.Discord:
+		authentication.DiscordLogout(w, r)
+	}
+}
