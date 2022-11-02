@@ -4,7 +4,6 @@ import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
-	"Area/services/actions"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -86,14 +85,14 @@ func (outlook *outlookService) GetName() string {
 }
 
 func (*outlookService) Check(action string, trigger models.Trigger) bool {
-	var srv = actions.CreateOutlookConnection(trigger.User.MicrosoftToken)
-	if srv == nil {
-		return false
-	}
-	switch action {
-	case "receive":
-		return actions.OutlookReceive(srv, trigger.ID, trigger.UserID)
-	}
+	// var srv = actions.CreateOutlookConnection(trigger.User.MicrosoftToken)
+	// if srv == nil {
+	// 	return false
+	// }
+	// switch action {
+	// case "receive":
+	// 	return actions.OutlookReceive(srv, trigger.ID, trigger.UserID)
+	// }
 	return false
 }
 
