@@ -157,10 +157,10 @@ resources:
       mimeType: application/json
       text: >-
         {
-        	"title": "Gmail send to discord send",
+        	"title": "Google send to discord send",
         	"description": "Yeah",
         	"action": "receive",
-        	"action_service": "gmail",
+        	"action_service": "google",
         	"reaction": "receive",
         	"reaction_service": "discord",
         	"reaction_data": "https://discord.com/api/webhooks/1027238222302027967/fneiUiJk26J_f4CzB9in4GKE-sz9z7J1M1keiIOr0mzyJKiQLTOkFs99yz4qs9v4nuXd"

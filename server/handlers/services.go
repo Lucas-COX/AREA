@@ -13,9 +13,9 @@ type servicesResponse struct {
 func GetServices(w http.ResponseWriter, r *http.Request) {
 	var resp servicesResponse
 	resp.Services = []services.JsonService{
-		services.Gmail.ToJson(),
+		services.Google.ToJson(),
 		services.Discord.ToJson(),
-		services.Outlook.ToJson(),
+		services.Microsoft.ToJson(),
 		services.Github.ToJson(),
 		services.Notion.ToJson(),
 	}
