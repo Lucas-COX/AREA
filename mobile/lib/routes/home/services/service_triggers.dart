@@ -6,61 +6,38 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TriggerReactionBody {
-  String type;
-  String action;
-  String token;
-
-  TriggerReactionBody(
-      {required this.type, required this.action, required this.token});
-
-  Map<String, dynamic> toJson() {
-    return {
-      'type': type,
-      'action': action,
-      'token': token,
-    };
-  }
-}
-
-class TriggerActionBody {
-  String type;
-  String event;
-  String token;
-
-  TriggerActionBody(
-      {required this.type, required this.event, required this.token});
-
-  Map<String, dynamic> toJson() => {
-        'type': type,
-        'event': event,
-        'token': token,
-      };
-}
-
 class TriggerBody {
   String title;
   String description;
-  num actionId;
-  num reactionId;
   String reactionData;
   String actionData;
+  String action;
+  String reaction;
+  String actionService;
+  String reactionService;
+  bool active;
 
   TriggerBody(
       {required this.title,
       required this.description,
-      required this.actionId,
-      required this.reactionId,
       required this.actionData,
-      required this.reactionData});
+      required this.reactionData,
+      required this.action,
+      required this.reaction,
+      required this.actionService,
+      required this.reactionService,
+      required this.active});
 
   Map<String, dynamic> toJson() => {
         'title': title,
         'description': description,
-        'action_id': actionId,
-        'reaction_id': reactionId,
         'action_data': actionData,
         'reaction_data': reactionData,
+        'action': action,
+        'reaction': reaction,
+        'action_service': actionService,
+        'reaction_service': reactionService,
+        'active': active,
       };
 }
 
@@ -72,10 +49,14 @@ class TriggersService {
     final TriggerBody triggerBody = TriggerBody(
         title: "New trigger",
         description: "",
-        actionId: 1,
-        reactionId: 1,
         actionData: "",
-        reactionData: "");
+        reactionData: "",
+        action: "receive",
+        reaction: "receive",
+        actionService: "gmail",
+        reactionService: "discord",
+        active: true);
+
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('area_token');
@@ -87,7 +68,6 @@ class TriggersService {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(triggerBody.toJson()));
-      debugPrint('Response status: ${response.statusCode}');
       debugPrint('Response body: ${response.body}');
       completer.complete(response);
     } catch (e) {
@@ -105,8 +85,6 @@ class TriggersService {
           .delete(Uri.parse('$url/triggers/$id'), headers: <String, String>{
         'Authorization': 'Bearer $token',
       });
-      debugPrint('Response status: ${response.statusCode}');
-      debugPrint('Response body: ${response.body}');
       completer.complete(response);
     } catch (e) {
       completer.completeError(e);
@@ -125,8 +103,24 @@ class TriggersService {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(triggerBody.toJson()));
-      debugPrint('Response status: ${response.statusCode}');
-      debugPrint('Response body: ${response.body}');
+      completer.complete(response);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  static Future update(TriggerBody trigger, num id) async {
+    var completer = Completer();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('area_token');
+      final response = await http.put(Uri.parse('$url/triggers/$id'),
+          headers: <String, String>{
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(trigger.toJson()));
       completer.complete(response);
     } catch (e) {
       completer.completeError(e);

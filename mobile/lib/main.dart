@@ -3,6 +3,7 @@ import 'routes/register/register.dart';
 import 'routes/login/login.dart';
 import 'routes/home/home.dart';
 import 'routes/home/edit_card.dart';
+import 'routes/services/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterPage(),
         '/edit': (context) => const EditCard(
               title: '',
+            ),
+        '/services': (context) => const ServicesPage(
+              title: 'Services',
             ),
       },
     );

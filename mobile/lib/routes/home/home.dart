@@ -28,7 +28,6 @@ class _HomePageState extends State<HomePage> {
             ))));
           }
           final session = snapshot.data;
-          print(session);
           if (session?.isLoggedIn != null && !(session?.isLoggedIn ?? false)) {
             return AccueilPage(title: widget.title);
           }
@@ -72,14 +71,25 @@ class _HomePageState extends State<HomePage> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                Switch(
+                                  value: triggers?[index].active,
+                                  onChanged: (value) async {
+                                    setState(() {
+                                      if (value == true) {
+                                        triggers?[index].active = true;
+                                      } else {
+                                        triggers?[index].active = false;
+                                      }
+                                    });
+                                    await TriggersService.update(
+                                        triggers?[index].toTriggerBody(),
+                                        triggers?[index].id);
+                                  },
+                                ),
                                 IconButton(
                                     onPressed: () async {
-                                      final response =
-                                          await TriggersService.delete(
-                                              triggers?[index].id);
-                                      debugPrint('index = $index');
-                                      debugPrint(
-                                          'response = ${response.statusCode}');
+                                      await TriggersService.delete(
+                                          triggers?[index].id);
                                       setState(() {
                                         triggers?.removeAt(index);
                                       });
@@ -120,6 +130,15 @@ Widget headerWidget(BuildContext context, final session) {
           ),
         ),
         const SizedBox(height: 50),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: const Color.fromRGBO(235, 94, 40, 1)),
+            onPressed: () {
+              Navigator.pushNamed(context, '/services');
+            },
+            child: const Text('Connect to your services',
+                style: TextStyle(color: Colors.white))),
+        const SizedBox(height: 10),
         const Text(
           'Create your trigger',
           style: TextStyle(
@@ -128,7 +147,7 @@ Widget headerWidget(BuildContext context, final session) {
             color: Color.fromRGBO(37, 36, 34, 1),
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 10),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,

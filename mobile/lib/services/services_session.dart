@@ -9,43 +9,55 @@ class Trigger {
   num id;
   String title;
   String description;
-  num actionId;
-  num reactionId;
   String createdAt;
   String updatedAt;
   String reactionData;
   String actionData;
+  String action;
+  String reaction;
+  String actionService;
+  String reactionService;
+  bool active;
 
   Trigger(
       {required this.id,
       required this.title,
       required this.description,
-      required this.actionId,
-      required this.reactionId,
       required this.createdAt,
       required this.updatedAt,
       required this.reactionData,
-      required this.actionData});
+      required this.actionData,
+      required this.action,
+      required this.reaction,
+      required this.actionService,
+      required this.reactionService,
+      required this.active});
 
   Trigger.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title'],
         description = json['description'],
-        actionId = json['action_id'],
-        reactionId = json['reaction_id'],
         createdAt = json['created_at'],
         updatedAt = json['updated_at'],
         reactionData = json['reaction_data'],
-        actionData = json['action_data'];
+        actionData = json['action_data'],
+        action = json['action'],
+        reaction = json['reaction'],
+        actionService = json['action_service'],
+        reactionService = json['reaction_service'],
+        active = json['active'];
 
   TriggerBody toTriggerBody() {
     return TriggerBody(
         title: title,
         description: description,
-        actionId: actionId,
-        reactionId: reactionId,
         actionData: actionData,
-        reactionData: reactionData);
+        reactionData: reactionData,
+        action: action,
+        reaction: reaction,
+        actionService: actionService,
+        reactionService: reactionService,
+        active: active);
   }
 }
 

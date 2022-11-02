@@ -10,12 +10,9 @@ class Openwindow {
     var completer = Completer();
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('area_token');
-    const apiUrl = String.fromEnvironment('API_URL');
     Codec<String, String> stringToBase64Url = utf8.fuse(base64Url);
-    var encoded = stringToBase64Url.encode(apiUrl);
-    encoded = encoded.substring(0, encoded.length - 1);
     String url =
-        '${const String.fromEnvironment('API_URL')}/providers/google/auth?callback=${stringToBase64Url.encode('https://google.com')}&api=$encoded';
+        '${const String.fromEnvironment('API_URL')}/providers/google/auth?callback=${stringToBase64Url.encode('https://google.com')}';
     if (token != null) {
       try {
         debugPrint(url);
@@ -23,8 +20,6 @@ class Openwindow {
             await http.get(Uri.parse(url), headers: <String, String>{
           'Authorization': 'Bearer $token',
         });
-        debugPrint('Response status: ${response.statusCode}');
-        debugPrint('Response body: ${response.body}');
         completer.complete(jsonDecode(response.body));
       } catch (e) {
         debugPrint(e.toString());
