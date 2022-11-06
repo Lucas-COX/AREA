@@ -1,4 +1,4 @@
-package actions
+package google
 
 import (
 	"Area/database"
@@ -17,7 +17,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func CreateGoogleConnection(refresh_token string) *gmail.Service {
+func createGoogleConnection(refresh_token string) *gmail.Service {
 	var conf = &oauth2.Config{
 		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
@@ -96,7 +96,7 @@ func compareGmailData(newData models.TriggerData, oldData models.TriggerData, ma
 	return false
 }
 
-func GmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
+func checkGmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var newData models.TriggerData
 	var storedData models.TriggerData
 	var mail = fetchLastGmailReceive(srv)
@@ -114,7 +114,7 @@ func GmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	return compareGmailData(newData, storedData, mail, trigger)
 }
 
-func GmailSend(srv *gmail.Service, triggerId uint, userId uint) bool {
+func checkGmailSend(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var newData models.TriggerData
 	var storedData models.TriggerData
 	var mail, err = fetchLastGmailSend(srv)

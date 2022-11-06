@@ -1,10 +1,10 @@
-package services
+package google
 
 import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
-	"Area/services/actions"
+	"Area/services/types"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -16,12 +16,12 @@ import (
 )
 
 type googleService struct {
-	actions   []Action
-	reactions []Reaction
+	actions   []types.Action
+	reactions []types.Reaction
 }
 
 func (*googleService) Authenticate(callback string, userId uint) string {
-	var state OauthState
+	var state types.OauthState
 
 	state.Callback = callback
 	state.UserId = userId
@@ -41,7 +41,7 @@ func (*googleService) Authenticate(callback string, userId uint) string {
 }
 
 func (*googleService) AuthenticateCallback(base64State string, code string) (string, error) {
-	var state OauthState
+	var state types.OauthState
 
 	bytes, _ := base64.RawStdEncoding.DecodeString(base64State)
 	err := json.Unmarshal(bytes, &state)
@@ -69,11 +69,11 @@ func (*googleService) AuthenticateCallback(base64State string, code string) (str
 	return state.Callback, nil
 }
 
-func (google *googleService) GetActions() []Action {
+func (google *googleService) GetActions() []types.Action {
 	return google.actions
 }
 
-func (google *googleService) GetReactions() []Reaction {
+func (google *googleService) GetReactions() []types.Reaction {
 	return google.reactions
 }
 
@@ -82,15 +82,15 @@ func (google *googleService) GetName() string {
 }
 
 func (*googleService) Check(action string, trigger models.Trigger) bool {
-	var srv = actions.CreateGoogleConnection(trigger.User.GoogleToken)
+	var srv = createGoogleConnection(trigger.User.GoogleToken)
 	if srv == nil {
 		return false
 	}
 	switch action {
 	case "receive":
-		return actions.GmailReceive(srv, trigger.ID, trigger.UserID)
+		return checkGmailReceive(srv, trigger.ID, trigger.UserID)
 	case "send":
-		return actions.GmailSend(srv, trigger.ID, trigger.UserID)
+		return checkGmailSend(srv, trigger.ID, trigger.UserID)
 	}
 	return false
 }
@@ -98,20 +98,20 @@ func (*googleService) Check(action string, trigger models.Trigger) bool {
 func (*googleService) React(reaction string, trigger models.Trigger) {
 }
 
-func (google *googleService) ToJson() JsonService {
-	return JsonService{
+func (google *googleService) ToJson() types.JsonService {
+	return types.JsonService{
 		Name:      google.GetName(),
 		Actions:   google.GetActions(),
 		Reactions: google.GetReactions(),
 	}
 }
 
-func NewGoogleService() *googleService {
+func New() *googleService {
 	return &googleService{
-		actions: []Action{
+		actions: []types.Action{
 			{Name: "receive", Description: "When the user receives an email on gmail"},
 			{Name: "send", Description: "When the user sends an email with gmail"},
 		},
-		reactions: []Reaction{},
+		reactions: []types.Reaction{},
 	}
 }
