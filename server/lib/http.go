@@ -19,6 +19,7 @@ func SetCookie(w http.ResponseWriter, name string, value string) {
 		MaxAge:   0,
 		HttpOnly: true,
 		SameSite: http.SameSiteNoneMode,
+		Secure:   true,
 	}
 	http.SetCookie(w, cookie)
 }
@@ -30,6 +31,8 @@ func RemoveCookie(w http.ResponseWriter, name string) {
 		Value:    "",
 		MaxAge:   -1,
 		HttpOnly: true,
+		SameSite: http.SameSiteNoneMode,
+		Secure:   true,
 	}
 	http.SetCookie(w, cookie)
 }
