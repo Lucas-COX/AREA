@@ -19,29 +19,22 @@ import Card from '../components/Card';
 const icons = {
   gmail,
   discord,
+  undefined: "none"
 };
+
+type iconsKey = keyof typeof icons;
 
 export default function Home({ session }: HomeProps) {
   const router = useRouter();
   const [state, setState] = useState({ triggers: session.user?.triggers ? session.user.triggers.sort((a, b) => ((a.updated_at < b.updated_at) ? 1 : -1)) : [] });
 
   const handleCreate = async () => {
-    const newTrigger = {
-      title: 'New trigger',
-      user_id: session.user?.id,
-      action: {
-        type: 'gmail',
-        event: 'receive',
-        token: 'google',
-      },
-      reaction: {
-        type: 'discord',
-        action: 'send',
-      },
-    };
     try {
       const response = await toast.promise(axios.post(`${process.env.NEXT_PUBLIC_API_URL}/triggers`, {
-        ...newTrigger,
+        title: 'New trigger',
+        user_id: session.user?.id,
+        action_id: null,
+        reaction_id: null
       }, {
         headers: { Authorization: `Bearer ${session.token as string}`, 'Content-Type': 'application/json' },
       }), {
@@ -107,11 +100,11 @@ export default function Home({ session }: HomeProps) {
               <CardActionArea onClick={function () { router.push(`/triggers/${trigger.id}`); }}>
                 <div className="flex items-center justify-evenly p-4">
                   <div className="w-20 h-20">
-                    <Image src={icons[trigger.action.type]} layout="responsive" alt={`${trigger.action.type} icon`} />
+                    <Image src={icons[trigger.action ? trigger.action.type as iconsKey : "undefined"]} layout="responsive" alt={`${trigger.action ? trigger.action.type : "undefined"} icon`} />
                   </div>
                   <TrendingFlatOutlined fontSize="large" color="secondary" />
                   <div className="w-20 h-20">
-                    <Image src={icons[trigger.reaction.type]} layout="responsive" alt={`${trigger.reaction.type} icon`} />
+                    <Image src={icons[trigger.reaction ? trigger.reaction.type : "undefined"]} layout="responsive" alt={`${trigger.reaction ? trigger.reaction.type : "undefined"} icon`} />
                   </div>
                 </div>
                 <CardContent>
