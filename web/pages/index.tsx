@@ -22,6 +22,8 @@ const icons = {
   undefined: "none"
 };
 
+type iconsKey = keyof typeof icons;
+
 export default function Home({ session }: HomeProps) {
   const router = useRouter();
   const [state, setState] = useState({ triggers: session.user?.triggers ? session.user.triggers.sort((a, b) => ((a.updated_at < b.updated_at) ? 1 : -1)) : [] });
@@ -98,7 +100,7 @@ export default function Home({ session }: HomeProps) {
               <CardActionArea onClick={function () { router.push(`/triggers/${trigger.id}`); }}>
                 <div className="flex items-center justify-evenly p-4">
                   <div className="w-20 h-20">
-                    <Image src={icons[trigger.action ? trigger.action.type : "undefined"]} layout="responsive" alt={`${trigger.action ? trigger.action.type : "undefined"} icon`} />
+                    <Image src={icons[trigger.action ? trigger.action.type as iconsKey : "undefined"]} layout="responsive" alt={`${trigger.action ? trigger.action.type : "undefined"} icon`} />
                   </div>
                   <TrendingFlatOutlined fontSize="large" color="secondary" />
                   <div className="w-20 h-20">

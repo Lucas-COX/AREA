@@ -1,42 +1,40 @@
+export type Service = {
+    name: string,
+    actions: Action[],
+    reactions: Reaction[],
+}
+
 export type Action = {
-    id: number,
-    type: String,
-    event: String,
-    token: String,
-    created_at: Date,
-    updated_at: Date,
-    trigger_id: Number,
+    name: string,
+    description: string,
 }
 
 export type Reaction = {
-    id: number,
-    type: "discord",
-    action: String,
-    created_at: Date,
-    updated_at: Date,
+    name: string,
+    description: string,
 }
 
 export type Trigger = {
     id: number,
-    title: String,
-    description?: String,
+    title: string,
+    description?: string,
     active: boolean,
     created_at: Date,
     updated_at: Date,
     user_id: number,
-    action_id: number,
-    reaction_id: number,
-    action?: Action,
-    reaction?: Reaction,
+    action_service: string,
+    reaction_service: string,
+    action: string,
+    reaction: string,
 }
 
 export type User = {
     id: number,
-    username: String,
+    username: string,
     created_at: Date,
     updated_at: Date,
     triggers?: Trigger[],
-    google_logged: boolean,
+    services: string[],
 }
 
 export type Session = {

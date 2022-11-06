@@ -12,14 +12,13 @@ import URLSafeBase64 from 'urlsafe-base64';
 import AppLayout from '../../components/AppLayout';
 import { getSession } from '../../lib/session';
 import { withSession } from '../../config/withs';
-import useActions from '../../hooks/useActions';
-import useReactions from '../../hooks/useReactions';
+import useServices from '../../hooks/useServices';
 import Spinner from '../../components/Spinner';
 
 interface TriggerPageState {
   trigger: Trigger;
-  actionType?: String;
-  reactionType?: String;
+  actionService?: String;
+  reactionService?: String;
 }
 
 
@@ -29,11 +28,10 @@ export default function TriggerPage({ session }: TriggerProps) {
   const trigger = session?.user?.triggers?.find((t) => t.id === Number(id));
   const [state, setState] = useState<TriggerPageState>({
     trigger: trigger as Trigger,
-    actionType: undefined,
-    reactionType: undefined
+    actionService: undefined,
+    reactionService: undefined,
   });
-  const actionsState = useActions(session.token as string)
-  const reactionsState = useReactions(session.token as string)
+  const {services, setServices, loading, error} = useServices(session.token as string)
 
   if (trigger === undefined) {
     return router.push('/');
@@ -105,31 +103,32 @@ export default function TriggerPage({ session }: TriggerProps) {
 
   const handleGoogleLogin = async () => {
     try {
-      const location = `http://localhost:3000${router.asPath}`;
-      const url = URLSafeBase64.encode(Buffer.from(location));
+      const url = URLSafeBase64.encode(Buffer.from(`${process.env.NEXT_PUBLIC_API_URL}/login/done`));
 
-      const response = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/google/auth?callback=${url}`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/google/auth?callback=${url}`, {
         headers: { Authorization: `Bearer ${session.token}` },
       });
-      router.push((await response).data.url);
+      if (response.data.url !== null) {
+        window.open(response.data.url, '_blank')?.focus();
+      }
     } catch (e) {
       toast.error('Failed to redirect to Google authentication page.');
     }
   };
 
-  const handleActionTypeChange = (e: SelectChangeEvent) => {
-    setState({ ...state, actionType: e.target.value })
+  const handleActionServiceChange = (e: SelectChangeEvent) => {
+    setState({ ...state, actionService: e.target.value })
   }
   const handleActionEventChange = (e: SelectChangeEvent) => {
     setState({ ...state,
       trigger: {
         ...state.trigger,
-        action_id: Number(e.target.value)
+        action_service: e.target.value,
       }
     })
   }
 
-  if (actionsState.loading || reactionsState.loading) {
+  if (loading) {
     return (
       <AppLayout
         type="centered"
@@ -140,13 +139,10 @@ export default function TriggerPage({ session }: TriggerProps) {
     )
   }
 
-  // const ActionIcon = <Image src={icons[actionsState.actions[trigger.action_id].type]} alt={`${actionsState.actions[trigger.action_id].type} icon`} width="15" height="15" />;
-  // const ReactionIcon = <Image src={icons[reactionsState.reactions[trigger.reaction_id].type]} alt={`${reactionsState.reactions[trigger.action_id].type} icon`} width="15" height="15" />;
+  const filteredServices = services.filter((service) => session?.user?.services.includes(service.name))
+  const filteredActions = filteredServices.filter((service) => service.name === state.actionService).map((service) => service.actions).flat()
+  console.log(filteredActions)
 
-  const filteredActions = actionsState.actions.filter((action) => action.type === state.actionType)
-  const filteredReactions = reactionsState.reactions.filter((reaction) => reaction.type === state.reactionType)
-
-  console.log(state.trigger.action_id)
   return (
     <AppLayout
       type="centered"
@@ -173,34 +169,23 @@ export default function TriggerPage({ session }: TriggerProps) {
           <div className="flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-primary/5">
             <div>Action</div>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={state.actionType ? state.actionType : String(actionsState.actions.find(({ id }) => id == state.trigger.action_id).type) }
-              label="Age"
-              onChange={handleActionTypeChange}
+              value={state.actionService ? state.actionService.toString() : "undefined" }
+              label="Service"
+              onChange={handleActionServiceChange}
             >
-              {actionsState.actions.map((action) => (
-                <MenuItem value={action.type}>{action.type.toUpperCase()}</MenuItem>
+              {filteredServices.map((service) => (
+                <MenuItem key={`service-pick-${service.name}`} value={service.name}>{service.name.toUpperCase()}</MenuItem>
               ))}
             </Select>
-            {state.actionType !== "undefined" && <Select
-              value={String(state.trigger?.action_id) || String(filteredActions[0].id)}
+            {state.actionService && state.actionService !== "undefined" && <Select
+              value={state.trigger?.action || (filteredActions[0] && filteredActions[0].name)}
               label="Event"
               onChange={handleActionEventChange}
             >
               {filteredActions.map((action) => (
-                <MenuItem value={String(action.id)}>{action.event}</MenuItem>
+                <MenuItem key={`action-${action.name}`} value={action.name}>{action.name}</MenuItem>
               ))}
             </Select>}
-            {trigger.action_id && <Button
-              variant="outlined"
-              color="primary"
-              // startIcon={ActionIcon}
-              className="h-10"
-              disabled={session.user?.google_logged}
-            >
-              {session.user?.google_logged ? 'Logged in' : `Login with ${actionsState.actions[trigger.action_id]}`}
-            </Button>}
           </div>
           <TrendingFlatOutlined fontSize="large" color="secondary" />
           <div className="flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-secondary/5">
