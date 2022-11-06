@@ -1,9 +1,10 @@
-package services
+package notion
 
 import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
+	"Area/services/types"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -14,12 +15,12 @@ import (
 )
 
 type notionService struct {
-	actions   []Action
-	reactions []Reaction
+	actions   []types.Action
+	reactions []types.Reaction
 }
 
 func (*notionService) Authenticate(callback string, userId uint) string {
-	var state OauthState
+	var state types.OauthState
 
 	state.Callback = callback
 	state.UserId = userId
@@ -42,7 +43,7 @@ func (*notionService) Authenticate(callback string, userId uint) string {
 }
 
 func (*notionService) AuthenticateCallback(base64State string, code string) (string, error) {
-	var state OauthState
+	var state types.OauthState
 
 	bytes, _ := base64.RawStdEncoding.DecodeString(base64State)
 	err := json.Unmarshal(bytes, &state)
@@ -71,11 +72,11 @@ func (*notionService) AuthenticateCallback(base64State string, code string) (str
 	return state.Callback, nil
 }
 
-func (notion *notionService) GetActions() []Action {
+func (notion *notionService) GetActions() []types.Action {
 	return notion.actions
 }
 
-func (notion *notionService) GetReactions() []Reaction {
+func (notion *notionService) GetReactions() []types.Reaction {
 	return notion.reactions
 }
 
@@ -90,17 +91,17 @@ func (*notionService) Check(action string, trigger models.Trigger) bool {
 func (*notionService) React(reaction string, trigger models.Trigger) {
 }
 
-func (notion *notionService) ToJson() JsonService {
-	return JsonService{
+func (notion *notionService) ToJson() types.JsonService {
+	return types.JsonService{
 		Name:      notion.GetName(),
 		Actions:   notion.GetActions(),
 		Reactions: notion.GetReactions(),
 	}
 }
 
-func NewNotionService() *notionService {
+func New() *notionService {
 	return &notionService{
-		actions:   []Action{},
-		reactions: []Reaction{},
+		actions:   []types.Action{},
+		reactions: []types.Reaction{},
 	}
 }

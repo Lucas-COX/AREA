@@ -1,4 +1,4 @@
-package services
+package types
 
 import "Area/database/models"
 
@@ -32,18 +32,4 @@ type JsonService struct {
 	Name      string     `json:"name"`
 	Actions   []Action   `json:"actions"`
 	Reactions []Reaction `json:"reactions"`
-}
-
-var Google Service = NewGoogleService()
-var Discord Service = NewDiscordService()
-var Microsoft Service = NewMicrosoftService()
-var Github Service = NewGithubService()
-var Notion Service = NewNotionService()
-
-func Get() []Service {
-	var result = []Service{
-		Google,
-		Discord,
-	}
-	return result
 }
