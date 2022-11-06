@@ -88,9 +88,9 @@ func (*googleService) Check(action string, trigger models.Trigger) bool {
 	}
 	switch action {
 	case "receive":
-		return gmailReceive(srv, trigger.ID, trigger.UserID)
+		return checkGmailReceive(srv, trigger.ID, trigger.UserID)
 	case "send":
-		return gmailSend(srv, trigger.ID, trigger.UserID)
+		return checkGmailSend(srv, trigger.ID, trigger.UserID)
 	}
 	return false
 }

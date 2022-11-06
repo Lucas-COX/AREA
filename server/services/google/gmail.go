@@ -96,7 +96,7 @@ func compareGmailData(newData models.TriggerData, oldData models.TriggerData, ma
 	return false
 }
 
-func gmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
+func checkGmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var newData models.TriggerData
 	var storedData models.TriggerData
 	var mail = fetchLastGmailReceive(srv)
@@ -114,7 +114,7 @@ func gmailReceive(srv *gmail.Service, triggerId uint, userId uint) bool {
 	return compareGmailData(newData, storedData, mail, trigger)
 }
 
-func gmailSend(srv *gmail.Service, triggerId uint, userId uint) bool {
+func checkGmailSend(srv *gmail.Service, triggerId uint, userId uint) bool {
 	var newData models.TriggerData
 	var storedData models.TriggerData
 	var mail, err = fetchLastGmailSend(srv)

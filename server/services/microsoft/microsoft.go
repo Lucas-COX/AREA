@@ -86,14 +86,14 @@ func (microsoft *microsoftService) GetName() string {
 }
 
 func (*microsoftService) Check(action string, trigger models.Trigger) bool {
-	// var srv = actions.CreateMicrosoftConnection(trigger.User.MicrosoftToken)
-	// if srv == nil {
-	// 	return false
-	// }
-	// switch action {
-	// case "receive":
-	// 	return actions.OutlookReceive(srv, trigger.ID, trigger.UserID)
-	// }
+	var srv = createMicrosoftConnection(trigger.User.MicrosoftToken)
+	if srv == nil {
+		return false
+	}
+	switch action {
+	case "receive":
+		return checkOutlookReceive(srv, trigger.ID, trigger.UserID)
+	}
 	return false
 }
 
