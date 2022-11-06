@@ -1,16 +1,16 @@
-package services
+package discord
 
 import (
 	"Area/database/models"
 	"Area/lib"
-	"Area/services/reactions"
+	"Area/services/types"
 	"bytes"
 	"encoding/gob"
 )
 
 type discordService struct {
-	actions   []Action
-	reactions []Reaction
+	actions   []types.Action
+	reactions []types.Reaction
 }
 
 func (*discordService) Authenticate(callback string, userId uint) string {
@@ -21,11 +21,11 @@ func (*discordService) AuthenticateCallback(base64State string, code string) (st
 	return "", nil
 }
 
-func (discord *discordService) GetActions() []Action {
+func (discord *discordService) GetActions() []types.Action {
 	return discord.actions
 }
 
-func (discord *discordService) GetReactions() []Reaction {
+func (discord *discordService) GetReactions() []types.Reaction {
 	return discord.reactions
 }
 
@@ -47,22 +47,22 @@ func (*discordService) React(reaction string, trigger models.Trigger) {
 
 	switch reaction {
 	case "send":
-		reactions.SendDiscordMessage(storedData, trigger.Action, trigger.ActionService)
+		sendMessage(storedData, trigger.Action, trigger.ActionService)
 	}
 }
 
-func (discord *discordService) ToJson() JsonService {
-	return JsonService{
+func (discord *discordService) ToJson() types.JsonService {
+	return types.JsonService{
 		Name:      discord.GetName(),
 		Actions:   discord.GetActions(),
 		Reactions: discord.GetReactions(),
 	}
 }
 
-func NewDiscordService() *discordService {
+func New() *discordService {
 	return &discordService{
-		actions: []Action{},
-		reactions: []Reaction{
+		actions: []types.Action{},
+		reactions: []types.Reaction{
 			{Name: "send", Description: "Sends a message through a webhook url"},
 		},
 	}
