@@ -8,7 +8,6 @@ import {
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { TrendingFlatOutlined } from '@mui/icons-material';
-import URLSafeBase64 from 'urlsafe-base64';
 import AppLayout from '../../components/AppLayout';
 import { getSession } from '../../lib/session';
 import { withSession } from '../../config/withs';
@@ -97,22 +96,6 @@ export default function TriggerPage({ session }: TriggerProps) {
       router.push('/');
     } catch (e) {
       console.error(e);
-    }
-  };
-
-
-  const handleGoogleLogin = async () => {
-    try {
-      const url = URLSafeBase64.encode(Buffer.from(`${process.env.NEXT_PUBLIC_API_URL}/login/done`));
-
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/google/auth?callback=${url}`, {
-        headers: { Authorization: `Bearer ${session.token}` },
-      });
-      if (response.data.url !== null) {
-        window.open(response.data.url, '_blank')?.focus();
-      }
-    } catch (e) {
-      toast.error('Failed to redirect to Google authentication page.');
     }
   };
 

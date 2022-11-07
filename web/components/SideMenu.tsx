@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import MenuIcon from '@mui/icons-material/Menu';
 import Offcanvas from './Offcanvas';
+import { Button } from '@mui/material';
 
 export default function SideMenu({}: SideMenuProps) {
     const [show, setShow] = useState(false);
@@ -19,6 +20,12 @@ export default function SideMenu({}: SideMenuProps) {
             </button>
             <Offcanvas show={show} onClose={handleClose} title={'Area'}>
                 <div className='w-full h-full flex flex-col items-center px-8 py-4'>
+                    <Button onClick={() => router.push('/')} >
+                        Home
+                    </Button>
+                    <Button onClick={() => router.push('/services')} >
+                        Connect your services accounts !
+                    </Button>
                 </div>
             </Offcanvas>
         </div>
