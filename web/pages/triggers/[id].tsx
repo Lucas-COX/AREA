@@ -17,8 +17,8 @@ import Spinner from '../../components/Spinner';
 
 interface TriggerPageState {
   trigger: Trigger;
-  actionService?: String;
-  reactionService?: String;
+  actionService: String;
+  reactionService: String;
 }
 
 
@@ -28,8 +28,8 @@ export default function TriggerPage({ session }: TriggerProps) {
   const trigger = session?.user?.triggers?.find((t) => t.id === Number(id));
   const [state, setState] = useState<TriggerPageState>({
     trigger: trigger as Trigger,
-    actionService: undefined,
-    reactionService: undefined,
+    actionService: String("undefined"),
+    reactionService: String("undefined"),
   });
   const {services, setServices, loading, error} = useServices(session.token as string)
 
@@ -139,9 +139,12 @@ export default function TriggerPage({ session }: TriggerProps) {
     )
   }
 
-  const filteredServices = services.filter((service) => session?.user?.services.includes(service.name))
-  const filteredActions = filteredServices.filter((service) => service.name === state.actionService).map((service) => service.actions).flat()
-  console.log(filteredActions)
+  const filteredActionServices = services.filter((service) => session?.user?.services.includes(service.name) && service.actions.length !== 0)
+  const filteredReactionServices = services.filter((service) => session?.user?.services.includes(service.name) && service.reactions.length !== 0)
+  const filteredActions = filteredActionServices.filter((service) => service.name === state.actionService).map((service) => service.actions).flat()
+  const filteredReactions = filteredReactionServices.filter((service) => service.name === state.reactionService).map((service) => service.reactions).flat()
+  filteredActionServices.push({ name: 'undefined', actions: [], reactions: [] })
+  filteredReactionServices.push({ name: 'undefined', actions: [], reactions: [] })
 
   return (
     <AppLayout
@@ -169,22 +172,22 @@ export default function TriggerPage({ session }: TriggerProps) {
           <div className="flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-primary/5">
             <div>Action</div>
             <Select
-              value={state.actionService ? state.actionService.toString() : "undefined" }
+              value={state.actionService ? state.actionService.toString() : "undefined"}
               label="Service"
               onChange={handleActionServiceChange}
             >
-              {filteredServices.map((service) => (
+              {filteredActionServices.map((service) => (
                 <MenuItem key={`service-pick-${service.name}`} value={service.name}>{service.name.toUpperCase()}</MenuItem>
               ))}
             </Select>
-            {state.actionService && state.actionService !== "undefined" && <Select
+            {filteredActions.length !== 0 && <Select
               value={state.trigger?.action || (filteredActions[0] && filteredActions[0].name)}
               label="Event"
               onChange={handleActionEventChange}
             >
-              {filteredActions.map((action) => (
+            {filteredActions.map((action) => (
                 <MenuItem key={`action-${action.name}`} value={action.name}>{action.name}</MenuItem>
-              ))}
+            ))}
             </Select>}
           </div>
           <TrendingFlatOutlined fontSize="large" color="secondary" />
