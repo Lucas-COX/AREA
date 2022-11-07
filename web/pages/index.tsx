@@ -94,18 +94,23 @@ export default function Home({ session }: HomeProps) {
               console.error(e);
             }
           };
+          const actionIcon = icons[trigger.action ? trigger.action_service as iconsKey : "undefined"];
+          const reactionIcon = icons[trigger.reaction ? trigger.reaction_service as iconsKey : "undefined"];
 
           return (
             <Card key={`trigger_${trigger.id}`} className="flex flex-col items-center h-64 bg-white">
               <CardActionArea onClick={function () { router.push(`/triggers/${trigger.id}`); }}>
                 <div className="flex items-center justify-evenly p-4">
-                  <div className="w-20 h-20">
-                    <Image src={icons[trigger.action ? trigger.action.type as iconsKey : "undefined"]} layout="responsive" alt={`${trigger.action ? trigger.action.type : "undefined"} icon`} />
+                  <div className="w-20 h-20 bg-gray-100 rounded-md">
+                    {actionIcon !== "none" &&
+                      <Image src={actionIcon} layout="responsive" alt={`${trigger.action ? trigger.action_service : "undefined"} icon`} />
+                    }
                   </div>
                   <TrendingFlatOutlined fontSize="large" color="secondary" />
-                  <div className="w-20 h-20">
-                    <Image src={icons[trigger.reaction ? trigger.reaction.type : "undefined"]} layout="responsive" alt={`${trigger.reaction ? trigger.reaction.type : "undefined"} icon`} />
-                  </div>
+                  <div className="w-20 h-20 bg-gray-100 rounded-md">
+                    {reactionIcon !== "none" && <Image src={reactionIcon} layout="responsive" alt={`${trigger.reaction ? trigger.reaction_service : "undefined"} icon`} />
+                    }
+                </div>
                 </div>
                 <CardContent>
                   <div className="flex justify-between items-center">

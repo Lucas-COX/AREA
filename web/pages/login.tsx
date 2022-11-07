@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { Alert, Button, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { GetServerSidePropsContext } from 'next';
 import { toast } from 'react-toastify';
 import { getSession } from '../lib/session';
 import AppLayout from '../components/AppLayout';
+import nookies from 'nookies';
 
 export default function LoginPage({}: LoginPageProps) {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function LoginPage({}: LoginPageProps) {
   };
 
   const handleLogin = async () => {
-    await toast.promise(axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+    const res = await toast.promise(axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       username: state.username,
       password: state.password,
     }, { withCredentials: true }), {
@@ -30,10 +31,11 @@ export default function LoginPage({}: LoginPageProps) {
       error: 'An error has occured',
       success: `Hello ${state.username} !`,
     });
+    nookies.set(null, 'area_token', res.data.token, { path: '/' });
     router.push('/');
   };
   const handleRegister = async (e: any) => {
-    await toast.promise(axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
+    const res = await toast.promise(axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
       username: state.username,
       password: state.password,
     }, { withCredentials: true }), {
@@ -41,6 +43,7 @@ export default function LoginPage({}: LoginPageProps) {
       error: 'An error has occurred',
       success: `Hello ${state.username} !`,
     });
+    localStorage.setItem('area_token', res.data.token);
     router.push('/');
   };
   const canSubmit = () => (state.username !== '' && state.password !== '');

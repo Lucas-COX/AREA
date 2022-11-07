@@ -1,8 +1,7 @@
-import { IncomingMessage } from 'http';
-import cookie from 'cookie';
+import { GetServerSidePropsContext } from 'next';
+import nookies from 'nookies';
 
-export function getToken(req: IncomingMessage): string | null {
-  if (!req.headers.cookie) return null;
-  const cookies = cookie.parse(req.headers.cookie);
+export function getToken(context: GetServerSidePropsContext): string | null {
+  const cookies = nookies.get(context);
   return cookies.area_token;
 }
