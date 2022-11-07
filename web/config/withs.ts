@@ -10,3 +10,15 @@ export interface withChildren extends PropsWithChildren {}
 export interface withClassName {
     className?: string;
 }
+
+export interface withTitle {
+    title?: string;
+}
+
+export interface withShow {
+    show?: boolean;
+}
+
+export interface withOnClose {
+    onClose?: () => void;
+}
