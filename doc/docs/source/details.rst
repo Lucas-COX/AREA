@@ -36,7 +36,21 @@ Voici un diagramme explicant de façons large le fonctionnement :
     :width: 400
 
 
-Pour ce faire une connection au service est necessaire ci-joint : :ref:`service`
+Pour ce faire une connection au service est necessaire pour le fonctionnement voir ci-joint pour plus d'information: :ref:`service`
+
+quelque point clés pour comprendre le composant.
+
+Tous d'abord le composant Action est lier a un trigger définie en amont pour guider l'action a faire.
+sans un trigger il ne serai pas quoi faire.
+
+Donc des trigger on été définie pour chaque action et reaction.
+Un exemple de trigger :
+    
+    Connection au gmail
+    
+    check tous les x temps si nous avons reçus un mail
+    
+    stockage des information du mail.
 
 .. _reaction:
 
