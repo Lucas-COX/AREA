@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import nookies from 'nookies';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
 import CenteredLayout from './CenteredLayout';
@@ -20,12 +21,10 @@ export default function AppLayout({
   const router = useRouter();
   const handleLogout = async () => {
     try {
-      await toast.promise(axios.get(`${process.env.NEXT_PUBLIC_API_URL}/logout`), {
-        pending: 'Logging you out...',
-        error: 'An error occurend while loggin you out.',
-        success: 'Successfully logged out.',
-      });
+      toast.success("You're now logged out.");
+      nookies.destroy(null, 'area_token');
       router.push('/login');
+
     } catch (e) {
       console.error(e);
     }
