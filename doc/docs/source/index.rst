@@ -22,6 +22,10 @@ This software suite will be broken into three parts :
    • A web client to use the application from your browser by querying the application server
    • A mobile client to use the application from your phone by querying the application server
 
+
+Sommaire :
+----------
+
 .. toctree::
 
    usage
