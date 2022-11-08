@@ -205,4 +205,40 @@ Mais dans une grand majoriter par exemple pour .... nous faisons comme ci-dessou
 
 .. code-block:: go
     
+	func (jobsManager) Do() {
+	var triggered bool
+	triggers, err := database.Trigger.GetActive()
+	lib.LogError(err)
 
+	for _, v := range triggers {
+		switch v.ActionService {
+		case "google":
+			triggered = services.Google.Check(v.Action, v)
+		case "microsoft":
+			triggered = services.Microsoft.Check(v.Action, v)
+		case "github":
+			triggered = services.Github.Check(v.Action, v)
+		case "notion":
+			triggered = services.Notion.Check(v.Action, v)
+		case "discord":
+			triggered = services.Discord.Check(v.Action, v)
+		default:
+			triggered = false
+		}
+		if triggered {
+			updated, _ := database.Trigger.GetById(v.ID, v.UserID)
+			switch v.ReactionService {
+			case "google":
+				services.Google.React(v.Reaction, *updated)
+			case "microsoft":
+				services.Microsoft.React(v.Reaction, *updated)
+			case "github":
+				services.Github.Check(v.Reaction, *updated)
+			case "notion":
+				services.Notion.React(v.Reaction, *updated)
+			case "discord":
+				services.Discord.React(v.Reaction, *updated)
+			}
+		}
+	}
+	}
