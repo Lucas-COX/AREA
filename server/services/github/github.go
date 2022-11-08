@@ -5,8 +5,10 @@ import (
 	"Area/database/models"
 	"Area/lib"
 	"Area/services/types"
+	"bytes"
 	"context"
 	"encoding/base64"
+	"encoding/gob"
 	"encoding/json"
 	"errors"
 	"os"
@@ -109,6 +111,16 @@ func (*githubService) Check(action string, trigger models.Trigger) bool {
 }
 
 func (*githubService) React(reaction string, trigger models.Trigger) {
+	var srv = createGithubConnection(trigger.User.GithubToken)
+	var triggerData models.TriggerData
+	if srv == nil {
+		return
+	}
+	gob.NewDecoder(bytes.NewReader(trigger.Data)).Decode(&triggerData)
+	switch reaction {
+	case "issue":
+		createIssue(srv, triggerData, trigger.Action, trigger.ActionService)
+	}
 }
 
 func (gh *githubService) ToJson() types.JsonService {
@@ -122,8 +134,11 @@ func (gh *githubService) ToJson() types.JsonService {
 func New() *githubService {
 	return &githubService{
 		actions: []types.Action{
-			{Name: "pull request", Description: "When a pull request is opened"},
+			{Name: "pull request opened", Description: "When a pull request is opened"},
+			{Name: "issue created", Description: "When an issue is opened"},
 		},
-		reactions: []types.Reaction{},
+		reactions: []types.Reaction{
+			{Name: "issue", Description: "Create an issue"},
+		},
 	}
 }
