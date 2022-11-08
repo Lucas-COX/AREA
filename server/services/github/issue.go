@@ -12,17 +12,17 @@ import (
 	"github.com/shurcooL/githubv4"
 )
 
-func comparePullRequestData(pr pullRequest, trigger *models.Trigger) bool {
+func compareIssueData(issue issue, trigger *models.Trigger) bool {
 	var newData models.TriggerData
 	var oldData models.TriggerData
 	gob.NewDecoder(bytes.NewReader(trigger.Data)).Decode(&oldData)
-	prTimestamp, _ := time.Parse(time.RFC3339, pr.CreatedAt)
-	if oldData.Timestamp.Before(prTimestamp) {
+	issueTimestamp, _ := time.Parse(time.RFC3339, issue.CreatedAt)
+	if oldData.Timestamp.Before(issueTimestamp) {
 		newData = oldData
-		newData.Timestamp = prTimestamp.Local()
-		newData.Title = pr.Title
-		newData.Author = "Opened by " + pr.Author.Login + " in " + pr.Repository.Name
-		newData.Description = "From " + pr.HeadRefName + " to " + pr.BaseRefName
+		newData.Timestamp = issueTimestamp.Local()
+		newData.Title = issue.Title
+		newData.Author = "Opened by " + issue.Author.Login + " in " + issue.Repository.Name
+		newData.Description = issue.Body
 		trigger.Data = lib.EncodeToBytes(newData)
 		database.Trigger.Update(trigger)
 		return true
@@ -30,8 +30,8 @@ func comparePullRequestData(pr pullRequest, trigger *models.Trigger) bool {
 	return false
 }
 
-func checkNewPullRequest(srv *githubv4.Client, triggerId uint, userId uint) bool {
-	var query pullRequestsQuery
+func checkNewIssue(srv *githubv4.Client, triggerId uint, userId uint) bool {
+	var query issuesQuery
 	var oldData models.TriggerData
 	trigger, _ := database.Trigger.GetById(triggerId, userId)
 	gob.NewDecoder(bytes.NewReader(trigger.Data)).Decode(&oldData)
@@ -46,8 +46,8 @@ func checkNewPullRequest(srv *githubv4.Client, triggerId uint, userId uint) bool
 		return false
 	}
 	gob.NewDecoder(bytes.NewReader(trigger.Data)).Decode(&oldData)
-	if len(query.Repository.PullRequests.Edges) == 0 {
+	if len(query.Repository.Issues.Edges) == 0 {
 		return false
 	}
-	return comparePullRequestData(query.Repository.PullRequests.Edges[0].Node, trigger)
+	return compareIssueData(query.Repository.Issues.Edges[0].Node, trigger)
 }
