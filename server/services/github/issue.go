@@ -51,3 +51,15 @@ func checkNewIssue(srv *githubv4.Client, triggerId uint, userId uint) bool {
 	}
 	return compareIssueData(query.Repository.Issues.Edges[0].Node, trigger)
 }
+
+func createIssue(srv *githubv4.Client, storedData models.TriggerData, action string, service string) {
+	var mutation createIssueMutation
+	var repository = getRepository(srv, storedData.ReactionData)
+	var input = githubv4.CreateIssueInput{
+		RepositoryID: repository.Viewer.Repository.Id,
+		Title:        githubv4.String(storedData.Title),
+		Body:         githubv4.NewString(githubv4.String(storedData.Description + "\n\n" + "Created by " + storedData.Author)),
+	}
+	err := srv.Mutate(context.Background(), &mutation, input, nil)
+	lib.LogError(err)
+}

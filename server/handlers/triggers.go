@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -127,8 +126,6 @@ func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
 
 	trigger, err = database.Trigger.Update(trigger)
 	lib.CheckError(err)
-
-	log.Println(trigger.Title)
 
 	copier.Copy(&resp.Trigger, &trigger)
 	resp.Trigger.ActionData = data.ActionData
