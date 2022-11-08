@@ -47,7 +47,6 @@ services:
   web_service:
     depends_on:
       - app_server
-      - web_service
     image: web
     build:
       context: web
