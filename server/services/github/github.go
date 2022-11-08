@@ -135,7 +135,7 @@ func New() *githubService {
 	return &githubService{
 		actions: []types.Action{
 			{Name: "pull request opened", Description: "When a pull request is opened"},
-			{Name: "issue created", Description: "When an issue is opened"},
+			{Name: "issue opened", Description: "When an issue is opened"},
 		},
 		reactions: []types.Reaction{
 			{Name: "open issue", Description: "Create an issue"},
