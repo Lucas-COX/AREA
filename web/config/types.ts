@@ -42,3 +42,5 @@ export type Session = {
     authenticated: boolean,
     token?: string | null,
 }
+
+export type Color = "inherit" | "error" | "primary" | "secondary" | "success" | "info" | "warning" | undefined

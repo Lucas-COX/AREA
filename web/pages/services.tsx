@@ -7,6 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import URLSafeBase64 from 'urlsafe-base64';
 import useServices from '../hooks/useServices';
+import { Color } from '../config/types';
 
 export default function ServicesPage({ session }: ServicesPageProps) {
     const {services, setServices, loading, error} = useServices(session.token as string)
@@ -22,15 +23,44 @@ export default function ServicesPage({ session }: ServicesPageProps) {
             window.open(response.data.url, '_blank')?.focus();
           }
         } catch (e) {
-          toast.error('Failed to redirect to Google authentication page.');
+          toast.error(`Failed to redirect to ${service} authentication page.`);
         }
     };
+
+    const handleServiceLogout = async (service: string) => {
+        try {
+          await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/${service}/logout`, {
+            headers: { Authorization: `Bearer ${session.token}` },
+          });
+          toast.success(`Successfully disconnected to ${service}!`)
+        } catch (e) {
+          toast.error(`Failed to disconnect to ${service}`);
+        }
+    };
+
+    const colors = ["error", "inherit", "primary", "secondary", "success", "info", "warning"]
+
+    console.log(session?.user?.services)
     return (
         <AppLayout type="centered">
-            <div>
-                <Button>
-                    Service Name
-                </Button>
+            <div className="space-x-5">
+                {services.map((service, index) => {
+                    const handleClickLogin = () => handleServiceLogin(service.name);
+                    const handleClickLogout = () => handleServiceLogout(service.name);
+                    if (session?.user?.services.includes(service.name) == true) {
+                        return (
+                            <Button color={colors[index % colors.length] as Color} variant="outlined" onClick={handleClickLogout}>
+                                {service.name}
+                            </Button>
+                        )
+                    } else {
+                        return (
+                            <Button color={colors[index % colors.length] as Color} onClick={handleClickLogin}>
+                                {service.name}
+                            </Button>
+                        )
+                    }
+                })}
             </div>
         </AppLayout>
     );
