@@ -11,8 +11,8 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	var input AuthRequestBody
-	var resp AuthResponseBody
+	var input authRequestBody
+	var resp authResponseBody
 
 	err := json.NewDecoder(r.Body).Decode(&input)
 	lib.CheckError(err)

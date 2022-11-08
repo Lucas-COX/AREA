@@ -9,12 +9,12 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-type userBody struct {
-	User UserBody `json:"me"`
+type userResponse struct {
+	User userBody `json:"me"`
 }
 
 func Me(w http.ResponseWriter, r *http.Request) {
-	var resp userBody
+	var resp userResponse
 	user, err := database.User.GetFromContext(r.Context())
 	lib.CheckError(err)
 
