@@ -1,5 +1,5 @@
 FROM golang:1.19-buster as builder
-WORKDIR /server
+WORKDIR /server/
 
 #download necessary GO modules
 COPY go.mod ./
@@ -7,13 +7,14 @@ COPY go.sum ./
 
 RUN go mod tidy
 COPY *.go ./
+ADD . .
 
-RUN go build -v -o app-server main.go
+RUN go build -v -o /server/main
 
 FROM scratch
 WORKDIR /server
-COPY --from=builder /server/app-server /server/app-server
+COPY --from=builder /server/main /server/main
 
 EXPOSE 8081
 
-CMD [ "./server" ]
+CMD [ "/server/main" ]
