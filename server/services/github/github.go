@@ -11,6 +11,7 @@ import (
 	"errors"
 	"os"
 
+	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 )
@@ -18,6 +19,17 @@ import (
 type githubService struct {
 	actions   []types.Action
 	reactions []types.Reaction
+}
+
+func createGithubConnection(refresh_token string) *githubv4.Client {
+	token := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: refresh_token},
+	)
+	if refresh_token == "" {
+		return nil
+	}
+	client := oauth2.NewClient(context.Background(), token)
+	return githubv4.NewClient(client)
 }
 
 func (*githubService) Authenticate(callback string, userId uint) string {
@@ -90,6 +102,8 @@ func (*githubService) Check(action string, trigger models.Trigger) bool {
 	switch action {
 	case "pull request":
 		return checkNewPullRequest(srv, trigger.ID, trigger.UserID)
+	case "issue":
+		return checkNewIssue(srv, trigger.ID, trigger.UserID)
 	}
 	return false
 }
