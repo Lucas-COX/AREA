@@ -31,4 +31,5 @@ func UnprotectedRoutes(r chi.Router) {
 	r.Get("/providers/{provider}/callback", handlers.ProviderCallback)
 	r.Get("/logout", handlers.Logout)
 	r.Get("/login/done", handlers.LoginDone)
+	r.Get("/about.json", handlers.AboutHandler)
 }
