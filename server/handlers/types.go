@@ -5,20 +5,20 @@ import (
 	"time"
 )
 
-type AuthRequestBody struct {
+type authRequestBody struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type AuthResponseBody struct {
+type authResponseBody struct {
 	Token string `json:"token"`
 }
 
-type LogoutResponseBody struct {
+type logoutResponseBody struct {
 	Message string `json:"message"`
 }
 
-type TriggerRequestBody struct {
+type triggerRequestBody struct {
 	Title           string `json:"title"`
 	Description     string `json:"description"`
 	ActionService   string `json:"action_service"`
@@ -30,23 +30,7 @@ type TriggerRequestBody struct {
 	Active          *bool  `json:"active"`
 }
 
-type ActionResponseBody struct {
-	ID          uint      `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-}
-
-type ReactionResponseBody struct {
-	ID          uint      `json:"id"`
-	Name        string    `json:"type"`
-	Description string    `json:"action"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-}
-
-type TriggerBody struct {
+type triggerBody struct {
 	ID              uint      `json:"id"`
 	CreatedAt       time.Time `json:"created_at"`
 	UpdatedAt       time.Time `json:"updated_at"`
@@ -62,12 +46,17 @@ type TriggerBody struct {
 	ReactionData    string    `json:"reaction_data"`
 }
 
-type UserBody struct {
+type userBody struct {
 	ID        uint            `json:"id"`
 	CreatedAt time.Time       `json:"created_at"`
 	UpdatedAt time.Time       `json:"updated_at"`
 	Username  string          `json:"username"`
 	Role      models.UserRole `json:"role"`
-	Triggers  []TriggerBody   `json:"triggers"`
+	Triggers  []triggerBody   `json:"triggers"`
 	Services  []string        `json:"services"`
+}
+
+type aboutResponse struct {
+	Client client `json:"client"`
+	Server server `json:"server"`
 }
