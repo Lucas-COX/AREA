@@ -16,11 +16,11 @@ import (
 )
 
 type triggersResponse struct {
-	Triggers []TriggerBody `json:"triggers"`
+	Triggers []triggerBody `json:"triggers"`
 }
 
 type triggerResponse struct {
-	Trigger TriggerBody `json:"trigger"`
+	Trigger triggerBody `json:"trigger"`
 }
 
 func GetTriggers(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +44,7 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateTriggers(w http.ResponseWriter, r *http.Request) {
-	var input TriggerRequestBody
+	var input triggerRequestBody
 	var resp triggerResponse
 	var data models.Trigger
 	var buf bytes.Buffer
@@ -98,7 +98,7 @@ func GetTriggerById(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateTrigger(w http.ResponseWriter, r *http.Request) {
-	var input TriggerRequestBody
+	var input triggerRequestBody
 	var resp triggerResponse
 	var buf bytes.Buffer
 	var data models.TriggerData
