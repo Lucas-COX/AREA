@@ -138,7 +138,7 @@ func New() *githubService {
 			{Name: "issue created", Description: "When an issue is opened"},
 		},
 		reactions: []types.Reaction{
-			{Name: "issue", Description: "Create an issue"},
+			{Name: "open issue", Description: "Create an issue"},
 		},
 	}
 }
