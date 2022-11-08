@@ -50,3 +50,19 @@ type userQuery struct {
 		Login string
 	}
 }
+
+type repositoryQuery struct {
+	Viewer struct {
+		Login      string
+		Repository struct {
+			Name string
+			Id   string
+		} `graphql:"repository(name: $name)"`
+	}
+}
+
+type createIssueMutation struct {
+	CreateIssue struct {
+		ClientMutationId string
+	} `graphql:"createIssue(input: $input)"`
+}

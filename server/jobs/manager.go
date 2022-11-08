@@ -50,13 +50,14 @@ func (jobsManager) Do() {
 		}
 		if triggered {
 			updated, _ := database.Trigger.GetById(v.ID, v.UserID)
+			updated.User = v.User
 			switch v.ReactionService {
 			case "google":
 				services.Google.React(v.Reaction, *updated)
 			case "microsoft":
 				services.Microsoft.React(v.Reaction, *updated)
 			case "github":
-				services.Github.Check(v.Reaction, *updated)
+				services.Github.React(v.Reaction, *updated)
 			case "notion":
 				services.Notion.React(v.Reaction, *updated)
 			case "discord":
