@@ -32,6 +32,7 @@ func (*githubService) Authenticate(callback string, userId uint) string {
 		RedirectURL:  os.Getenv("OAUTH_REDIRECT_URL") + "/providers/github/callback",
 		Scopes: []string{
 			"access_offline",
+			"repo",
 		},
 		Endpoint: github.Endpoint,
 	}
@@ -82,6 +83,14 @@ func (gh *githubService) GetName() string {
 }
 
 func (*githubService) Check(action string, trigger models.Trigger) bool {
+	var srv = createGithubConnection(trigger.User.GithubToken)
+	if srv == nil {
+		return false
+	}
+	switch action {
+	case "pull request":
+		return checkNewPullRequest(srv, trigger.ID, trigger.UserID)
+	}
 	return false
 }
 
@@ -98,7 +107,9 @@ func (gh *githubService) ToJson() types.JsonService {
 
 func New() *githubService {
 	return &githubService{
-		actions:   []types.Action{},
+		actions: []types.Action{
+			{Name: "pull request", Description: "When a pull request is opened"},
+		},
 		reactions: []types.Reaction{},
 	}
 }

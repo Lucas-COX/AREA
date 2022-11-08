@@ -3,6 +3,7 @@ module Area
 go 1.19
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/cors v1.2.1
 	github.com/go-chi/jwtauth/v5 v5.0.2
@@ -10,6 +11,7 @@ require (
 	github.com/gtuk/discordwebhook v1.0.2
 	github.com/jinzhu/copier v0.3.5
 	github.com/lestrrat-go/jwx v1.2.21
+	github.com/shurcooL/githubv4 v0.0.0-20221021030919-a134b1472cc7
 	github.com/spf13/viper v1.13.0
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa
 	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5
@@ -48,6 +50,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

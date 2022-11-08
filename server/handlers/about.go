@@ -25,7 +25,7 @@ func AboutHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		resp.Client.Host = lib.ReadUserIP(r)
 	}
-	resp.Server.CurrentTime = time.Now().UnixMilli()
+	resp.Server.CurrentTime = time.Now().UTC().UnixMilli()
 	resp.Server.Services = []types.JsonService{
 		services.Discord.ToJson(),
 		services.Google.ToJson(),
