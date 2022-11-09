@@ -102,10 +102,12 @@ func (*githubService) Check(action string, trigger models.Trigger) bool {
 		return false
 	}
 	switch action {
-	case "pull request":
+	case "pull request opened":
 		return checkNewPullRequest(srv, trigger.ID, trigger.UserID)
-	case "issue":
+	case "issue opened":
 		return checkNewIssue(srv, trigger.ID, trigger.UserID)
+	case "commit pushed":
+		return checkNewCommit(srv, trigger.ID, trigger.UserID)
 	}
 	return false
 }
@@ -118,7 +120,7 @@ func (*githubService) React(reaction string, trigger models.Trigger) {
 	}
 	gob.NewDecoder(bytes.NewReader(trigger.Data)).Decode(&triggerData)
 	switch reaction {
-	case "issue":
+	case "open issue":
 		createIssue(srv, triggerData, trigger.Action, trigger.ActionService)
 	}
 }
@@ -134,11 +136,12 @@ func (gh *githubService) ToJson() types.JsonService {
 func New() *githubService {
 	return &githubService{
 		actions: []types.Action{
-			{Name: "pull request opened", Description: "When a pull request is opened"},
-			{Name: "issue opened", Description: "When an issue is opened"},
+			{Name: "pull request opened", Description: "When a pull request is opened on a repository"},
+			{Name: "issue opened", Description: "When an issue is opened on a respository"},
+			{Name: "commit pushed", Description: "When a commit is pushed on a repository"},
 		},
 		reactions: []types.Reaction{
-			{Name: "open issue", Description: "Create an issue"},
+			{Name: "open issue", Description: "Create an issue on a repository"},
 		},
 	}
 }
