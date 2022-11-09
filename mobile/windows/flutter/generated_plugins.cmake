@@ -3,6 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+<<<<<<< HEAD
+=======
+  url_launcher_windows
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

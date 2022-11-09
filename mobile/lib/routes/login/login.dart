@@ -1,10 +1,15 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+<<<<<<< HEAD
 
 import 'services/services_login.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+=======
+import 'services/services_login.dart';
+import 'package:flutter/material.dart';
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
 
 class AccueilPage extends StatefulWidget {
   const AccueilPage({Key? key, required this.title}) : super(key: key);
@@ -16,9 +21,15 @@ class AccueilPage extends StatefulWidget {
 }
 
 class _AccueilPageState extends State<AccueilPage> {
+<<<<<<< HEAD
   @override
   String username = '', password = '';
 
+=======
+  String username = '', password = '';
+
+  @override
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
@@ -28,6 +39,10 @@ class _AccueilPageState extends State<AccueilPage> {
         title: const Text('Area',
             style: TextStyle(color: Color.fromRGBO(37, 36, 34, 1))),
         elevation: 0,
+<<<<<<< HEAD
+=======
+        leading: const Text(''),
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
       ),
       body: Form(
         child: Column(
@@ -97,7 +112,10 @@ class _AccueilPageState extends State<AccueilPage> {
                 onPressed: () async {
                   final response = await ServicesLogin.login(
                       username.trim(), password.trim());
+<<<<<<< HEAD
                   print(response.statusCode);
+=======
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
                   if (response.statusCode == 200) {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.setString(

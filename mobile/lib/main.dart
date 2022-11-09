@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'routes/register/register.dart';
 import 'routes/login/login.dart';
 import 'routes/home/home.dart';
+=======
+import 'package:flutter/material.dart';
+import 'routes/register/register.dart';
+import 'routes/login/login.dart';
+import 'routes/home/home.dart';
+import 'routes/home/edit_card.dart';
+import 'routes/services/services.dart';
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +40,15 @@ class MyApp extends StatelessWidget {
               title: 'Area',
             ),
         '/register': (context) => const RegisterPage(),
+<<<<<<< HEAD
+=======
+        '/edit': (context) => const EditCard(
+              title: '',
+            ),
+        '/services': (context) => const ServicesPage(
+              title: 'Services',
+            ),
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
       },
     );
   }

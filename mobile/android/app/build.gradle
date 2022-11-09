@@ -52,7 +52,11 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -68,4 +72,8 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))

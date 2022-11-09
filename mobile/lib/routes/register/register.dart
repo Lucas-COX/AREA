@@ -1,5 +1,8 @@
 import 'dart:convert';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/services_register.dart';
@@ -14,7 +17,13 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
       appBar: AppBar(
+<<<<<<< HEAD
         title: const Text('Register'),
+=======
+        centerTitle: true,
+        title: const Text('Register'),
+        leading: const Text(''),
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
         backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
       ),
       body: Form(
@@ -117,7 +126,10 @@ class RegisterPage extends StatelessWidget {
               onPressed: () async {
                 final response = await ServicesRegister.register(
                     username.trim(), password.trim());
+<<<<<<< HEAD
                 print(response.statusCode);
+=======
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
                 if (response.statusCode == 200) {
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setString(
@@ -133,7 +145,11 @@ class RegisterPage extends StatelessWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
+<<<<<<< HEAD
                 primary: const Color.fromRGBO(235, 94, 40, 1),
+=======
+                backgroundColor: const Color.fromRGBO(235, 94, 40, 1),
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),

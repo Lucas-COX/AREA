@@ -7,8 +7,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+<<<<<<< HEAD
 
 import 'package:mobile/main.dart';
+=======
+import 'package:mobil/main.dart';
+>>>>>>> 8dc2ef7 (feat(mobile): creation of a functional flutter client (#72))
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
