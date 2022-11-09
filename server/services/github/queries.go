@@ -61,6 +61,43 @@ type repositoryQuery struct {
 	}
 }
 
+type commit struct {
+	CommittedDate string
+	Message       string
+	MessageBody   string
+	Author        struct {
+		Name  string
+		Email string
+	}
+	Repository struct {
+		Name string
+	}
+	CommitUrl string
+}
+
+type commitQuery struct {
+	Repository struct {
+		Refs struct {
+			Edges []struct {
+				Node struct {
+					Name   string
+					Target struct {
+						Commit struct {
+							History struct {
+								Edges []struct {
+									Node struct {
+										Commit commit `graphql:"... on Commit"`
+									}
+								}
+							} `graphql:"history(first: 1)"`
+						} `graphql:"... on Commit"`
+					}
+				}
+			}
+		} `graphql:"refs(refPrefix: \"refs/heads/\", orderBy: {direction: DESC, field: TAG_COMMIT_DATE}, first: 5)"`
+	} `graphql:"repository(owner: $owner, name: $name)"`
+}
+
 type createIssueMutation struct {
 	CreateIssue struct {
 		ClientMutationId string
