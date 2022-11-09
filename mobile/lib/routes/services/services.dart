@@ -12,23 +12,14 @@ class ServicesPage extends StatefulWidget {
 }
 
 class _ServicesPageState extends State<ServicesPage> {
-  get_icon(String name) {
-    if (name == 'gmail') {
-      return const Icon(Icons.mail);
-    }
-    if (name == 'discord') {
-      return const Icon(Icons.discord);
-    }
-    if (name == 'outlook') {
-      return const Icon(Icons.mail);
-    }
-    if (name == 'github') {
-      return const Icon(Icons.code);
-    }
-    if (name == 'notion') {
-      return const Icon(Icons.note);
-    }
-  }
+  Map<String, Icon> icons = {
+    'google': const Icon(Icons.mail),
+    'discord': const Icon(Icons.discord),
+    'microsoft': const Icon(Icons.mail),
+    'github': const Icon(Icons.code),
+    'notion': const Icon(Icons.note),
+    'default': const Icon(Icons.question_mark),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +50,7 @@ class _ServicesPageState extends State<ServicesPage> {
                 }
                 final services = snapshot.data;
                 return (Scaffold(
+                    backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
                     appBar: AppBar(
                       centerTitle: true,
                       title: Text(widget.title,
@@ -70,45 +62,29 @@ class _ServicesPageState extends State<ServicesPage> {
                         itemCount: services?.length,
                         itemBuilder: (BuildContext context, int index) {
                           return (Card(
-                              color: const Color.fromRGBO(235, 94, 40, 1),
+                              color: session?.user?.services
+                                          .contains(services?[index].name) ==
+                                      true
+                                  ? const Color.fromRGBO(235, 94, 40, 1)
+                                  : const Color.fromRGBO(255, 252, 242, 1),
                               child: ListTile(
                                   title: Text(
                                     services?[index].name ?? '',
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    style: TextStyle(
+                                      color: session?.user?.services.contains(
+                                                  services?[index].name) ==
+                                              true
+                                          ? const Color.fromRGBO(
+                                              255, 252, 242, 1)
+                                          : const Color.fromRGBO(37, 36, 34, 1),
                                     ),
                                   ),
                                   leading:
-                                      get_icon(services?[index].name ?? ''),
+                                      icons[services?[index].name ?? 'default'],
                                   onTap: () async {
-                                    String weebok = '';
                                     if (services?[index].name == 'discord') {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: const Text('Discord'),
-                                              content: TextFormField(
-                                                initialValue: '',
-                                                decoration:
-                                                    const InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText: 'Weebhook'),
-                                                onChanged: (value) {
-                                                  weebok = value;
-                                                },
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('OK'),
-                                                ),
-                                              ],
-                                            );
-                                          });
+                                      await Services.getUrl(
+                                          services?[index].name ?? '');
                                     } else {
                                       final url = await Services.getUrl(
                                           services?[index].name ?? '');

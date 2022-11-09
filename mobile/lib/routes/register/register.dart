@@ -118,7 +118,6 @@ class RegisterPage extends StatelessWidget {
               onPressed: () async {
                 final response = await ServicesRegister.register(
                     username.trim(), password.trim());
-                debugPrint(response.statusCode.toString());
                 if (response.statusCode == 200) {
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setString(

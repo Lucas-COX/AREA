@@ -96,7 +96,6 @@ class _AccueilPageState extends State<AccueilPage> {
                 onPressed: () async {
                   final response = await ServicesLogin.login(
                       username.trim(), password.trim());
-                  debugPrint(response.statusCode.toString());
                   if (response.statusCode == 200) {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.setString(

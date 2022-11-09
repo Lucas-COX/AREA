@@ -53,14 +53,13 @@ class TriggersService {
         reactionData: "",
         action: "receive",
         reaction: "receive",
-        actionService: "gmail",
-        reactionService: "discord",
+        actionService: "",
+        reactionService: "",
         active: true);
 
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('area_token');
-      debugPrint(token);
 
       final response = await http.post(Uri.parse('$url/triggers'),
           headers: <String, String>{
@@ -68,7 +67,6 @@ class TriggersService {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(triggerBody.toJson()));
-      debugPrint('Response body: ${response.body}');
       completer.complete(response);
     } catch (e) {
       completer.completeError(e);

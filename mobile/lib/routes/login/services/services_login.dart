@@ -20,8 +20,6 @@ class ServicesLogin {
             'username': username,
             'password': password,
           }));
-      debugPrint('Response status: ${response.statusCode}');
-      debugPrint('Response body: ${response.body}');
       completer.complete(response);
     } catch (e) {
       debugPrint(e.toString());

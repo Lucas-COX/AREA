@@ -4,13 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-class Action {
+class ServiceAction {
   String name;
   String description;
 
-  Action({required this.name, required this.description});
+  ServiceAction({required this.name, required this.description});
 
-  Action.fromJson(Map<String, dynamic> json)
+  ServiceAction.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         description = json['description'];
 
@@ -20,13 +20,13 @@ class Action {
       };
 }
 
-class Reaction {
+class ServiceReaction {
   String name;
   String description;
 
-  Reaction({required this.name, required this.description});
+  ServiceReaction({required this.name, required this.description});
 
-  Reaction.fromJson(Map<String, dynamic> json)
+  ServiceReaction.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         description = json['description'];
 
@@ -37,17 +37,18 @@ class Reaction {
 }
 
 class Service {
-  List<Action> actions;
-  List<Reaction> reactions;
+  List<ServiceAction> actions;
+  List<ServiceReaction> reactions;
   String name;
 
   Service({required this.actions, required this.reactions, required this.name});
 
   Service.fromJson(Map<String, dynamic> json)
-      : actions =
-            (json['actions'] as List).map((i) => Action.fromJson(i)).toList(),
+      : actions = (json['actions'] as List)
+            .map((i) => ServiceAction.fromJson(i))
+            .toList(),
         reactions = (json['reactions'] as List)
-            .map((i) => Reaction.fromJson(i))
+            .map((i) => ServiceReaction.fromJson(i))
             .toList(),
         name = json['name'];
 
@@ -80,7 +81,6 @@ class Services {
     } catch (e) {
       completer.completeError(e);
     }
-    print('completer = ${completer.future}');
     return completer.future;
   }
 
@@ -90,7 +90,8 @@ class Services {
     final token = prefs.getString('area_token');
     Codec<String, String> stringToBase64Url = utf8.fuse(base64Url);
     String url =
-        '${const String.fromEnvironment('API_URL')}/providers/$name/auth?callback=${stringToBase64Url.encode('https://google.com')}';
+        '${const String.fromEnvironment('API_URL')}/providers/$name/auth?callback=${stringToBase64Url.encode('${const String.fromEnvironment('API_URL')}/login/done')}';
+    url = url.substring(0, url.length - 2);
     if (token != null) {
       try {
         final response =
@@ -98,7 +99,6 @@ class Services {
           'Authorization': 'Bearer $token',
         });
         completer.complete(jsonDecode(response.body));
-        print('body = ${response.body}');
       } catch (e) {
         print(e.toString());
       }

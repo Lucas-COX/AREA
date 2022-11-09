@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobil/routes/services/services/services_services.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,6 +67,7 @@ class User {
   DateTime createdAt;
   DateTime updatedAt;
   List<Trigger> triggers = [];
+  List<String> services = [];
 
   User(
       {required this.username,
@@ -80,6 +82,11 @@ class User {
             ? []
             : (json['triggers'] as List)
                 .map((trigger) => Trigger.fromJson(trigger))
+                .toList(),
+        services = json['services'] == null
+            ? []
+            : (json['services'] as List)
+                .map((service) => service.toString())
                 .toList();
 }
 
@@ -97,19 +104,16 @@ class ServicesSession {
   static Future<Session> get() async {
     var completer = Completer<Session>();
     String url = const String.fromEnvironment('API_URL');
-    debugPrint(url);
     try {
       final prefs = await SharedPreferences.getInstance();
 
       final token = prefs.getString('area_token');
-      debugPrint('token = $token');
       if (token == null) {
         return Session(null, false);
       }
       final response = await http.get(Uri.parse('$url/me'),
           headers: {'Authorization': 'Bearer $token'});
-      debugPrint('Response status session: ${response.statusCode}');
-      debugPrint('Response body session: ${response.body}');
+
       final json = jsonDecode(response.body);
       if (!json.containsKey('me')) {
         completer.complete(Session(null, false));
@@ -119,7 +123,6 @@ class ServicesSession {
     } catch (e) {
       completer.completeError(e);
     }
-    print('completer = ${completer.future}');
     return completer.future;
   }
 }

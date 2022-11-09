@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
             return AccueilPage(title: widget.title);
           }
           final triggers = session?.user == null ? [] : session?.user?.triggers;
-          debugPrint('the triggers = $triggers');
           return (DraggableHome(
               title: const Text("",
                   style: TextStyle(color: Color.fromRGBO(37, 36, 34, 1))),
@@ -159,7 +158,6 @@ Widget headerWidget(BuildContext context, final session) {
           ),
           onPressed: () async {
             final response = await TriggersService.post();
-            debugPrint('response = $response');
             if (response.statusCode == 200) {
               Navigator.pushNamed(context, '/');
             }

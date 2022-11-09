@@ -15,7 +15,6 @@ class Openwindow {
         '${const String.fromEnvironment('API_URL')}/providers/google/auth?callback=${stringToBase64Url.encode('https://google.com')}';
     if (token != null) {
       try {
-        debugPrint(url);
         final response =
             await http.get(Uri.parse(url), headers: <String, String>{
           'Authorization': 'Bearer $token',
@@ -29,7 +28,6 @@ class Openwindow {
   }
 
   static Future openwindow(String url) async {
-    debugPrint(url);
     if (!await launchUrl(Uri.parse(url),
         mode: LaunchMode.externalApplication)) {
       throw 'Could not launch $url';
