@@ -19,7 +19,7 @@ func compareIssueData(issue issue, trigger *models.Trigger) bool {
 	issueTimestamp, _ := time.Parse(time.RFC3339, issue.CreatedAt)
 	if oldData.Timestamp.Before(issueTimestamp) {
 		newData = oldData
-		newData.Timestamp = issueTimestamp.Local()
+		newData.Timestamp = issueTimestamp
 		newData.Title = issue.Title
 		newData.Author = "Opened by " + issue.Author.Login + " in " + issue.Repository.Name
 		newData.Description = issue.Body
@@ -37,7 +37,7 @@ func compareClosedIssueData(issue closedIssue, trigger *models.Trigger) bool {
 	issueTimestamp, _ := time.Parse(time.RFC3339, issue.ClosedAt)
 	if oldData.Timestamp.Before(issueTimestamp) {
 		newData = oldData
-		newData.Timestamp = issueTimestamp.Local()
+		newData.Timestamp = issueTimestamp
 		newData.Title = issue.Title
 		newData.Author = "Was opened by " + issue.Author.Login + " in " + issue.Repository.Name
 		newData.Description = issue.Body

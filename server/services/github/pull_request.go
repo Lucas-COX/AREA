@@ -19,7 +19,7 @@ func comparePullRequestData(pr pullRequest, trigger *models.Trigger) bool {
 	prTimestamp, _ := time.Parse(time.RFC3339, pr.CreatedAt)
 	if oldData.Timestamp.Before(prTimestamp) {
 		newData = oldData
-		newData.Timestamp = prTimestamp.Local()
+		newData.Timestamp = prTimestamp
 		newData.Title = pr.Title
 		newData.Author = "Opened by " + pr.Author.Login + " in " + pr.Repository.Name
 		newData.Description = "From " + pr.HeadRefName + " to " + pr.BaseRefName
@@ -37,7 +37,7 @@ func compareMergedPullRequestData(pr mergedPullRequest, trigger *models.Trigger)
 	prTimestamp, _ := time.Parse(time.RFC3339, pr.MergedAt)
 	if oldData.Timestamp.Before(prTimestamp) {
 		newData = oldData
-		newData.Timestamp = prTimestamp.Local()
+		newData.Timestamp = prTimestamp
 		newData.Title = pr.Title
 		newData.Author = "Merged by " + pr.MergedBy.Login + " in " + pr.Repository.Name
 		newData.Description = "From " + pr.HeadRefName + " to " + pr.BaseRefName
