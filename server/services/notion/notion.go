@@ -5,12 +5,16 @@ import (
 	"Area/database/models"
 	"Area/lib"
 	"Area/services/types"
+	"bytes"
 	"context"
 	"encoding/base64"
+	"encoding/gob"
 	"encoding/json"
 	"errors"
 	"os"
+	"strings"
 
+	"github.com/jomei/notionapi"
 	"golang.org/x/oauth2"
 )
 
@@ -89,6 +93,16 @@ func (*notionService) Check(action string, trigger models.Trigger) bool {
 }
 
 func (*notionService) React(reaction string, trigger models.Trigger) {
+	var triggerData models.TriggerData
+	gob.NewDecoder(bytes.NewReader(trigger.Data)).Decode(&triggerData)
+	pageUrl := strings.Split(triggerData.ReactionData, "-")
+	pageId := pageUrl[len(pageUrl)-1]
+	client := notionapi.NewClient(notionapi.Token(trigger.User.NotionToken))
+
+	switch reaction {
+	case "comment":
+		comment(client, pageId, triggerData, &trigger)
+	}
 }
 
 func (notion *notionService) ToJson() types.JsonService {
@@ -101,7 +115,9 @@ func (notion *notionService) ToJson() types.JsonService {
 
 func New() *notionService {
 	return &notionService{
-		actions:   []types.Action{},
-		reactions: []types.Reaction{},
+		actions: []types.Action{},
+		reactions: []types.Reaction{
+			{Name: "comment", Description: "Post a comment on a page"},
+		},
 	}
 }
