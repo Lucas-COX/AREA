@@ -26,7 +26,7 @@ func (timer *timerService) GetActions() []types.Action {
 }
 
 func (timer *timerService) GetReactions() []types.Reaction {
-	return nil
+	return timer.reactions
 }
 
 func (timer *timerService) GetName() string {
