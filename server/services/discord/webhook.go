@@ -3,6 +3,7 @@ package discord
 import (
 	"Area/database/models"
 	"Area/lib"
+	"time"
 
 	"github.com/gtuk/discordwebhook"
 )
@@ -13,7 +14,8 @@ func sendMessage(storedData models.TriggerData, action string, service string) {
 	var color = "1668818"
 	var embeds []discordwebhook.Embed
 	var fields []discordwebhook.Field
-	var timestamp = storedData.Timestamp.Format("January 2, 2006") + " at " + storedData.Timestamp.Format("15:04:05")
+	var location, _ = time.LoadLocation("CET")
+	var timestamp = storedData.Timestamp.In(location).Format("January 2, 2006") + " at " + storedData.Timestamp.Local().Format("15:04:05")
 	var footer discordwebhook.Footer = discordwebhook.Footer{
 		Text: &timestamp,
 	}
