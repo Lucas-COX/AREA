@@ -26,6 +26,8 @@ func ProviderLogin(w http.ResponseWriter, r *http.Request) {
 		authentication.NotionLogin(w, r)
 	case authentication.Discord:
 		authentication.DiscordLogin(w, r)
+	case authentication.Timer:
+		authentication.TimerLogin(w, r)
 	default:
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
 	}
@@ -69,5 +71,7 @@ func ProviderLogout(w http.ResponseWriter, r *http.Request) {
 		authentication.NotionLogout(w, r)
 	case authentication.Discord:
 		authentication.DiscordLogout(w, r)
+	case authentication.Timer:
+		authentication.TimerLogout(w, r)
 	}
 }

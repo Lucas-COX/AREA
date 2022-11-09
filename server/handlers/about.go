@@ -28,6 +28,7 @@ func AboutHandler(w http.ResponseWriter, r *http.Request) {
 	resp.Server.CurrentTime = time.Now().UTC().UnixMilli()
 	resp.Server.Services = []types.JsonService{
 		services.Discord.ToJson(),
+		services.Timer.ToJson(),
 		services.Google.ToJson(),
 		services.Github.ToJson(),
 		services.Microsoft.ToJson(),
