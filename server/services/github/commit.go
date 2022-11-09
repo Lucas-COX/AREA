@@ -19,7 +19,7 @@ func compareCommitData(commit commit, trigger *models.Trigger) bool {
 	commitTimestamp, _ := time.Parse(time.RFC3339, commit.CommittedDate)
 	if oldData.Timestamp.Before(commitTimestamp) {
 		newData = oldData
-		newData.Timestamp = commitTimestamp.Local()
+		newData.Timestamp = commitTimestamp
 		newData.Title = commit.Message
 		newData.Author = "Authored by " + commit.Author.Name + " (" + commit.Author.Email + ")"
 		newData.Description = "Pushed in " + commit.Repository.Name + " on branch " + commit.MessageBody + "\n" + commit.CommitUrl
