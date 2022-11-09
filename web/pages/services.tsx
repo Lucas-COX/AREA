@@ -1,4 +1,5 @@
 import { getSession } from '../lib/session';
+import { useState } from 'react';
 import type { GetServerSidePropsContext } from 'next';
 import AppLayout from '../components/AppLayout';
 import { Button } from '@mui/material';
@@ -11,17 +12,22 @@ import { Color } from '../config/types';
 
 export default function ServicesPage({ session }: ServicesPageProps) {
     const {services, setServices, loading, error} = useServices(session.token as string)
+    const [registered, setRegistered] = useState(session?.user?.services || [])
 
     const handleServiceLogin = async (service: string) => {
         try {
           const url = URLSafeBase64.encode(Buffer.from(`${process.env.NEXT_PUBLIC_API_URL}/login/done`));
-    
+
           const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/${service}/auth?callback=${url}`, {
             headers: { Authorization: `Bearer ${session.token}` },
           });
-          if (response.data.url !== null) {
+          if (response.data.url !== null && !['discord', 'timer'].includes(service)) {
             window.open(response.data.url, '_blank')?.focus();
           }
+          if (['discord', 'timer'].includes(service)) {
+            setRegistered([...registered, service])
+          }
+          toast.success(`Successfully activated ${service} service.`)
         } catch (e) {
           toast.error(`Failed to redirect to ${service} authentication page.`);
         }
@@ -29,37 +35,39 @@ export default function ServicesPage({ session }: ServicesPageProps) {
 
     const handleServiceLogout = async (service: string) => {
         try {
-          await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/${service}/logout`, {
-            headers: { Authorization: `Bearer ${session.token}` },
-          });
-          toast.success(`Successfully disconnected to ${service}!`)
+            await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/${service}/logout`, {
+                headers: { Authorization: `Bearer ${session.token}` },
+            });
+            toast.success(`Successfully disconnected from ${service}.`)
+            var index = registered.indexOf(service) || -1;
+            if (index > -1) {
+                setRegistered(service => service.filter((_, i) => i !== index))
+            }
         } catch (e) {
-          toast.error(`Failed to disconnect to ${service}`);
+            toast.error(`Failed to disconnect from ${service}`);
         }
     };
 
     const colors = ["error", "inherit", "primary", "secondary", "success", "info", "warning"]
 
-    console.log(session?.user?.services)
     return (
         <AppLayout type="centered">
             <div className="space-x-5">
                 {services.map((service, index) => {
-                    const handleClickLogin = () => handleServiceLogin(service.name);
+                    const handleClickLogin = () => {
+                        handleServiceLogin(service.name)
+                        setRegistered
+                    };
                     const handleClickLogout = () => handleServiceLogout(service.name);
-                    if (session?.user?.services.includes(service.name) == true) {
-                        return (
-                            <Button color={colors[index % colors.length] as Color} variant="outlined" onClick={handleClickLogout}>
-                                {service.name}
-                            </Button>
-                        )
-                    } else {
-                        return (
-                            <Button color={colors[index % colors.length] as Color} onClick={handleClickLogin}>
-                                {service.name}
-                            </Button>
-                        )
-                    }
+                    return (
+                        <Button
+                            key={`service-${service.name}`}
+                            color={colors[index % colors.length] as Color}
+                            variant={registered.includes(service.name) == true ? "outlined" : "text"}
+                            onClick={registered.includes(service.name) == true ? handleClickLogout : handleClickLogin}>
+                            {service.name}
+                        </Button>
+                    )
                 })}
             </div>
         </AppLayout>
@@ -82,4 +90,3 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         props: { session },
     };
 }
-  
