@@ -22,7 +22,7 @@ type TriggerController interface {
 func (triggerController) Create(trigger models.Trigger) (*models.Trigger, error) {
 	var triggerData models.TriggerData
 	gob.NewDecoder(bytes.NewReader(trigger.Data)).Decode(&triggerData)
-	triggerData.Timestamp = time.Now()
+	triggerData.Timestamp = time.Now().UTC()
 	err := db.Create(&trigger).Error
 	if err != nil {
 		return nil, err

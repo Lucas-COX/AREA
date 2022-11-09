@@ -4,6 +4,7 @@ import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -12,16 +13,10 @@ func checkTimeInterval(currentTime time.Time, storedData models.TriggerData, tri
 	interval, err := strconv.ParseInt(storedData.ActionData, 10, 64)
 	lib.CheckError(err)
 
-	if storedData.Timestamp.IsZero() {
-		storedData.Timestamp = time.Now()
-		trigger.Data = lib.EncodeToBytes(storedData)
-		database.Trigger.Update(trigger)
-	}
-
 	if currentTime.After(storedData.Timestamp.Add(time.Minute * time.Duration(interval))) {
 		storedData.Title = "reminder!"
 		storedData.Description = storedData.ActionData + " minutes has passed!"
-		storedData.Timestamp = time.Now()
+		storedData.Timestamp = time.Now().UTC()
 		trigger.Data = lib.EncodeToBytes(storedData)
 		database.Trigger.Update(trigger)
 		return true
@@ -33,10 +28,12 @@ func checkEveryDayTime(currentTime time.Time, storedData models.TriggerData, tri
 	reminder, err := time.Parse("15:04", storedData.ActionData)
 	lib.CheckError(err)
 
+	reminder = reminder.Add(-time.Hour)
+
 	if reminder.Hour() == currentTime.Hour() && (reminder.Minute() == currentTime.Minute()) {
 		storedData.Title = "Daily reminder!"
 		storedData.Description = "It's time!"
-		storedData.Timestamp = time.Now()
+		storedData.Timestamp = time.Now().UTC()
 		trigger.Data = lib.EncodeToBytes(storedData)
 		database.Trigger.Update(trigger)
 		return true
@@ -49,10 +46,15 @@ func checkSingleTime(currentTime time.Time, storedData models.TriggerData, trigg
 	reminder, err := time.Parse("2006-01-02 15:04", storedData.ActionData)
 	lib.CheckError(err)
 
-	if reminder.Before(currentTime.Add(time.Hour)) && storedData.Timestamp.IsZero() {
+	reminder = reminder.Add(-time.Hour)
+
+	fmt.Println(reminder)
+	fmt.Println(currentTime)
+
+	if reminder.Equal(currentTime) {
 		storedData.Title = "Single reminder!"
 		storedData.Description = "It's time!"
-		storedData.Timestamp = time.Now()
+		storedData.Timestamp = time.Now().UTC()
 		trigger.Data = lib.EncodeToBytes(storedData)
 		database.Trigger.Update(trigger)
 		return true
