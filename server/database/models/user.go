@@ -20,6 +20,7 @@ type User struct {
 	GithubToken    string
 	NotionToken    string
 	DiscordEnabled bool
+	TimerEnabled   bool
 }
 
 func (u *User) TableName() string { return "users" }

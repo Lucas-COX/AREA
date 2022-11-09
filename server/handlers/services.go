@@ -16,6 +16,7 @@ func GetServices(w http.ResponseWriter, r *http.Request) {
 	resp.Services = []types.JsonService{
 		services.Google.ToJson(),
 		services.Discord.ToJson(),
+		services.Timer.ToJson(),
 		services.Microsoft.ToJson(),
 		services.Github.ToJson(),
 		services.Notion.ToJson(),
