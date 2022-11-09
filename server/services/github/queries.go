@@ -35,6 +35,29 @@ type pullRequestsQuery struct {
 	} `graphql:"repository(owner: $owner, name: $name)"`
 }
 
+type mergedPullRequest struct {
+	Title    string
+	MergedAt string
+	MergedBy struct {
+		Login string
+	}
+	BaseRefName string
+	HeadRefName string
+	Repository  struct {
+		Name string
+	}
+}
+
+type mergedPullRequestsQuery struct {
+	Repository struct {
+		PullRequests struct {
+			Edges []struct {
+				Node mergedPullRequest
+			}
+		} `graphql:"pullRequests(states: MERGED, first: 1, orderBy: {field: CREATED_AT, direction: DESC})"`
+	} `graphql:"repository(owner: $owner, name: $name)"`
+}
+
 type issuesQuery struct {
 	Repository struct {
 		Issues struct {
