@@ -36,6 +36,9 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	if user.DiscordEnabled {
 		resp.User.Services = append(resp.User.Services, services.Discord.GetName())
 	}
+	if user.TimerEnabled {
+		resp.User.Services = append(resp.User.Services, services.Timer.GetName())
+	}
 	triggers, err := database.Trigger.Get(user.ID)
 	lib.CheckError(err)
 

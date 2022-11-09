@@ -45,6 +45,8 @@ func (jobsManager) Do() {
 			triggered = services.Notion.Check(v.Action, v)
 		case "discord":
 			triggered = services.Discord.Check(v.Action, v)
+		case "timer":
+			triggered = services.Timer.Check(v.Action, v)
 		default:
 			triggered = false
 		}
@@ -62,6 +64,8 @@ func (jobsManager) Do() {
 				services.Notion.React(v.Reaction, *updated)
 			case "discord":
 				services.Discord.React(v.Reaction, *updated)
+			case "timer":
+				services.Timer.React(v.Reaction, *updated)
 			}
 		}
 	}
