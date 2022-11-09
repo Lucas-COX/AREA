@@ -35,7 +35,7 @@ func (timer *timerService) GetName() string {
 
 func (*timerService) Check(action string, trigger models.Trigger) bool {
 
-	currentTime := time.Now()
+	currentTime := time.Now().UTC()
 
 	var storedData models.TriggerData
 	var buf bytes.Buffer

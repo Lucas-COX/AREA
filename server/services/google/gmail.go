@@ -70,7 +70,7 @@ func fetchLastGmailSend(srv *gmail.Service) (*gmail.Message, error) {
 }
 
 func compareGmailData(newData models.TriggerData, oldData models.TriggerData, mail *gmail.Message, trigger *models.Trigger) bool {
-	newData.Timestamp = time.UnixMilli(mail.InternalDate)
+	newData.Timestamp = time.UnixMilli(mail.InternalDate).UTC()
 	if trigger.Data == nil || oldData.Timestamp.Before(newData.Timestamp) {
 		newData.Description = mail.Snippet
 
