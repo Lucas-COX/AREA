@@ -108,6 +108,8 @@ func (*githubService) Check(action string, trigger models.Trigger) bool {
 		return checkMergedPullRequest(srv, trigger.ID, trigger.UserID)
 	case "issue opened":
 		return checkNewIssue(srv, trigger.ID, trigger.UserID)
+	case "issue closed":
+		return checkClosedIssue(srv, trigger.ID, trigger.UserID)
 	case "commit pushed":
 		return checkNewCommit(srv, trigger.ID, trigger.UserID)
 	}
@@ -141,6 +143,7 @@ func New() *githubService {
 			{Name: "pull request opened", Description: "When a pull request is opened on a repository"},
 			{Name: "pull request merged", Description: "When a pull request is merged on a repository"},
 			{Name: "issue opened", Description: "When an issue is opened on a respository"},
+			{Name: "issue closed", Description: "When an issue is closed on a respository"},
 			{Name: "commit pushed", Description: "When a commit is pushed on a repository"},
 		},
 		reactions: []types.Reaction{

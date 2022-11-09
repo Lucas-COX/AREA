@@ -13,11 +13,36 @@ type pullRequest struct {
 	}
 }
 
+type mergedPullRequest struct {
+	Title    string
+	MergedAt string
+	MergedBy struct {
+		Login string
+	}
+	BaseRefName string
+	HeadRefName string
+	Repository  struct {
+		Name string
+	}
+}
+
 type issue struct {
 	Title     string
 	Body      string
 	CreatedAt string
 	Author    struct {
+		Login string
+	}
+	Repository struct {
+		Name string
+	}
+}
+
+type closedIssue struct {
+	Title    string
+	Body     string
+	ClosedAt string
+	Author   struct {
 		Login string
 	}
 	Repository struct {
@@ -33,19 +58,6 @@ type pullRequestsQuery struct {
 			}
 		} `graphql:"pullRequests(first: 1, orderBy: {field: CREATED_AT, direction: DESC})"`
 	} `graphql:"repository(owner: $owner, name: $name)"`
-}
-
-type mergedPullRequest struct {
-	Title    string
-	MergedAt string
-	MergedBy struct {
-		Login string
-	}
-	BaseRefName string
-	HeadRefName string
-	Repository  struct {
-		Name string
-	}
 }
 
 type mergedPullRequestsQuery struct {
@@ -65,6 +77,16 @@ type issuesQuery struct {
 				Node issue
 			}
 		} `graphql:"issues(first: 1, orderBy: {field: CREATED_AT, direction: DESC})"`
+	} `graphql:"repository(owner: $owner, name: $name)"`
+}
+
+type closedIssuesQuery struct {
+	Repository struct {
+		Issues struct {
+			Edges []struct {
+				Node closedIssue
+			}
+		} `graphql:"issues(states: CLOSED, first: 1, orderBy: {field: UPDATED_AT, direction: DESC})"`
 	} `graphql:"repository(owner: $owner, name: $name)"`
 }
 

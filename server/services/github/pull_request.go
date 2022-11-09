@@ -39,7 +39,7 @@ func compareMergedPullRequestData(pr mergedPullRequest, trigger *models.Trigger)
 		newData = oldData
 		newData.Timestamp = prTimestamp.Local()
 		newData.Title = pr.Title
-		newData.Author = "Opened by " + pr.MergedBy.Login + " in " + pr.Repository.Name
+		newData.Author = "Merged by " + pr.MergedBy.Login + " in " + pr.Repository.Name
 		newData.Description = "From " + pr.HeadRefName + " to " + pr.BaseRefName
 		trigger.Data = lib.EncodeToBytes(newData)
 		database.Trigger.Update(trigger)
