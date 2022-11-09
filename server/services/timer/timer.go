@@ -67,19 +67,13 @@ func (timer *timerService) ToJson() types.JsonService {
 	}
 }
 
-func NewTimerService() *timerService {
+func New() *timerService {
 	return &timerService{
 		actions: []types.Action{
 			{Name: "every x minutes", Description: "When x minutes has passed"},
 			{Name: "everyday at", Description: "every day at x time"},
 			{Name: "single time", Description: "When it's x time"},
 		},
-	}
-}
-
-func New() *timerService {
-	return &timerService{
-		actions:   []types.Action{},
 		reactions: []types.Reaction{},
 	}
 }
