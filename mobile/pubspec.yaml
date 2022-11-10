@@ -19,8 +19,8 @@ environment:
   sdk: '>=2.18.1 <3.0.0'
 flutter:
   assets:
-    - assets/
-    - .env
+    - assets/images/google.logo.png
+    #- .env
   uses-material-design: true
 name: mobil
 publish_to: none
