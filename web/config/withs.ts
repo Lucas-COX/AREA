@@ -22,3 +22,8 @@ export interface withShow {
 export interface withOnClose {
     onClose?: () => void;
 }
+
+export interface asTextField {
+    value?: string;
+    onChange?: (value: string) => void;
+}
