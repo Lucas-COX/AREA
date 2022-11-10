@@ -4,7 +4,6 @@ import (
 	"Area/database"
 	"Area/database/models"
 	"Area/lib"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -59,11 +58,7 @@ func checkSingleTime(currentTime time.Time, storedData models.TriggerData, trigg
 
 	reminder = reminder.Add(-time.Hour)
 
-	fmt.Println(reminder)
-	fmt.Println(currentTime)
-
 	if reminder.Equal(currentTime.Truncate(60 * time.Second)) {
-		fmt.Println("okkkkk")
 		storedData.Title = "Single reminder!"
 		storedData.Description = "It's time!"
 		storedData.Timestamp = time.Now().UTC()
