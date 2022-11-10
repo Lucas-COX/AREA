@@ -29,7 +29,7 @@ func Parse(s string) (Provider, error) {
 	var providersMap = map[string]Provider{
 		"google":    Google,
 		"discord":   Discord,
-		"Timer":     Timer,
+		"timer":     Timer,
 		"notion":    Notion,
 		"github":    Github,
 		"microsoft": Microsoft,
