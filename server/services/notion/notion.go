@@ -12,7 +12,6 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"strings"
 
 	"github.com/jomei/notionapi"
 	"golang.org/x/oauth2"
@@ -95,13 +94,13 @@ func (*notionService) Check(action string, trigger models.Trigger) bool {
 func (*notionService) React(reaction string, trigger models.Trigger) {
 	var triggerData models.TriggerData
 	gob.NewDecoder(bytes.NewReader(trigger.Data)).Decode(&triggerData)
-	pageUrl := strings.Split(triggerData.ReactionData, "-")
-	pageId := pageUrl[len(pageUrl)-1]
 	client := notionapi.NewClient(notionapi.Token(trigger.User.NotionToken))
 
 	switch reaction {
 	case "comment":
-		comment(client, pageId, triggerData, &trigger)
+		comment(client, triggerData, &trigger)
+	case "create page":
+		create_page(client, triggerData, &trigger)
 	}
 }
 
@@ -118,6 +117,7 @@ func New() *notionService {
 		actions: []types.Action{},
 		reactions: []types.Reaction{
 			{Name: "comment", Description: "Post a comment on a page"},
+			{Name: "create page", Description: "Create a new sub page on a page"},
 		},
 	}
 }
