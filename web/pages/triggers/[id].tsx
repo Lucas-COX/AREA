@@ -186,13 +186,14 @@ export default function TriggerPage({ session }: TriggerProps) {
           />
         </div>
         <div className="h-full flex items-center space-x-6">
-          <div className="flex flex-col space-y-4 items-center justify-evenly w-full py-2 border rounded-lg bg-primary/5">
+          <div className="flex flex-col space-y-4 items-center justify-evenly w-full py-4 border rounded-lg bg-primary/5">
             <div>Action</div>
-            <div className="flex w-full justify-evenly">
+            <div className="flex w-full justify-evenly px-4 space-x-4">
               <Select
                 value={state.trigger.action_service ? state.trigger.action_service.toString() : "undefined"}
                 onChange={handleActionServiceChange}
                 className="bg-white"
+                fullWidth
               >
                 {filteredActionServices.map((service) => (
                   <MenuItem key={`service-pick-${service.name}`} value={service.name}>{service.name.toUpperCase()}</MenuItem>
@@ -202,6 +203,7 @@ export default function TriggerPage({ session }: TriggerProps) {
                 value={state.trigger?.action || (filteredActions[0] && filteredActions[0].name)}
                 onChange={handleActionEventChange}
                 className="bg-white"
+                fullWidth
               >
               {filteredActions.map((action) => (
                   <MenuItem key={`action-${action.name}`} value={action.name}>{action.name}</MenuItem>
@@ -213,13 +215,14 @@ export default function TriggerPage({ session }: TriggerProps) {
             }
           </div>
           <TrendingFlatOutlined fontSize="large" color="secondary" />
-          <div className="flex flex-col space-y-4 items-center justify-evenly w-full py-2 border rounded-lg bg-secondary/5">
+          <div className="flex flex-col space-y-4 items-center justify-evenly w-full py-4 border rounded-lg bg-secondary/5">
             <div>Reaction</div>
-            <div className="flex w-full justify-evenly">
+            <div className="flex w-full justify-evenly px-4 space-x-4">
               <Select
                 value={state.trigger.reaction_service ? state.trigger.reaction_service.toString() : "undefined"}
                 onChange={handleReactionServiceChange}
                 className="bg-white"
+                fullWidth
               >
                 {filteredReactionServices.map((service) => (
                   <MenuItem key={`service-pick-${service.name}`} value={service.name}>{service.name.toUpperCase()}</MenuItem>
@@ -229,6 +232,7 @@ export default function TriggerPage({ session }: TriggerProps) {
                 value={state.trigger?.reaction || (filteredReactions[0] && filteredReactions[0].name)}
                 onChange={handleReactionActionChange}
                 className="bg-white"
+                fullWidth
               >
               {filteredReactions.map((reaction) => (
                   <MenuItem key={`action-${reaction.name}`} value={reaction.name}>{reaction.name}</MenuItem>
