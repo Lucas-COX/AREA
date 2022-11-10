@@ -13,6 +13,7 @@ func ProviderLogin(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
+		return
 	}
 
 	switch provider {
@@ -37,6 +38,7 @@ func ProviderCallback(w http.ResponseWriter, r *http.Request) {
 	provider, err := authentication.Parse(chi.URLParam(r, "provider"))
 	if err != nil {
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
+		return
 	}
 
 	switch provider {
@@ -58,6 +60,7 @@ func ProviderLogout(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		lib.SendError(w, http.StatusBadRequest, "Invalid provider.")
+		return
 	}
 
 	switch provider {
