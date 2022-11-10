@@ -11,7 +11,10 @@ import (
 
 func checkTimeInterval(currentTime time.Time, storedData models.TriggerData, trigger *models.Trigger) bool {
 	interval, err := strconv.ParseInt(storedData.ActionData, 10, 64)
-	lib.CheckError(err)
+	if err != nil {
+		lib.LogError(err)
+		return false
+	}
 
 	if currentTime.After(storedData.Timestamp.Add(time.Minute * time.Duration(interval))) {
 		storedData.Title = "reminder!"
@@ -26,7 +29,10 @@ func checkTimeInterval(currentTime time.Time, storedData models.TriggerData, tri
 
 func checkEveryDayTime(currentTime time.Time, storedData models.TriggerData, trigger *models.Trigger) bool {
 	reminder, err := time.Parse("15:04", storedData.ActionData)
-	lib.CheckError(err)
+	if err != nil {
+		lib.LogError(err)
+		return false
+	}
 
 	reminder = reminder.Add(-time.Hour)
 
@@ -44,7 +50,10 @@ func checkEveryDayTime(currentTime time.Time, storedData models.TriggerData, tri
 
 func checkSingleTime(currentTime time.Time, storedData models.TriggerData, trigger *models.Trigger) bool {
 	reminder, err := time.Parse("2006-01-02 15:04", storedData.ActionData)
-	lib.CheckError(err)
+	if err != nil {
+		lib.LogError(err)
+		return false
+	}
 
 	reminder = reminder.Add(-time.Hour)
 
