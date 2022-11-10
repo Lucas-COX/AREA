@@ -1,5 +1,5 @@
 import type { GetServerSidePropsContext } from 'next';
-import type { Trigger } from '../../config/types';
+import type { Trigger, Service } from '../../config/types';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
@@ -8,17 +8,32 @@ import {
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { TrendingFlatOutlined } from '@mui/icons-material';
-import URLSafeBase64 from 'urlsafe-base64';
 import AppLayout from '../../components/AppLayout';
 import { getSession } from '../../lib/session';
 import { withSession } from '../../config/withs';
 import useServices from '../../hooks/useServices';
 import Spinner from '../../components/Spinner';
+import GithubField from '../../components/fields/GithubField';
+import DiscordField from '../../components/fields/DiscordField';
+import NotionField from '../../components/fields/NotionField';
+import { TimerMinuteField, TimerTimeField, TimerDateTimeField } from '../../components/fields/TimerField';
 
 interface TriggerPageState {
   trigger: Trigger;
-  actionService: String;
-  reactionService: String;
+}
+
+const fieldMappings = {
+  "github/pull request opened": GithubField,
+  "github/pull request merged": GithubField,
+  "github/issue opened": GithubField,
+  "github/issue closed": GithubField,
+  "github/commit pushed": GithubField,
+  "github/open issue": GithubField,
+  "timer/every x minutes": TimerMinuteField,
+  "timer/everyday at": TimerTimeField,
+  "timer/single time": TimerDateTimeField,
+  "notion/comment": NotionField,
+  "discord/send": DiscordField,
 }
 
 
@@ -28,8 +43,6 @@ export default function TriggerPage({ session }: TriggerProps) {
   const trigger = session?.user?.triggers?.find((t) => t.id === Number(id));
   const [state, setState] = useState<TriggerPageState>({
     trigger: trigger as Trigger,
-    actionService: String("undefined"),
-    reactionService: String("undefined"),
   });
   const {services, setServices, loading, error} = useServices(session.token as string)
 
@@ -59,19 +72,7 @@ export default function TriggerPage({ session }: TriggerProps) {
       });
     }
   };
-  // const handleReactionTokenChange = (e: any) => {
-  //   if (state.trigger !== undefined) {
-  //     setState({
-  //       trigger: {
-  //         ...state.trigger,
-  //         reaction: {
-  //           ...state.trigger.reaction,
-  //           token: e.target.value,
-  //         },
-  //       },
-  //     });
-  //   }
-  // };
+
   const handleToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (state.trigger !== undefined) {
       setState({
@@ -85,6 +86,7 @@ export default function TriggerPage({ session }: TriggerProps) {
   };
   const handleApply = async (e: any) => {
     try {
+      console.log(state.trigger);
       await toast.promise(axios.put(`${process.env.NEXT_PUBLIC_API_URL}/triggers/${trigger.id}`, {
         ...state.trigger,
       }, {
@@ -100,32 +102,44 @@ export default function TriggerPage({ session }: TriggerProps) {
     }
   };
 
-
-  const handleGoogleLogin = async () => {
-    try {
-      const url = URLSafeBase64.encode(Buffer.from(`${process.env.NEXT_PUBLIC_API_URL}/login/done`));
-
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/providers/google/auth?callback=${url}`, {
-        headers: { Authorization: `Bearer ${session.token}` },
-      });
-      if (response.data.url !== null) {
-        window.open(response.data.url, '_blank')?.focus();
-      }
-    } catch (e) {
-      toast.error('Failed to redirect to Google authentication page.');
-    }
-  };
-
   const handleActionServiceChange = (e: SelectChangeEvent) => {
-    setState({ ...state, actionService: e.target.value })
+    var action = state.trigger.action
+    if (e.target.value !== "undefined") {
+      action = (services.find((s) => s.name === e.target.value) as Service).actions[0].name;
+    }
+    setState({ ...state, trigger: { ...state.trigger, action_service: e.target.value, action, action_data: "" }});
   }
   const handleActionEventChange = (e: SelectChangeEvent) => {
     setState({ ...state,
       trigger: {
         ...state.trigger,
-        action_service: e.target.value,
+        action: e.target.value,
+        action_data: ""
       }
     })
+  }
+  const handleActionDataChange = (value: string) => {
+    setState({ ...state, trigger: { ...state.trigger, action_data: value }})
+  }
+
+  const handleReactionServiceChange = (e: SelectChangeEvent) => {
+    var reaction = state.trigger.reaction
+    if (e.target.value !== "undefined") {
+      reaction = (services.find((s) => s.name === e.target.value) as Service).reactions[0].name;
+    }
+    setState({ ...state, trigger: { ...state.trigger, reaction_service: e.target.value, reaction, reaction_data: "" }})
+  }
+  const handleReactionActionChange = (e: SelectChangeEvent) => {
+    setState({ ...state,
+      trigger: {
+        ...state.trigger,
+        reaction: e.target.value,
+        reaction_data: "",
+      }
+    })
+  }
+  const handleReactionDataChange = (value: string) => {
+    setState({ ...state, trigger: { ...state.trigger, reaction_data: value }})
   }
 
   if (loading) {
@@ -141,10 +155,13 @@ export default function TriggerPage({ session }: TriggerProps) {
 
   const filteredActionServices = services.filter((service) => session?.user?.services.includes(service.name) && service.actions.length !== 0)
   const filteredReactionServices = services.filter((service) => session?.user?.services.includes(service.name) && service.reactions.length !== 0)
-  const filteredActions = filteredActionServices.filter((service) => service.name === state.actionService).map((service) => service.actions).flat()
-  const filteredReactions = filteredReactionServices.filter((service) => service.name === state.reactionService).map((service) => service.reactions).flat()
+  const filteredActions = filteredActionServices.filter((service) => service.name === state.trigger.action_service).map((service) => service.actions).flat()
+  const filteredReactions = filteredReactionServices.filter((service) => service.name === state.trigger.reaction_service).map((service) => service.reactions).flat()
   filteredActionServices.push({ name: 'undefined', actions: [], reactions: [] })
   filteredReactionServices.push({ name: 'undefined', actions: [], reactions: [] })
+
+  const ActionField = fieldMappings[`${state.trigger.action_service}/${state.trigger.action}` as keyof typeof fieldMappings]
+  const ReactionField = fieldMappings[`${state.trigger.reaction_service}/${state.trigger.reaction}` as keyof typeof fieldMappings]
 
   return (
     <AppLayout
@@ -152,7 +169,7 @@ export default function TriggerPage({ session }: TriggerProps) {
       className="flex flex-col items-center justify-center bg-blue-50/50"
       loggedIn
     >
-      <Paper className="w-2/3 h-2/3 flex flex-col justify-between p-10">
+      <Paper className="w-full h-full  sm:w-4/5 sm:h-4/5 md:w-3/4 md:h-3/4 flex flex-col justify-between p-10">
         <div className="flex flex-col space-y-6">
           <TextField
             label="Title"
@@ -169,44 +186,62 @@ export default function TriggerPage({ session }: TriggerProps) {
           />
         </div>
         <div className="h-full flex items-center space-x-6">
-          <div className="flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-primary/5">
+          <div className="flex flex-col space-y-4 items-center justify-evenly w-full py-4 border rounded-lg bg-primary/5">
             <div>Action</div>
-            <Select
-              value={state.actionService ? state.actionService.toString() : "undefined"}
-              label="Service"
-              onChange={handleActionServiceChange}
-            >
-              {filteredActionServices.map((service) => (
-                <MenuItem key={`service-pick-${service.name}`} value={service.name}>{service.name.toUpperCase()}</MenuItem>
+            <div className="flex w-full justify-evenly px-4 space-x-4">
+              <Select
+                value={state.trigger.action_service ? state.trigger.action_service.toString() : "undefined"}
+                onChange={handleActionServiceChange}
+                className="bg-white"
+                fullWidth
+              >
+                {filteredActionServices.map((service) => (
+                  <MenuItem key={`service-pick-${service.name}`} value={service.name}>{service.name.toUpperCase()}</MenuItem>
+                ))}
+              </Select>
+              {filteredActions.length !== 0 && <Select
+                value={state.trigger?.action || (filteredActions[0] && filteredActions[0].name)}
+                onChange={handleActionEventChange}
+                className="bg-white"
+                fullWidth
+              >
+              {filteredActions.map((action) => (
+                  <MenuItem key={`action-${action.name}`} value={action.name}>{action.name}</MenuItem>
               ))}
-            </Select>
-            {filteredActions.length !== 0 && <Select
-              value={state.trigger?.action || (filteredActions[0] && filteredActions[0].name)}
-              label="Event"
-              onChange={handleActionEventChange}
-            >
-            {filteredActions.map((action) => (
-                <MenuItem key={`action-${action.name}`} value={action.name}>{action.name}</MenuItem>
-            ))}
-            </Select>}
+              </Select>}
+            </div>
+            {Object.keys(fieldMappings).includes(`${state.trigger.action_service}/${state.trigger.action}`) &&
+              <ActionField value={state.trigger.action_data} onChange={handleActionDataChange} />
+            }
           </div>
           <TrendingFlatOutlined fontSize="large" color="secondary" />
-          <div className="flex flex-col space-y-4 items-center justify-evenly w-full h-1/2 border rounded-lg bg-secondary/5">
+          <div className="flex flex-col space-y-4 items-center justify-evenly w-full py-4 border rounded-lg bg-secondary/5">
             <div>Reaction</div>
-            {/* <TextField
-              label="Discord webhook url"
-              className="bg-white"
-              value={state.trigger && state.trigger.reaction.token}
-              onChange={handleReactionTokenChange}
-              InputProps={{
-                className: 'h-10',
-                startAdornment: (
-                  <InputAdornment position="start">
-                    {ReactionIcon}
-                  </InputAdornment>
-                ),
-              }}
-            /> */}
+            <div className="flex w-full justify-evenly px-4 space-x-4">
+              <Select
+                value={state.trigger.reaction_service ? state.trigger.reaction_service.toString() : "undefined"}
+                onChange={handleReactionServiceChange}
+                className="bg-white"
+                fullWidth
+              >
+                {filteredReactionServices.map((service) => (
+                  <MenuItem key={`service-pick-${service.name}`} value={service.name}>{service.name.toUpperCase()}</MenuItem>
+                ))}
+              </Select>
+              {filteredReactions.length !== 0 && <Select
+                value={state.trigger?.reaction || (filteredReactions[0] && filteredReactions[0].name)}
+                onChange={handleReactionActionChange}
+                className="bg-white"
+                fullWidth
+              >
+              {filteredReactions.map((reaction) => (
+                  <MenuItem key={`action-${reaction.name}`} value={reaction.name}>{reaction.name}</MenuItem>
+              ))}
+              </Select>}
+            </div>
+            {Object.keys(fieldMappings).includes(`${state.trigger.reaction_service}/${state.trigger.reaction}`) &&
+              <ReactionField value={state.trigger.reaction_data} onChange={handleReactionDataChange} />
+            }
           </div>
         </div>
         <div className="justify-self-end space-x-4">

@@ -13,12 +13,16 @@ import { TrendingFlatOutlined } from '@mui/icons-material';
 import { withSession } from '../config/withs';
 import { getSession } from '../lib/session';
 import AppLayout from '../components/AppLayout';
-import { gmail, discord } from '../lib/icons';
+import { google, discord, microsoft, github, notion, timer } from '../lib/icons';
 import Card from '../components/Card';
 
 const icons = {
-  gmail,
+  google,
   discord,
+  microsoft,
+  github,
+  notion,
+  timer,
   undefined: "none"
 };
 
@@ -101,14 +105,15 @@ export default function Home({ session }: HomeProps) {
             <Card key={`trigger_${trigger.id}`} className="flex flex-col items-center h-64 bg-white">
               <CardActionArea onClick={function () { router.push(`/triggers/${trigger.id}`); }}>
                 <div className="flex items-center justify-evenly p-4">
-                  <div className="w-20 h-20 bg-gray-100 rounded-md">
+                  <div className="w-20 h-20 bg-gray-100 rounded-md p-2">
                     {actionIcon !== "none" &&
                       <Image src={actionIcon} layout="responsive" alt={`${trigger.action ? trigger.action_service : "undefined"} icon`} />
                     }
                   </div>
                   <TrendingFlatOutlined fontSize="large" color="secondary" />
-                  <div className="w-20 h-20 bg-gray-100 rounded-md">
-                    {reactionIcon !== "none" && <Image src={reactionIcon} layout="responsive" alt={`${trigger.reaction ? trigger.reaction_service : "undefined"} icon`} />
+                  <div className="w-20 h-20 bg-gray-100 rounded-md p-2">
+                    {reactionIcon !== "none" &&
+                      <Image src={reactionIcon} layout="responsive" alt={`${trigger.reaction ? trigger.reaction_service : "undefined"} icon`} />
                     }
                 </div>
                 </div>

@@ -26,6 +26,8 @@ export type Trigger = {
     reaction_service: string,
     action: string,
     reaction: string,
+    action_data: string,
+    reaction_data: string,
 }
 
 export type User = {
@@ -42,3 +44,5 @@ export type Session = {
     authenticated: boolean,
     token?: string | null,
 }
+
+export type Color = "inherit" | "error" | "primary" | "secondary" | "success" | "info" | "warning" | undefined
