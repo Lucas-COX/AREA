@@ -6,6 +6,7 @@ import (
 	"Area/lib"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -49,7 +50,8 @@ func checkEveryDayTime(currentTime time.Time, storedData models.TriggerData, tri
 }
 
 func checkSingleTime(currentTime time.Time, storedData models.TriggerData, trigger *models.Trigger) bool {
-	reminder, err := time.Parse("2006-01-02 15:04", storedData.ActionData)
+	stringTime := strings.Replace(storedData.ActionData, "T", " ", 1)
+	reminder, err := time.Parse("2006-01-02 15:04", stringTime)
 	if err != nil {
 		lib.LogError(err)
 		return false
@@ -60,7 +62,8 @@ func checkSingleTime(currentTime time.Time, storedData models.TriggerData, trigg
 	fmt.Println(reminder)
 	fmt.Println(currentTime)
 
-	if reminder.Equal(currentTime) {
+	if reminder.Equal(currentTime.Truncate(60 * time.Second)) {
+		fmt.Println("okkkkk")
 		storedData.Title = "Single reminder!"
 		storedData.Description = "It's time!"
 		storedData.Timestamp = time.Now().UTC()
