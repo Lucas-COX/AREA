@@ -14,4 +14,4 @@ RUN yarn build
 
 #COPY file config next js
 
-CMD [ "make", "yarn", "dev" "build", "install"]
+CMD [ "yarn", "start"]
