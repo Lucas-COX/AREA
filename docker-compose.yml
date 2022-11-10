@@ -19,8 +19,8 @@ services:
     build:
       context: server
       dockerfile: dockerfile
-    volumes:
-      - .:/server
+    #volumes:
+    #  - .:/server
     restart: always
     ports:
       - '8080:8080'
@@ -33,30 +33,31 @@ services:
       DB_NAME: postgres
 
   mobile_service:
-    depends_on:
-      - web_service
-      - app_server
-    build:
-      context: mobile
-      dockerfile: dockerfile
-    image: mobile
+    build: mobile
+    #  context: mobile
+    #  dockerfile: dockerfile
+    #image: mobile
+    environment:
+      MOBILE_APP_FILEPATH: /app/client/area_mobile.apk
     volumes:
-      - .:/mobile
+      - client:/app/client
     restart: always
   
   web_service:
     depends_on:
       - app_server
+      - mobile_service
     image: web
     build:
       context: web
       dockerfile: Dockerfile
     volumes:
-      - .:/web
+      - client:/usr/share/nginx/html/assets/client
     restart: always
     ports:
       - '8081:8081'
 volumes:
   my-db:
     driver: local
+  client: null
   
