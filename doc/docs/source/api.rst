@@ -72,5 +72,7 @@ Timer
 
 Action :
    Recovery x times all times of the hour
+   
    Retrieve every day at x time
+   
    Retrieve the information at a defined date.
