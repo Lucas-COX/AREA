@@ -1,20 +1,6 @@
 version: "3.3"
 services:
-  # db:
-  #   image: postgres:14.1-alpine
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgre
-  #   ports:
-  #     - '3306:3306'
-  #   expose:
-  #     - '3306'
-  #   volumes:
-  #     - my-db:/var/lib/postgresql/data
   app_server:
-    # depends_on:
-    #   - db
     image: application_server
     build:
       context: server
