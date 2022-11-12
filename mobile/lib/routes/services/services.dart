@@ -18,6 +18,7 @@ class _ServicesPageState extends State<ServicesPage> {
     'microsoft': const Icon(Icons.mail),
     'github': const Icon(Icons.code),
     'notion': const Icon(Icons.note),
+    'timer': const Icon(Icons.timer),
     'default': const Icon(Icons.question_mark),
   };
 
@@ -82,7 +83,8 @@ class _ServicesPageState extends State<ServicesPage> {
                                   leading:
                                       icons[services?[index].name ?? 'default'],
                                   onTap: () async {
-                                    if (services?[index].name == 'discord') {
+                                    if (services?[index].name == 'discord' ||
+                                        services?[index].name == 'timer') {
                                       await Services.getUrl(
                                           services?[index].name ?? '');
                                     } else {

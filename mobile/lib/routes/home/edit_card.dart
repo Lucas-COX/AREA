@@ -17,10 +17,7 @@ class _EditCardState extends State<EditCard> {
   List<String> get_list_reactions_name(List<String> list) {
     List<String> tmp = [];
     for (int i = 0; i < list.length; i++) {
-      if (list[i] == 'microsoft' ||
-          list[i] == 'notion' ||
-          list[i] == 'timer' ||
-          list[i] == 'google') {
+      if (list[i] == 'microsoft' || list[i] == 'timer' || list[i] == 'google') {
         continue;
       } else {
         tmp.add(list[i]);
@@ -177,68 +174,154 @@ class _EditCardState extends State<EditCard> {
                         color: const Color.fromRGBO(235, 94, 40, 1),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
-                        child: Row(children: <Widget>[
-                          const SizedBox(width: 20),
-                          DropdownButton<String>(
-                              value: trigger.actionService == ''
-                                  ? 'Undefined'
-                                  : trigger.actionService,
-                              icon: const Icon(Icons.arrow_downward),
-                              iconSize: 24,
-                              elevation: 16,
-                              style: const TextStyle(color: Colors.black),
-                              underline: Container(
-                                height: 2,
-                                color: Colors.black,
-                              ),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  trigger.actionService = newValue!;
-                                  listActions = get_list_actions_actions(
-                                      trigger.actionService, services);
-                                });
-                              },
-                              items: get_list_actions_name(servicesAvalable!)
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              hint: const Text('Service')),
-                          const SizedBox(width: 50),
-                          if (listActions.isNotEmpty) ...[
-                            Expanded(
-                                child: DropdownButton<String>(
-                              value: listActions.isNotEmpty
-                                  ? listActions.first.name
-                                  : 'Undefined',
-                              icon: const Icon(Icons.arrow_downward),
-                              iconSize: 24,
-                              elevation: 16,
-                              style: const TextStyle(color: Colors.black),
-                              underline: Container(
-                                height: 2,
-                                color: Colors.black,
-                              ),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  trigger.action = newValue!;
-                                });
-                              },
-                              items: get_list_actions_actions(
-                                      trigger.actionService, services)
-                                  .map<DropdownMenuItem<String>>(
-                                      (ServiceAction value) {
-                                return DropdownMenuItem<String>(
-                                  value: value.name,
-                                  child: Text(value.name),
-                                );
-                              }).toList(),
-                            ))
+                        child: Column(
+                          children: <Widget>[
+                            Row(children: <Widget>[
+                              const SizedBox(width: 20),
+                              DropdownButton<String>(
+                                  value: trigger.actionService == ''
+                                      ? 'Undefined'
+                                      : trigger.actionService,
+                                  icon: const Icon(Icons.arrow_downward),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Colors.black),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.black,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      trigger.actionService = newValue!;
+                                      listActions = get_list_actions_actions(
+                                          trigger.actionService, services);
+                                    });
+                                  },
+                                  items:
+                                      get_list_actions_name(servicesAvalable!)
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  hint: const Text('Service')),
+                              const SizedBox(width: 50),
+                              if (listActions.isNotEmpty) ...[
+                                Expanded(
+                                    child: DropdownButton<String>(
+                                  value: listActions.isNotEmpty
+                                      ? listActions.first.name
+                                      : 'Undefined',
+                                  icon: const Icon(Icons.arrow_downward),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Colors.black),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.black,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      trigger.action = newValue!;
+                                    });
+                                  },
+                                  items: get_list_actions_actions(
+                                          trigger.actionService, services)
+                                      .map<DropdownMenuItem<String>>(
+                                          (ServiceAction value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.name,
+                                      child: Text(value.name),
+                                    );
+                                  }).toList(),
+                                ))
+                              ],
+                            ]),
+                            if (trigger.actionService == 'github' ||
+                                trigger.actionService == 'timer') ...[
+                              const SizedBox(height: 10),
+                            ],
+                            Row(
+                              children: <Widget>[
+                                if (trigger.actionService == 'github') ...[
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: TextFormField(
+                                        obscureText: true,
+                                        decoration: const InputDecoration(
+                                          hoverColor:
+                                              Color.fromRGBO(235, 94, 40, 1),
+                                          labelText: 'Repository',
+                                          contentPadding: EdgeInsets.all(14),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    235, 94, 40, 1),
+                                                width: 2.0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    235, 94, 40, 1)),
+                                          ),
+                                        ),
+                                        onChanged: (value) => setState(() {
+                                          trigger.actionData = value;
+                                        }),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                                if (trigger.actionService == 'timer') ...[
+                                  Expanded(
+                                      child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: TextFormField(
+                                            obscureText: true,
+                                            decoration: const InputDecoration(
+                                              hoverColor: Color.fromRGBO(
+                                                  235, 94, 40, 1),
+                                              labelText: 'Time',
+                                              contentPadding:
+                                                  EdgeInsets.all(14),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color.fromRGBO(
+                                                        235, 94, 40, 1),
+                                                    width: 2.0),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                borderSide: BorderSide(
+                                                    color: Color.fromRGBO(
+                                                        235, 94, 40, 1)),
+                                              ),
+                                            ),
+                                            onChanged: (value) => setState(() {
+                                              trigger.actionData = value;
+                                            }),
+                                          )))
+                                ]
+                              ],
+                            ),
+                            if (trigger.actionService == 'github' ||
+                                trigger.actionService == 'timer') ...[
+                              const SizedBox(height: 10),
+                            ],
                           ],
-                        ]),
+                        ),
                       ),
                       const SizedBox(height: 50),
                       const Text('Reaction',
@@ -249,68 +332,157 @@ class _EditCardState extends State<EditCard> {
                         color: const Color.fromRGBO(235, 94, 40, 1),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
-                        child: Row(children: <Widget>[
-                          const SizedBox(width: 20),
-                          DropdownButton<String>(
-                              value: trigger.reactionService == ''
-                                  ? 'Undefined'
-                                  : trigger.reactionService,
-                              icon: const Icon(Icons.arrow_downward),
-                              iconSize: 24,
-                              elevation: 16,
-                              style: const TextStyle(color: Colors.black),
-                              underline: Container(
-                                height: 2,
-                                color: Colors.black,
-                              ),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  trigger.reactionService = newValue!;
-                                  listReactions = get_list_reactions_reactions(
-                                      trigger.reactionService, services);
-                                });
-                              },
-                              items: get_list_reactions_name(servicesAvalable!)
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              hint: const Text('Service')),
-                          const SizedBox(width: 50),
-                          if (listReactions.isNotEmpty) ...[
-                            Expanded(
-                                child: DropdownButton<String>(
-                              value: listReactions.isNotEmpty
-                                  ? listReactions.first.name
-                                  : 'Undefined',
-                              icon: const Icon(Icons.arrow_downward),
-                              iconSize: 24,
-                              elevation: 16,
-                              style: const TextStyle(color: Colors.black),
-                              underline: Container(
-                                height: 2,
-                                color: Colors.black,
-                              ),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  trigger.reaction = newValue!;
-                                });
-                              },
-                              items: get_list_reactions_reactions(
-                                      trigger.reactionService, services)
-                                  .map<DropdownMenuItem<String>>(
-                                      (ServiceReaction value) {
-                                return DropdownMenuItem<String>(
-                                  value: value.name,
-                                  child: Text(value.name),
-                                );
-                              }).toList(),
-                            ))
+                        child: Column(
+                          children: <Widget>[
+                            Row(children: <Widget>[
+                              const SizedBox(width: 20),
+                              DropdownButton<String>(
+                                  value: trigger.reactionService == ''
+                                      ? 'Undefined'
+                                      : trigger.reactionService,
+                                  icon: const Icon(Icons.arrow_downward),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Colors.black),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.black,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      trigger.reactionService = newValue!;
+                                      listReactions =
+                                          get_list_reactions_reactions(
+                                              trigger.reactionService,
+                                              services);
+                                    });
+                                  },
+                                  items:
+                                      get_list_reactions_name(servicesAvalable!)
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  hint: const Text('Service')),
+                              const SizedBox(width: 50),
+                              if (listReactions.isNotEmpty) ...[
+                                Expanded(
+                                    child: DropdownButton<String>(
+                                  value: listReactions.isNotEmpty
+                                      ? listReactions.first.name
+                                      : 'Undefined',
+                                  icon: const Icon(Icons.arrow_downward),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Colors.black),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.black,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      trigger.reaction = newValue!;
+                                    });
+                                  },
+                                  items: get_list_reactions_reactions(
+                                          trigger.reactionService, services)
+                                      .map<DropdownMenuItem<String>>(
+                                          (ServiceReaction value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.name,
+                                      child: Text(value.name),
+                                    );
+                                  }).toList(),
+                                ))
+                              ],
+                            ]),
+                            if (trigger.reactionService == 'discord') ...[
+                              const SizedBox(height: 10),
+                            ],
+                            const SizedBox(height: 20),
+                            Row(
+                              children: <Widget>[
+                                if (trigger.reactionService == 'discord') ...[
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: TextFormField(
+                                        obscureText: true,
+                                        decoration: const InputDecoration(
+                                          hoverColor:
+                                              Color.fromRGBO(235, 94, 40, 1),
+                                          labelText: 'Weebhook',
+                                          contentPadding: EdgeInsets.all(14),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    235, 94, 40, 1),
+                                                width: 2.0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    235, 94, 40, 1)),
+                                          ),
+                                        ),
+                                        onChanged: (value) => setState(() {
+                                          trigger.reactionData = value;
+                                        }),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                                if (trigger.reactionService == 'github') ...[
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: TextFormField(
+                                        obscureText: true,
+                                        decoration: const InputDecoration(
+                                          hoverColor:
+                                              Color.fromRGBO(235, 94, 40, 1),
+                                          labelText: 'Repository',
+                                          contentPadding: EdgeInsets.all(14),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    235, 94, 40, 1),
+                                                width: 2.0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    235, 94, 40, 1)),
+                                          ),
+                                        ),
+                                        onChanged: (value) => setState(() {
+                                          trigger.reactionData = value;
+                                        }),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ],
+                            ),
+                            if (trigger.reactionService == 'discord' ||
+                                trigger.reactionService == 'github') ...[
+                              const SizedBox(height: 10),
+                            ],
                           ],
-                        ]),
+                        ),
                       ),
                       const SizedBox(height: 50),
                       ElevatedButton(
