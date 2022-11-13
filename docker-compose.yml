@@ -10,8 +10,6 @@ services:
     restart: always
     ports:
       - '8080:8080'
-    networks:
-      - host
     environment:
       DATABASE_URL: 'postgres://tdpctwviqiswwx:276fbb485b727489042e9dc6791d22545b66a0ba29f119903bcec469865f7d80@ec2-54-228-125-183.eu-west-1.compute.amazonaws.com:5432/d82uah1mvprhgv'
       GITHUB_CLIENT_ID: '1d5a92b7b384ab92f057'
@@ -51,12 +49,6 @@ services:
     restart: always
     ports:
       - '8081:8081'
-    networks:
-      - host
-
-networks:
-  host:
-    driver: overlay
 
 volumes:
   my-db:
