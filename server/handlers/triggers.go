@@ -35,6 +35,7 @@ func GetTriggers(w http.ResponseWriter, r *http.Request) {
 	for i := range triggers {
 		buf.Reset()
 		buf.Write(triggers[i].Data)
+		data = models.TriggerData{}
 		gob.NewDecoder(&buf).Decode(&data)
 		resp.Triggers[i].ActionData = data.ActionData
 		resp.Triggers[i].ReactionData = data.ReactionData
