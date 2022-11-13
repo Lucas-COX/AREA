@@ -7,6 +7,7 @@ class ServicesRegister {
   static Future register(String username, String password) async {
     var completer = Completer();
     String url = const String.fromEnvironment('API_URL');
+    print('url: $url');
     try {
       final response = await http.post(Uri.parse('$url/register'),
           headers: <String, String>{

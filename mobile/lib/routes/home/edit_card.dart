@@ -4,6 +4,7 @@ import 'package:mobil/routes/home/services/service_triggers.dart';
 import '../../services/services_session.dart';
 import '../login/login.dart';
 import '../services/services/services_services.dart';
+import 'package:date_field/date_field.dart';
 
 class EditCard extends StatefulWidget {
   const EditCard({Key? key, required this.title}) : super(key: key);
@@ -48,7 +49,6 @@ class _EditCardState extends State<EditCard> {
     List<String> tmp = services.map((e) => e.name).toList();
     if (tmp.contains(naming)) {
       if (services.firstWhere((name) => name.name == naming).reactions != []) {
-        print(services.firstWhere((name) => name.name == naming).reactions);
         return services.firstWhere((name) => name.name == naming).reactions;
       } else {
         return [];
@@ -103,22 +103,18 @@ class _EditCardState extends State<EditCard> {
                     get_list_reactions_reactions(
                         trigger.reactionService, services);
                 return (Scaffold(
-                  backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
+                  backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                   appBar: AppBar(
-                    backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
+                    backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                     title: const Text('Edit card',
                         style: TextStyle(
-                            color: Color.fromRGBO(37, 36, 34, 1),
+                            color: Color.fromRGBO(206, 13, 13, 1),
                             fontFamily: 'Roboto')),
+                    centerTitle: true,
                   ),
                   body: Center(
                       child: Column(
                     children: [
-                      const Text('Edit card',
-                          style: TextStyle(
-                              color: Color.fromRGBO(37, 36, 34, 1),
-                              fontFamily: 'Roboto')),
-                      const SizedBox(height: 50),
                       Padding(
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
@@ -126,17 +122,18 @@ class _EditCardState extends State<EditCard> {
                             decoration: const InputDecoration(
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color.fromRGBO(235, 94, 40, 1),
+                                    color: Color.fromRGBO(206, 13, 13, 1),
                                     width: 2.0),
                               ),
                               border: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0)),
-                                  borderSide: BorderSide(color: Colors.black)),
+                                  borderSide: BorderSide(
+                                      color: Color.fromRGBO(206, 13, 13, 1))),
                               filled: true,
                               labelText: 'Title',
                               labelStyle: TextStyle(
-                                  color: Color.fromRGBO(37, 36, 34, 1)),
+                                  color: Color.fromRGBO(206, 13, 13, 1)),
                             ),
                             onChanged: (value) {
                               trigger.title = value.trim();
@@ -149,17 +146,18 @@ class _EditCardState extends State<EditCard> {
                             decoration: const InputDecoration(
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color.fromRGBO(235, 94, 40, 1),
+                                    color: Color.fromRGBO(206, 13, 13, 1),
                                     width: 2.0),
                               ),
                               border: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0)),
-                                  borderSide: BorderSide(color: Colors.black)),
+                                  borderSide: BorderSide(
+                                      color: Color.fromRGBO(206, 13, 13, 1))),
                               filled: true,
                               labelText: 'Description',
                               labelStyle: TextStyle(
-                                  color: Color.fromRGBO(37, 36, 34, 1)),
+                                  color: Color.fromRGBO(206, 13, 13, 1)),
                             ),
                             onChanged: (value) {
                               trigger.title = value.trim();
@@ -168,10 +166,10 @@ class _EditCardState extends State<EditCard> {
                       const SizedBox(height: 50),
                       const Text('Action',
                           style: TextStyle(
-                              color: Color.fromRGBO(37, 36, 34, 1),
+                              color: Color.fromRGBO(206, 13, 13, 1),
                               fontFamily: 'Roboto')),
                       Card(
-                        color: const Color.fromRGBO(235, 94, 40, 1),
+                        color: const Color.fromRGBO(12, 169, 12, 1),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         child: Column(
@@ -185,16 +183,19 @@ class _EditCardState extends State<EditCard> {
                                   icon: const Icon(Icons.arrow_downward),
                                   iconSize: 24,
                                   elevation: 16,
-                                  style: const TextStyle(color: Colors.black),
                                   underline: Container(
                                     height: 2,
-                                    color: Colors.black,
+                                    color: Color.fromRGBO(206, 13, 13, 1),
                                   ),
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       trigger.actionService = newValue!;
                                       listActions = get_list_actions_actions(
                                           trigger.actionService, services);
+                                      trigger.action = listActions.isNotEmpty
+                                          ? listActions.first.name
+                                          : '';
+                                      print(trigger.action);
                                     });
                                   },
                                   items:
@@ -211,20 +212,18 @@ class _EditCardState extends State<EditCard> {
                               if (listActions.isNotEmpty) ...[
                                 Expanded(
                                     child: DropdownButton<String>(
-                                  value: listActions.isNotEmpty
-                                      ? listActions.first.name
-                                      : 'Undefined',
+                                  value: trigger.action,
                                   icon: const Icon(Icons.arrow_downward),
                                   iconSize: 24,
                                   elevation: 16,
-                                  style: const TextStyle(color: Colors.black),
                                   underline: Container(
                                     height: 2,
-                                    color: Colors.black,
+                                    color: Color.fromRGBO(206, 13, 13, 1),
                                   ),
                                   onChanged: (String? newValue) {
                                     setState(() {
                                       trigger.action = newValue!;
+                                      print(trigger.action);
                                     });
                                   },
                                   items: get_list_actions_actions(
@@ -254,7 +253,7 @@ class _EditCardState extends State<EditCard> {
                                         obscureText: true,
                                         decoration: const InputDecoration(
                                           hoverColor:
-                                              Color.fromRGBO(235, 94, 40, 1),
+                                              Color.fromRGBO(206, 13, 13, 1),
                                           labelText: 'Repository',
                                           contentPadding: EdgeInsets.all(14),
                                           focusedBorder: OutlineInputBorder(
@@ -272,6 +271,9 @@ class _EditCardState extends State<EditCard> {
                                                 color: Color.fromRGBO(
                                                     235, 94, 40, 1)),
                                           ),
+                                          labelStyle: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  206, 13, 13, 1)),
                                         ),
                                         onChanged: (value) => setState(() {
                                           trigger.actionData = value;
@@ -308,12 +310,15 @@ class _EditCardState extends State<EditCard> {
                                                     color: Color.fromRGBO(
                                                         235, 94, 40, 1)),
                                               ),
+                                              labelStyle: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      206, 13, 13, 1)),
                                             ),
                                             onChanged: (value) => setState(() {
                                               trigger.actionData = value;
                                             }),
                                           )))
-                                ]
+                                ],
                               ],
                             ),
                             if (trigger.actionService == 'github' ||
@@ -326,10 +331,10 @@ class _EditCardState extends State<EditCard> {
                       const SizedBox(height: 50),
                       const Text('Reaction',
                           style: TextStyle(
-                              color: Color.fromRGBO(37, 36, 34, 1),
+                              color: Color.fromRGBO(206, 13, 13, 1),
                               fontFamily: 'Roboto')),
                       Card(
-                        color: const Color.fromRGBO(235, 94, 40, 1),
+                        color: const Color.fromRGBO(12, 169, 12, 1),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         child: Column(
@@ -343,10 +348,9 @@ class _EditCardState extends State<EditCard> {
                                   icon: const Icon(Icons.arrow_downward),
                                   iconSize: 24,
                                   elevation: 16,
-                                  style: const TextStyle(color: Colors.black),
                                   underline: Container(
                                     height: 2,
-                                    color: Colors.black,
+                                    color: Color.fromRGBO(206, 13, 13, 1),
                                   ),
                                   onChanged: (String? newValue) {
                                     setState(() {
@@ -355,6 +359,10 @@ class _EditCardState extends State<EditCard> {
                                           get_list_reactions_reactions(
                                               trigger.reactionService,
                                               services);
+                                      trigger.reaction =
+                                          listReactions.isNotEmpty
+                                              ? listReactions.first.name
+                                              : '';
                                     });
                                   },
                                   items:
@@ -377,10 +385,9 @@ class _EditCardState extends State<EditCard> {
                                   icon: const Icon(Icons.arrow_downward),
                                   iconSize: 24,
                                   elevation: 16,
-                                  style: const TextStyle(color: Colors.black),
                                   underline: Container(
                                     height: 2,
-                                    color: Colors.black,
+                                    color: Color.fromRGBO(206, 13, 13, 1),
                                   ),
                                   onChanged: (String? newValue) {
                                     setState(() {
@@ -405,6 +412,44 @@ class _EditCardState extends State<EditCard> {
                             const SizedBox(height: 20),
                             Row(
                               children: <Widget>[
+                                if (trigger.reactionService == 'notion') ...[
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: TextFormField(
+                                        obscureText: true,
+                                        decoration: const InputDecoration(
+                                          hoverColor:
+                                              Color.fromRGBO(206, 13, 13, 1),
+                                          labelText: 'URl',
+                                          contentPadding: EdgeInsets.all(14),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    235, 94, 40, 1),
+                                                width: 2.0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                            borderSide: BorderSide(
+                                                color: Color.fromRGBO(
+                                                    235, 94, 40, 1)),
+                                          ),
+                                          labelStyle: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  206, 13, 13, 1)),
+                                        ),
+                                        onChanged: (value) => setState(() {
+                                          trigger.reactionData = value;
+                                        }),
+                                      ),
+                                    ),
+                                  )
+                                ],
                                 if (trigger.reactionService == 'discord') ...[
                                   Expanded(
                                     child: Padding(
@@ -414,7 +459,7 @@ class _EditCardState extends State<EditCard> {
                                         obscureText: true,
                                         decoration: const InputDecoration(
                                           hoverColor:
-                                              Color.fromRGBO(235, 94, 40, 1),
+                                              Color.fromRGBO(206, 13, 13, 1),
                                           labelText: 'Weebhook',
                                           contentPadding: EdgeInsets.all(14),
                                           focusedBorder: OutlineInputBorder(
@@ -432,6 +477,9 @@ class _EditCardState extends State<EditCard> {
                                                 color: Color.fromRGBO(
                                                     235, 94, 40, 1)),
                                           ),
+                                          labelStyle: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  206, 13, 13, 1)),
                                         ),
                                         onChanged: (value) => setState(() {
                                           trigger.reactionData = value;
@@ -449,7 +497,7 @@ class _EditCardState extends State<EditCard> {
                                         obscureText: true,
                                         decoration: const InputDecoration(
                                           hoverColor:
-                                              Color.fromRGBO(235, 94, 40, 1),
+                                              Color.fromRGBO(206, 13, 13, 1),
                                           labelText: 'Repository',
                                           contentPadding: EdgeInsets.all(14),
                                           focusedBorder: OutlineInputBorder(
@@ -488,9 +536,9 @@ class _EditCardState extends State<EditCard> {
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             foregroundColor:
-                                const Color.fromRGBO(235, 94, 40, 1),
+                                const Color.fromRGBO(255, 255, 255, 1),
                             backgroundColor:
-                                const Color.fromRGBO(255, 252, 242, 1),
+                                const Color.fromRGBO(206, 13, 13, 1),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -530,7 +578,7 @@ class _ActionGoogleState extends State<ActionGoogle> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: const Color.fromRGBO(235, 94, 40, 1),
+            color: const Color.fromRGBO(12, 169, 12, 1),
           ),
         ),
         child: Column(
@@ -541,7 +589,7 @@ class _ActionGoogleState extends State<ActionGoogle> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(37, 36, 34, 1),
+                color: Color.fromRGBO(206, 13, 13, 1),
               ),
             ),
             IconButton(
@@ -552,12 +600,12 @@ class _ActionGoogleState extends State<ActionGoogle> {
                 icon: const Icon(
                   Icons.g_mobiledata_rounded,
                   size: 50,
-                  color: Color.fromRGBO(37, 36, 34, 1),
+                  color: Color.fromRGBO(206, 13, 13, 1),
                 )),
             const Text('Connect to google',
                 style: TextStyle(
                   fontSize: 11,
-                  color: Color.fromRGBO(37, 36, 34, 1),
+                  color: Color.fromRGBO(206, 13, 13, 1),
                 )),
           ],
         ),
