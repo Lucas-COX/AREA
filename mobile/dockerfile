@@ -33,4 +33,6 @@ COPY ./ /app/
 RUN gradle --refresh-dependencies
 RUN flutter build apk --release --dart-define API_URL=https://areeeeeeea.herokuapp.com
 
-CMD cp ../build/app/outputs/apk/release/app-release.apk $MOBILE_APP_FILEPATH
+RUN cp ../build/app/outputs/apk/release/app-release.apk $MOBILE_APP_FILEPATH
+
+CMD [ "echo", "Apk built to $MOBILE_APP_FILEPATH" ]

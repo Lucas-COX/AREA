@@ -10,6 +10,8 @@ RUN yarn install
 
 COPY . .
 
+COPY $MOBILE_APP_FILEPATH ./public/client.apk
+
 RUN yarn build
 
 #COPY file config next js
