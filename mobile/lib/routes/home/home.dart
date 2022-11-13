@@ -1,7 +1,6 @@
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
 import 'package:mobil/routes/login/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'services/service_triggers.dart';
 
 import '../../services/services_session.dart';
@@ -34,8 +33,8 @@ class _HomePageState extends State<HomePage> {
           final triggers = session?.user == null ? [] : session?.user?.triggers;
           return (DraggableHome(
               title: const Text("",
-                  style: TextStyle(color: Color.fromRGBO(37, 36, 34, 1))),
-              backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
+                  style: TextStyle(color: Color.fromRGBO(206, 13, 13, 1))),
+              backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
               headerWidget: headerWidget(context, session),
               alwaysShowTitle: true,
               alwaysShowLeadingAndAction: true,
@@ -44,15 +43,16 @@ class _HomePageState extends State<HomePage> {
                   onPressed: (() {
                     Navigator.pushNamed(context, '/login');
                   }),
-                  icon: const Icon(Icons.login)),
-              appBarColor: const Color.fromRGBO(255, 252, 242, 1),
+                  icon: const Icon(Icons.login,
+                      color: Color.fromRGBO(206, 13, 13, 1))),
+              appBarColor: const Color.fromRGBO(255, 255, 255, 1),
               body: [
                 const Text(
                   'Your trigger',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(37, 36, 34, 1),
+                    color: Color.fromRGBO(206, 13, 13, 1),
                   ),
                 ),
                 const SizedBox(height: 50),
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                     shrinkWrap: true,
                     itemCount: triggers?.length ?? 0,
                     itemBuilder: (context, index) => Card(
-                          color: const Color.fromRGBO(235, 94, 40, 1),
+                          color: const Color.fromRGBO(12, 169, 12, 1),
                           child: ListTile(
                             subtitle: Text(triggers?[index].description ??
                                 'No description'),
@@ -72,13 +72,13 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Switch(
                                   value: triggers?[index].active,
+                                  activeColor: Color.fromRGBO(206, 13, 13, 1),
                                   onChanged: (value) async {
                                     setState(() {
-                                      if (value == true) {
-                                        triggers?[index].active = true;
-                                      } else {
-                                        triggers?[index].active = false;
-                                      }
+                                      print(value);
+                                      print(triggers?[index].active);
+                                      triggers?[index].active = value;
+                                      print(triggers?[index].active);
                                     });
                                     await TriggersService.update(
                                         triggers?[index].toTriggerBody(),
@@ -93,7 +93,8 @@ class _HomePageState extends State<HomePage> {
                                         triggers?.removeAt(index);
                                       });
                                     },
-                                    icon: const Icon(Icons.delete)),
+                                    icon: const Icon(Icons.delete,
+                                        color: Color.fromRGBO(206, 13, 13, 1))),
                                 IconButton(
                                     onPressed: () async {
                                       Navigator.pushNamed(context, '/edit',
@@ -101,6 +102,7 @@ class _HomePageState extends State<HomePage> {
                                     },
                                     icon: const Icon(
                                       Icons.edit,
+                                      color: Color.fromRGBO(206, 13, 13, 1),
                                     )),
                               ],
                             ),
@@ -116,7 +118,7 @@ Widget headerWidget(BuildContext context, final session) {
   return Container(
       height: 200,
       width: double.infinity,
-      color: const Color.fromRGBO(255, 252, 242, 1),
+      color: const Color.fromRGBO(255, 255, 255, 1),
       child:
           Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
         const SizedBox(height: 50),
@@ -125,13 +127,13 @@ Widget headerWidget(BuildContext context, final session) {
           style: const TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(37, 36, 34, 1),
+            color: Color.fromRGBO(206, 13, 13, 1),
           ),
         ),
         const SizedBox(height: 50),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: const Color.fromRGBO(235, 94, 40, 1)),
+                primary: const Color.fromRGBO(12, 169, 12, 1)),
             onPressed: () {
               Navigator.pushNamed(context, '/services');
             },
@@ -143,14 +145,14 @@ Widget headerWidget(BuildContext context, final session) {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(37, 36, 34, 1),
+            color: Color.fromRGBO(206, 13, 13, 1),
           ),
         ),
         const SizedBox(height: 10),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
-            backgroundColor: const Color.fromRGBO(235, 94, 40, 1),
+            backgroundColor: const Color.fromRGBO(12, 169, 12, 1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(32.0),
             ),
