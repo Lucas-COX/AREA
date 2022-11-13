@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobil/routes/services/services/services_services.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,18 +64,21 @@ class User {
   String username;
   DateTime createdAt;
   DateTime updatedAt;
+  String role;
   List<Trigger> triggers = [];
   List<String> services = [];
 
   User(
       {required this.username,
       required this.createdAt,
+      required this.role,
       required this.updatedAt});
 
   User.fromJson(Map<String, dynamic> json)
       : username = json['username'],
         createdAt = DateTime.parse(json['created_at']),
         updatedAt = DateTime.parse(json['updated_at']),
+        role = json['role'],
         triggers = json['triggers'] == null
             ? []
             : (json['triggers'] as List)

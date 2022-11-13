@@ -19,12 +19,12 @@ class _AccueilPageState extends State<AccueilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         title: const Text('Area',
-            style: TextStyle(color: Color.fromRGBO(37, 36, 34, 1))),
+            style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1))),
         elevation: 0,
         leading: const Text(''),
       ),
@@ -37,7 +37,7 @@ class _AccueilPageState extends State<AccueilPage> {
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(37, 36, 34, 1),
+                color: Color.fromRGBO(206, 13, 13, 1),
               ),
             ),
             const SizedBox(height: 80),
@@ -49,7 +49,7 @@ class _AccueilPageState extends State<AccueilPage> {
                   labelText: 'Username',
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: Color.fromRGBO(235, 94, 40, 1), width: 2.0),
+                        color: Color.fromRGBO(12, 169, 12, 1), width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                   border: OutlineInputBorder(
@@ -67,18 +67,18 @@ class _AccueilPageState extends State<AccueilPage> {
               child: TextFormField(
                 obscureText: true,
                 decoration: const InputDecoration(
-                  hoverColor: Color.fromRGBO(235, 94, 40, 1),
+                  hoverColor: Color.fromRGBO(12, 169, 12, 1),
                   labelText: 'Password',
                   contentPadding: EdgeInsets.all(14),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: Color.fromRGBO(235, 94, 40, 1), width: 2.0),
+                        color: Color.fromRGBO(12, 169, 12, 1), width: 2.0),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide:
-                        BorderSide(color: Color.fromRGBO(235, 94, 40, 1)),
+                        BorderSide(color: Color.fromRGBO(12, 169, 12, 1)),
                   ),
                 ),
                 onChanged: (value) => setState(() {
@@ -89,7 +89,7 @@ class _AccueilPageState extends State<AccueilPage> {
             const SizedBox(height: 20),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(235, 94, 40, 1),
+                  backgroundColor: const Color.fromRGBO(12, 169, 12, 1),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 45, vertical: 10),
                 ),

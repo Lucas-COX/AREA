@@ -55,7 +55,8 @@ class _ServicesPageState extends State<ServicesPage> {
                     appBar: AppBar(
                       centerTitle: true,
                       title: Text(widget.title,
-                          style: const TextStyle(color: Colors.black)),
+                          style: const TextStyle(
+                              color: Color.fromRGBO(206, 13, 13, 1))),
                       backgroundColor: const Color.fromRGBO(255, 252, 242, 1),
                       elevation: 0,
                     ),
@@ -66,7 +67,7 @@ class _ServicesPageState extends State<ServicesPage> {
                               color: session?.user?.services
                                           .contains(services?[index].name) ==
                                       true
-                                  ? const Color.fromRGBO(235, 94, 40, 1)
+                                  ? const Color.fromRGBO(12, 169, 12, 1)
                                   : const Color.fromRGBO(255, 252, 242, 1),
                               child: ListTile(
                                   title: Text(
@@ -77,7 +78,8 @@ class _ServicesPageState extends State<ServicesPage> {
                                               true
                                           ? const Color.fromRGBO(
                                               255, 252, 242, 1)
-                                          : const Color.fromRGBO(37, 36, 34, 1),
+                                          : const Color.fromRGBO(
+                                              206, 13, 13, 1),
                                     ),
                                   ),
                                   leading:
