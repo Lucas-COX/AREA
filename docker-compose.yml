@@ -31,7 +31,7 @@ services:
     #  dockerfile: dockerfile
     #image: mobile
     environment:
-      MOBILE_APP_FILEPATH: /app/client/area_mobile.apk
+      MOBILE_APP_FILEPATH: /web/public/area_mobile.apk
     volumes:
       - client:/app/client
 
@@ -47,6 +47,8 @@ services:
       - client:/usr/share/nginx/html/assets/client
       - client:/app/client
     restart: always
+    environment:
+      MOBILE_APP_FILEPATH: /web/public/area_mobile.apk
     ports:
       - '8081:8081'
 
