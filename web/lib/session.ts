@@ -16,7 +16,8 @@ export async function getSession(context: GetServerSidePropsContext): Promise<Se
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
       resolve({ user: res.data.me, authenticated: true, token });
-    }).catch(() => {
+    }).catch((e) => {
+      console.log(e);
       resolve({ user: undefined, authenticated: false });
     });
   });

@@ -22,5 +22,5 @@ WORKDIR "$APP_HOME"
 #COPY src/config/ config/
 COPY --from=builder "$APP_HOME"/server $APP_HOME
 
-EXPOSE 8081
+EXPOSE 8080
 CMD ["./server"]
