@@ -45,16 +45,10 @@ The docker component is divided into two parts:
 the first one is the docker compose, the neuralgic centre of the docker, it is him who will allow to containerize the different parts, but he cannot act all alone here is the second point
 In the second part we treat more precisely the parts with dockerfiles which are in the functioning like makefile. It will allow to install all the tools necessary in the containers for the various parts.
 
-This command up the db and environement :
+
+To run this project run this command:
 
 .. code-block:: console
    
-   (.env) $ docker-compose up
-
-
-Next you run this command to run project :
-
-.. code-block:: console
-   
-   (.venv) $ docker-compose run .
+   (.venv) $ docker-compose up --build
 
