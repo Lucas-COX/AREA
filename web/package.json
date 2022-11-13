@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 8081",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8081",
     "lint": "next lint --fix"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-toastify": "9.0.8",
+    "sharp": "^0.31.2",
     "tailwind-scrollbar-hide": "^1.1.7",
     "urlsafe-base64": "^1.0.0"
   },
