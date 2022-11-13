@@ -34,7 +34,6 @@ services:
       MOBILE_APP_FILEPATH: /app/client/area_mobile.apk
     volumes:
       - client:/app/client
-    restart: always
 
   web_service:
     depends_on:
@@ -46,6 +45,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - client:/usr/share/nginx/html/assets/client
+      - client:/app/client
     restart: always
     ports:
       - '8081:8081'
