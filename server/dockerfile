@@ -1,0 +1,26 @@
+FROM golang:1.19-buster as builder
+
+ENV APP_HOME /go/src/server
+
+WORKDIR "$APP_HOME"
+#download necessary GO modules
+COPY go.mod ./
+COPY go.sum ./
+
+RUN go mod tidy
+COPY *.go ./
+ADD . .
+
+RUN go build -o server
+
+FROM registry.semaphoreci.com/golang:1.18
+
+ENV APP_HOME /go/src/server
+RUN mkdir -p "$APP_HOME"
+WORKDIR "$APP_HOME"
+
+#COPY src/config/ config/
+COPY --from=builder "$APP_HOME"/server $APP_HOME
+
+EXPOSE 8080
+CMD ["./server"]

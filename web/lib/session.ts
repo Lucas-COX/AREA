@@ -12,11 +12,12 @@ export async function getSession(context: GetServerSidePropsContext): Promise<Se
   return new Promise<Session>((resolve) => {
     const token = getToken(context);
     if (token == null) resolve({ user: undefined, authenticated: false });
-    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
+    axios.get(`${process.env.API_URL}/me`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
       resolve({ user: res.data.me, authenticated: true, token });
-    }).catch(() => {
+    }).catch((e) => {
+      console.log(e);
       resolve({ user: undefined, authenticated: false });
     });
   });

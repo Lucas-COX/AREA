@@ -1,0 +1,56 @@
+version: "3.3"
+services:
+  app_server:
+    image: application_server
+    build:
+      context: server
+      dockerfile: dockerfile
+    #volumes:
+    #  - .:/server
+    restart: always
+    ports:
+      - '8080:8080'
+    environment:
+      DATABASE_URL: 'postgres://tdpctwviqiswwx:276fbb485b727489042e9dc6791d22545b66a0ba29f119903bcec469865f7d80@ec2-54-228-125-183.eu-west-1.compute.amazonaws.com:5432/d82uah1mvprhgv'
+      GITHUB_CLIENT_ID: '1d5a92b7b384ab92f057'
+      GITHUB_CLIENT_SECRET: 'f808c4f7b0e2d6767d76c29549c935a7dec66da5'
+      GOOGLE_CLIENT_ID: '613091759382-6hjja3qv3866thps1mru6v139pti64ju.apps.googleusercontent.com'
+      GOOGLE_CLIENT_SECRET: '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'
+      JWT_SECRET: 'e4fe29ea35cee5fcb03088eef1d9ff'
+      MICROSOFT_CLIENT_ID: '4ad8f38a-bbb1-4b06-8d5a-5b5afa47f7fa'
+      MICROSOFT_CLIENT_SECRET: '-3C8Q~63C5PdgFTRR-jx-S98WajB-RVrpKPYOcKf'
+      NOTION_CLIENT_ID: '7cf4f1ef-67a1-4881-87fa-2d2064d5baee'
+      NOTION_CLIENT_SECRET: 'secret_rUYop9JkKShZHOTRo6nCXVIDa2aqlVqPXAcYi1yxgim'
+      OAUTH_REDIRECT_URL: 'http://localhost:8080'
+      SALT: 10
+      PORT: 8080
+
+  mobile_service:
+    build: mobile
+    #  context: mobile
+    #  dockerfile: dockerfile
+    #image: mobile
+    environment:
+      MOBILE_APP_FILEPATH: /app/client/area_mobile.apk
+    volumes:
+      - client:/app/client
+
+  web_service:
+    depends_on:
+      - app_server
+      - mobile_service
+    image: web
+    build:
+      context: web
+      dockerfile: Dockerfile
+    volumes:
+      - client:/usr/share/nginx/html/assets/client
+      - client:/app/client
+    restart: always
+    ports:
+      - '8081:8081'
+
+volumes:
+  my-db:
+    driver: local
+  client: null
