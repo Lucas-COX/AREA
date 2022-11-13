@@ -15,7 +15,7 @@ export default function SideMenu({}: SideMenuProps) {
     const elements = [
         {name: "Home", href: "/"},
         {name: "Services", href: "/services"},
-        {name: "Download APK", href: process.env.NEXT_PUBLIC_APK_PATH as string},
+        {name: "Download APK", href: "/client.apk"},
     ]
 
     return (
