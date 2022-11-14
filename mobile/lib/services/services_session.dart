@@ -104,7 +104,7 @@ class Session {
 class ServicesSession {
   static Future<Session> get() async {
     var completer = Completer<Session>();
-    String url = const String.fromEnvironment('API_URL');
+    String url = "https://areeeeeeea.herokuapp.com";
     try {
       final prefs = await SharedPreferences.getInstance();
 

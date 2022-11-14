@@ -6,7 +6,7 @@ import 'dart:async';
 class ServicesRegister {
   static Future register(String username, String password) async {
     var completer = Completer();
-    String url = const String.fromEnvironment('API_URL');
+    String url = "https://areeeeeeea.herokuapp.com";
     print('url: $url');
     try {
       final response = await http.post(Uri.parse('$url/register'),

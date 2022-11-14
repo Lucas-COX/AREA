@@ -66,7 +66,7 @@ class Services {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('area_token');
-      String url = const String.fromEnvironment('API_URL');
+      String url = "https://areeeeeeea.herokuapp.com";
       final response =
           await http.get(Uri.parse('$url/services'), headers: <String, String>{
         'Authorization': 'Bearer $token',
@@ -91,7 +91,7 @@ class Services {
     final token = prefs.getString('area_token');
     Codec<String, String> stringToBase64Url = utf8.fuse(base64Url);
     String url =
-        '${const String.fromEnvironment('API_URL')}/providers/$name/auth?callback=${stringToBase64Url.encode('${const String.fromEnvironment('API_URL')}/login/done')}';
+        'https://areeeeeeea.herokuapp.com/providers/$name/auth?callback=${stringToBase64Url.encode('https://areeeeeeea.herokuapp.com/login/done')}';
     url = url.substring(0, url.length - 2);
     if (token != null) {
       try {

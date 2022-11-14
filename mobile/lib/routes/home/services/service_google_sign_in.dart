@@ -12,7 +12,7 @@ class Openwindow {
     final token = prefs.getString('area_token');
     Codec<String, String> stringToBase64Url = utf8.fuse(base64Url);
     String url =
-        '${const String.fromEnvironment('API_URL')}/providers/google/auth?callback=${stringToBase64Url.encode('https://google.com')}';
+        'https://areeeeeeea.herokuapp.com/providers/google/auth?callback=${stringToBase64Url.encode('https://google.com')}';
     if (token != null) {
       try {
         final response =

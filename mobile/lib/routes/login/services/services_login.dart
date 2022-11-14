@@ -6,11 +6,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ServicesLogin {
-  static String url = dotenv.env['API_URL']!;
+  static String url = "https://areeeeeeea.herokuapp.com";
 
   static Future login(String username, String password) async {
     var completer = Completer();
-    String url = const String.fromEnvironment('API_URL');
+    String url = "https://areeeeeeea.herokuapp.com";
     try {
       final response = await http.post(Uri.parse('$url/login'),
           headers: <String, String>{

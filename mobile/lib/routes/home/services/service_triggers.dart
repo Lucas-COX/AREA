@@ -41,7 +41,7 @@ class TriggerBody {
 }
 
 class TriggersService {
-  static String url = const String.fromEnvironment("API_URL");
+  static String url = "https://areeeeeeea.herokuapp.com";
 
   static Future post() async {
     var completer = Completer();
