@@ -1,22 +1,24 @@
 # AREA
 Action REAction application
 
-## Setup database
+## Prerequisities
+You will need :
+- A `docker` valid installation to run this project.
+- A valid configuration file as `server/config/config.yml` using the example provided.
+- A valid environment file as `web/.env` using the example provided.
+- Replacing `https://areeeeeeea.herokuapp.com` in the mobile/dockerfile by the url of an instance of the server running if you want to use the mobile client.
 
-> Make sure that the `area` user has all permissions over the `Area` database and that the database exists.
+## Start the project
+The compilation of the whole project is made with 
 ```bash
-cat area.sql | mysql -u area -p Area
+docker-compose up
 ```
+This command will start both the client and server containers and build the apk of the mobile client.
 
-## Start project
-To start the server use :
-```bash
-make run t=server
-```
+## Use the mobile client
+The apk of the mobile client can be downloaded from the web client.
 
-To start the web client use :
-```bash
-make run t=web
-```
-
-> To use the mobile client download the apk.
+## Authors
+<a href="https://github.com/angular/angular-ja/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Lucas-COX/AREA" />
+</a>
