@@ -1,5 +1,6 @@
 # AREA
-Action REAction application
+Epitech project, 2022\
+The goal of this project is to create bonds between APIs using an Action / Reaction system.
 
 ## Prerequisities
 You will need :
